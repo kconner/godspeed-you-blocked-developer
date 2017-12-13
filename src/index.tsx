@@ -1,11 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
+import Hello from './Hello';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root') as HTMLElement
-);
+const rootReactElement = <Hello name="my dude" enthusiasmLevel={3} />;
+const rootDOMElement = document.getElementById('root');
+
+if (rootDOMElement == null) {
+  throw new Error('Root DOM element not found');
+}
+
+ReactDOM.render(rootReactElement, rootDOMElement);
 registerServiceWorker();
