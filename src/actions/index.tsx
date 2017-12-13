@@ -12,7 +12,7 @@ export type EnthusiasmAction = IncrementEnthusiasm | DecrementEnthusiasm;
 
 export const incrementEnthusiasm = (): IncrementEnthusiasm => ({
   type: constants.INCREMENT_ENTHUSIASM
-})
+});
 
 export const decrementEnthusiasm = (): DecrementEnthusiasm => ({
   type: constants.DECREMENT_ENTHUSIASM
