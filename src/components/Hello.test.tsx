@@ -31,3 +31,17 @@ it('throws when the enthusiasm level is -1', () => {
     enzyme.shallow(<Hello name="Daniel" enthusiasmLevel={-1} />);
   }).toThrow();
 });
+
+it('fires onIncrement when the increment button is clicked', () => {
+  const callback = jest.fn();
+  const hello = enzyme.shallow(<Hello name="Daniel" onIncrement={callback} />);
+  hello.find('button').first().simulate('click')
+  expect(callback).toHaveBeenCalled()
+});
+
+it('fires onDecrement when the decrement button is clicked', () => {
+  const callback = jest.fn();
+  const hello = enzyme.shallow(<Hello name="Daniel" onDecrement={callback} />);
+  hello.find('button').at(1).simulate('click')
+  expect(callback).toHaveBeenCalled()
+});
