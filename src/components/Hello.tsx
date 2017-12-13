@@ -8,30 +8,9 @@ export interface Props {
   onDecrement?: () => void;
 }
 
-// class Hello extends React.Component<Props, object> {
-//   render() {
-//     const { name, enthusiasmLevel = 1, onIncrement, onDecrement } = this.props;
-//     if (enthusiasmLevel <= 0) {
-//       throw new Error('You could be a little more enthusiastic. :D');
-//     }
-
-//     return (
-//       <div className="hello">
-//         <div className="greeting">
-//           Hello {name + getExclamationMarks(enthusiasmLevel)}
-//         </div>
-//         <div>
-//           <button onClick={onIncrement}>+</button>
-//           <button onClick={onDecrement}>-</button>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
 function Hello({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
   if (enthusiasmLevel <= 0) {
-    throw new Error('You could be a little more enthusiastic. :D');
+    throw new Error('Application failed due to investing too heavily in external validation');
   }
 
   return (

@@ -23,7 +23,6 @@ const rootReactElement = (
 );
 
 const rootDOMElement = document.getElementById('root');
-
 if (rootDOMElement == null) {
   throw new Error('Root DOM element not found');
 }
