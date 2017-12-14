@@ -5,25 +5,9 @@ export interface SetGroup {
   group: string;
 }
 
-export interface IncrementEnthusiasm {
-  type: constants.INCREMENT_ENTHUSIASM;
-}
-
-export interface DecrementEnthusiasm {
-  type: constants.DECREMENT_ENTHUSIASM;
-}
-
-export type Action = SetGroup | IncrementEnthusiasm | DecrementEnthusiasm;
+export type Action = SetGroup; // | OtherAction | OtherAction
 
 export const setGroup = (group: string): SetGroup => ({
   type: constants.SET_GROUP,
   group
-});
-
-export const incrementEnthusiasm = (): IncrementEnthusiasm => ({
-  type: constants.INCREMENT_ENTHUSIASM
-});
-
-export const decrementEnthusiasm = (): DecrementEnthusiasm => ({
-  type: constants.DECREMENT_ENTHUSIASM
 });
