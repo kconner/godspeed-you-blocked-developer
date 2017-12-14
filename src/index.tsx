@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import GroupForm from './containers/GroupForm';
+import StateDisplay from './containers/StateDisplay';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { Provider } from 'react-redux';
@@ -17,7 +18,10 @@ const store = createStore<StoreState>(
 
 const rootReactElement = (
   <Provider store={store}>
-    <GroupForm />
+    <div>
+      <GroupForm />
+      <StateDisplay />
+    </div>
   </Provider>
 );
 
