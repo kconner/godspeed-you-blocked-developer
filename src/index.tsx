@@ -11,11 +11,7 @@ import reduce from './reducers/index';
 const store = createStore<StoreState>(
   reduce,
   {
-    group: '',
-
-    // TODO: Remove leftovers from tutorial
-    languageName: 'TypeScript',
-    enthusiasmLevel: 1,
+    group: ''
   }
 );
 
