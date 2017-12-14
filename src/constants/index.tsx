@@ -1,3 +1,6 @@
+export const SET_GROUP = 'SET_GROUP';
+export type SET_GROUP = typeof SET_GROUP;
+
 export const INCREMENT_ENTHUSIASM = 'INCREMENT_ENTHUSIASM';
 export type INCREMENT_ENTHUSIASM = typeof INCREMENT_ENTHUSIASM;
 

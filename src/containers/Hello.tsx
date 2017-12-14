@@ -8,7 +8,7 @@ export const mapStateToProps = ({ enthusiasmLevel, languageName }: StoreState) =
   name: languageName,
 });
 
-export const mapDispatchToProps = (dispatch: Dispatch<actions.EnthusiasmAction>) => ({
+export const mapDispatchToProps = (dispatch: Dispatch<actions.Action>) => ({
   onIncrement: () => dispatch(actions.incrementEnthusiasm()),
   onDecrement: () => dispatch(actions.decrementEnthusiasm()),
 });

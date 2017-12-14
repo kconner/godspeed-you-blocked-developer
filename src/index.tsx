@@ -1,16 +1,19 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Hello from './containers/Hello';
+import GroupForm from './containers/GroupForm';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { StoreState } from './types/index';
-import { enthusiasm } from './reducers/index';
+import reduce from './reducers/index';
 
 const store = createStore<StoreState>(
-  enthusiasm,
+  reduce,
   {
+    group: '',
+
+    // TODO: Remove leftovers from tutorial
     languageName: 'TypeScript',
     enthusiasmLevel: 1,
   }
@@ -18,7 +21,7 @@ const store = createStore<StoreState>(
 
 const rootReactElement = (
   <Provider store={store}>
-    <Hello />
+    <GroupForm />
   </Provider>
 );
 
