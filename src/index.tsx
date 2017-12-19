@@ -18,16 +18,38 @@ const store = createStore<StoreState>(
       'sample': {
         id: 'sample',
         tasks: {
-          'task 1': {
-            id: 'task 1',
-            title: 'First task',
-            assignee: '',
+          'task 0': {
+            id: 'task 0',
+            title: 'Finished task',
+            assignee: 'you',
             location: {
               x: 0,
               y: 0
             },
-            isDone: false,
+            isDone: true,
             prerequisiteTaskIDs: []
+          },
+          'task 1': {
+            id: 'task 1',
+            title: 'Next task',
+            assignee: 'me',
+            location: {
+              x: 100,
+              y: 0
+            },
+            isDone: false,
+            prerequisiteTaskIDs: ['task 0']
+          },
+          'task 2': {
+            id: 'task 2',
+            title: 'Blocked task',
+            assignee: 'you',
+            location: {
+              x: 200,
+              y: 0
+            },
+            isDone: false,
+            prerequisiteTaskIDs: ['task 1']
           }
         }
       }
