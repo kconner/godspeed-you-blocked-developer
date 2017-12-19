@@ -1,13 +1,13 @@
 import * as constants from '../constants';
 
-export interface SetGroup {
-  type: constants.SET_GROUP;
-  group: string;
+export interface SetCurrentPlanID {
+  type: constants.SET_CURRENT_PLAN_ID;
+  planID: string;
 }
 
-export type Action = SetGroup; // | OtherAction | OtherAction
+export type Action = SetCurrentPlanID; // | OtherAction | OtherAction
 
-export const setGroup = (group: string): SetGroup => ({
-  type: constants.SET_GROUP,
-  group
+export const setCurrentPlanID = (planID: string): SetCurrentPlanID => ({
+  type: constants.SET_CURRENT_PLAN_ID,
+  planID
 });

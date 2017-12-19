@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import GroupForm from './containers/GroupForm';
+import CurrentPlanIDForm from './containers/CurrentPlanIDForm';
 import StateDisplay from './containers/StateDisplay';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
@@ -12,7 +12,6 @@ import reduce from './reducers/index';
 const store = createStore<StoreState>(
   reduce,
   {
-    group: '',
     currentPlanID: '',
     plans: {
       'sample': {
@@ -38,7 +37,7 @@ const store = createStore<StoreState>(
 const rootReactElement = (
   <Provider store={store}>
     <div>
-      <GroupForm />
+      <CurrentPlanIDForm />
       <StateDisplay />
     </div>
   </Provider>

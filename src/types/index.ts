@@ -1,5 +1,4 @@
 export interface StoreState {
-  group: string;
   currentPlanID: string;
   plans: {
     [id: string]: Plan | undefined
