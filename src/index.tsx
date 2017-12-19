@@ -12,7 +12,26 @@ import reduce from './reducers/index';
 const store = createStore<StoreState>(
   reduce,
   {
-    group: ''
+    group: '',
+    currentPlanID: '',
+    plans: {
+      'sample': {
+        id: 'sample',
+        tasks: {
+          'task 1': {
+            id: 'task 1',
+            title: 'First task',
+            assignee: '',
+            location: {
+              x: 0,
+              y: 0
+            },
+            isDone: false,
+            prerequisiteTaskIDs: []
+          }
+        }
+      }
+    }
   }
 );
 
