@@ -4,7 +4,7 @@ import { StoreState } from '../types/index';
 import { connect, Dispatch } from 'react-redux';
 
 const mapStateToProps = ({ currentPlanID }: StoreState) => ({
-  title: 'Plan',
+  label: 'Plan',
   value: currentPlanID,
 });
 

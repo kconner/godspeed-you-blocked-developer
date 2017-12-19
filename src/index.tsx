@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import CurrentPlanIDForm from './containers/CurrentPlanIDForm';
+import CurrentPlanCanvas from './containers/CurrentPlanCanvas';
 import StateDisplay from './containers/StateDisplay';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
@@ -38,6 +39,7 @@ const rootReactElement = (
   <Provider store={store}>
     <div>
       <CurrentPlanIDForm />
+      <CurrentPlanCanvas />
       <StateDisplay />
     </div>
   </Provider>

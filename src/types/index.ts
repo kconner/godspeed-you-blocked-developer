@@ -27,15 +27,20 @@ export interface Point {
 }
 
 export enum TaskStatus {
-  blocked = "blocked",
-  doable = "doable",
-  done = "done",
+  blocked = 'blocked',
+  doable = 'doable',
+  done = 'done',
 }
+
+export const tasksInPlan = (plan: Plan): Task[] =>
+  definedElementsOfArray(
+    Object.keys(plan.tasks).map(taskID => plan.tasks[taskID])
+  );
 
 export const prerequisitesForTaskInPlan = (task: Task, plan: Plan): Task[] =>
   definedElementsOfArray(
     task.prerequisiteTaskIDs.map(prerequisiteTaskID => plan.tasks[prerequisiteTaskID])
-  )
+  );
 
 export const statusForTaskInPlan = (task: Task, plan: Plan): TaskStatus =>
   task.isDone
@@ -47,9 +52,12 @@ export const statusForTaskInPlan = (task: Task, plan: Plan): TaskStatus =>
 // Helpers
 
 const definedElementsOfArray = <T>(array: (T | undefined)[]): T[] =>
-  array.reduce((definedElements, element) => {
-    if (element) {
-      definedElements.push(element);
-    }
-    return definedElements;
-  }, [] as T[]);
+  array.reduce(
+    (definedElements, element) => {
+      if (element) {
+        definedElements.push(element);
+      }
+      return definedElements;
+    },
+    [] as T[]
+  );

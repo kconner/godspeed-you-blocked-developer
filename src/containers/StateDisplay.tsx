@@ -18,16 +18,13 @@ function component({ state }: Props) {
           ))
         }
       </ul>
-      <h2>Current Plan</h2>
-      <ul>
-        <li>{state.plans[state.currentPlanID] ? 'found' : ''}</li>
-      </ul>
     </div>
   );
 }
 
 const mapStateToProps = (state: StoreState) => ({
   state
+
 });
 
 export default connect(mapStateToProps, undefined)(component);
