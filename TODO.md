@@ -30,7 +30,23 @@
     - [x] Checkbox
 - [x] Style it
 - [ ] Prerequisites
+    - [x] Research and prototype a little
     - [ ] Represent them visually
+        - I need my tasks to be connected by lines, like in a flowchart
+        - But tasks can be arranged in any possible way
+        - Maybe… I can build SVG curves and arrange them? Is that bonkers?
+        - Hm. You can have SVG elements detect clicks and such because an SVG tree is a DOM in some sense. That's cool. Can I use that? Can I drag and drop those? Or is it better to just do it without?
     - [ ] Use drag and drop to create them
+        - I will need handles on Task cards to drag from and to
+        - Drag from the first task's right side (output) to the second task's right side (input)
+        - Outgoing arrows all spring from the right center where the handle is
+        - Incoming arrows (prerequisites) are arranged top to bottom on the left edge
+            - Order is established based on the Y coordinate of prerequisites, with X breaking ties
+            - X might need to break ties in opposite directions above / below center, so if you make a square… just trust me
     - [ ] Destroy them somehow
+        - I will need click targets for deleting dependencies
+        - Or maybe I can reuse drag handles if I'm clever
+        - Since you create by dragging left to right, you can destroy by dragging right to left
+        - That is, each prerequisite arrowhead pointing into the left side of a task card is also the drag handle used to either relocate it (drop on another card) or delete it (drop in the background)
+        - OK. So that means I can make prerequisites' arrows in SVG, drawn in the background, and the only things I need in the DOM otherwise are the outgoing handle for creating and the incoming handle for redirecting / deleting
 - [ ] Store state in browser local storage
