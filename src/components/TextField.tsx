@@ -13,7 +13,7 @@ export default function ({ label, value, onChangeValue }: Props) {
       {label}: <input
         type="text"
         value={value}
-        onChange={(event) => onChangeValue(event.target.value)}
+        onChange={event => onChangeValue(event.target.value)}
       />
     </div>
   );

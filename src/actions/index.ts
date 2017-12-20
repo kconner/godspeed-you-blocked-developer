@@ -11,7 +11,13 @@ export interface SetTaskTitle {
   title: string;
 }
 
-export type Action = SetCurrentPlanID | SetTaskTitle;
+export interface SetTaskAssignee {
+  type: constants.SET_TASK_ASSIGNEE;
+  taskID: string;
+  assignee: string;
+}
+
+export type Action = SetCurrentPlanID | SetTaskTitle | SetTaskAssignee;
 
 export const setCurrentPlanID = (planID: string): SetCurrentPlanID => ({
   type: constants.SET_CURRENT_PLAN_ID,
@@ -22,4 +28,10 @@ export const setTaskTitle = (taskID: string, title: string): SetTaskTitle => ({
   type: constants.SET_TASK_TITLE,
   taskID,
   title
+});
+
+export const setTaskAssignee = (taskID: string, assignee: string): SetTaskAssignee => ({
+  type: constants.SET_TASK_ASSIGNEE,
+  taskID,
+  assignee
 });

@@ -1,12 +1,13 @@
 import { Action } from '../actions';
 import { StoreState, Plan, Task } from '../types/index';
-import { SET_CURRENT_PLAN_ID, SET_TASK_TITLE } from '../constants/index';
+import { SET_CURRENT_PLAN_ID, SET_TASK_TITLE, SET_TASK_ASSIGNEE } from '../constants/index';
 
 export default (state: StoreState, action: Action): StoreState => {
   switch (action.type) {
     case SET_CURRENT_PLAN_ID:
       return { ...state, currentPlanID: action.planID };
     case SET_TASK_TITLE:
+    case SET_TASK_ASSIGNEE:
       const { currentPlanID, plans } = state;
       const plan = plans[currentPlanID];
       if (!plan) {
@@ -28,6 +29,7 @@ export default (state: StoreState, action: Action): StoreState => {
 const reducePlan = (plan: Plan, action: Action): Plan => {
   switch (action.type) {
     case SET_TASK_TITLE:
+    case SET_TASK_ASSIGNEE:
       const { taskID } = action;
       const { tasks } = plan;
       const task = tasks[taskID];
@@ -52,6 +54,9 @@ const reduceTask = (task: Task, action: Action): Task => {
     case SET_TASK_TITLE:
       const { title } = action;
       return { ...task, title };
+    case SET_TASK_ASSIGNEE:
+      const { assignee } = action;
+      return { ...task, assignee };
     default:
       return task;
   }

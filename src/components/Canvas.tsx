@@ -5,10 +5,11 @@ import TaskCard from './TaskCard';
 
 export interface Props {
   plan: Plan | undefined;
-  onChangeTaskTitle: (taskID: string, value: string) => void;
+  setTaskTitle: (taskID: string, value: string) => void;
+  setTaskAssignee: (taskID: string, value: string) => void;
 }
 
-export default function ({ plan, onChangeTaskTitle }: Props) {
+export default function ({ plan, setTaskTitle, setTaskAssignee }: Props) {
   return (
     <div className="canvas">
       {
@@ -19,7 +20,8 @@ export default function ({ plan, onChangeTaskTitle }: Props) {
                 key={task.id}
                 task={task}
                 status={statusForTaskInPlan(task, plan)}
-                onChangeTitle={(value: string) => onChangeTaskTitle(task.id, value)}
+                setTitle={(value: string) => setTaskTitle(task.id, value)}
+                setAssignee={(value: string) => setTaskAssignee(task.id, value)}
               />
               // prerequisites: {prerequisitesForTaskInPlan(task, plan).toString()},
             )

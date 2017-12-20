@@ -6,16 +6,22 @@ import TextField from './TextField';
 export interface Props {
   task: Task;
   status: TaskStatus;
-  onChangeTitle: (value: string) => void;
+  setTitle: (value: string) => void;
+  setAssignee: (value: string) => void;
 }
 
-export default function ({ task, status, onChangeTitle }: Props) {
+export default function ({ task, status, setTitle, setAssignee }: Props) {
   return (
     <li>{task.id}:
       <TextField
         label="Title"
         value={task.title}
-        onChangeValue={onChangeTitle}
+        onChangeValue={setTitle}
+      />
+      <TextField
+        label="Assignee"
+        value={task.assignee}
+        onChangeValue={setAssignee}
       />
       title: {task.title},
       assignee: {task.assignee},

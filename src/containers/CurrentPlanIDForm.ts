@@ -8,7 +8,7 @@ const mapStateToProps = ({ currentPlanID }: StoreState) => ({
   value: currentPlanID,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<actions.SetCurrentPlanID>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<actions.Action>) => ({
   onChangeValue: (value: string) => dispatch(actions.setCurrentPlanID(value))
 });
 
