@@ -11,20 +11,26 @@
 # Roadmap
 
 - [x] Set up a React / Redux app
-- [ ] Create a data model
-    - [ ] Plan
-        - [ ] id: string
-        - [ ] tasks: [Task]
-    - [ ] Task
-        - [ ] id: string
-        - [ ] title: string
-        - [ ] assignee: string
-        - [ ] location: x: number, y: number
-        - [ ] isDone: boolean
-        - [ ] prerequisiteTaskIDs: [Task.ID]
-        - [ ] status(): blocked, doable, or done
-- [ ] Build semantic markup components
-    - …
-- [ ] Style it
-    - …
+- [x] Create a data model
+    - [x] Plan
+        - [x] id: string
+        - [x] tasks: [Task]
+    - [x] Task
+        - [x] id: string
+        - [x] title: string
+        - [x] assignee: string
+        - [x] location: x: number, y: number
+        - [x] isDone: boolean
+        - [x] prerequisiteTaskIDs: [Task.ID]
+        - [x] status(): blocked, doable, or done
+- [x] Build semantic markup components
+    - [x] Canvas contains many TaskCards
+    - [x] TaskCard represents a Task
+    - [x] TextField
+    - [x] Checkbox
+- [x] Style it
+- [ ] Prerequisites
+    - [ ] Represent them visually
+    - [ ] Use drag and drop to create them
+    - [ ] Destroy them somehow
 - [ ] Store state in browser local storage
