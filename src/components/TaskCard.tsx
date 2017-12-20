@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Task, TaskStatus, Point } from '../types/index';
 import TextField from './TextField';
 import Checkbox from './Checkbox';
-// TODO: import './TaskCard.css';
+import './TaskCard.css';
 
 export interface Props {
   task: Task;
@@ -18,27 +18,24 @@ export default function ({ task, status, setTitle, setAssignee, setLocation, set
     <li
       draggable={true}
       onDrag={event => setLocation({ x: event.pageX, y: event.pageY })}
+      className={['taskCard', status].join(' ')}
+      style={{ left: task.location.x, top: task.location.y }}
     >
       <Checkbox
         checked={task.isDone}
         enabled={status !== TaskStatus.blocked}
         onChangeChecked={setDone}
-      /> {task.id}:
+      /> {status}:
       <TextField
-        label="Title"
+        placeholder="title"
         value={task.title}
         onChangeValue={setTitle}
       />
       <TextField
-        label="Assignee"
+        placeholder="assignee"
         value={task.assignee}
         onChangeValue={setAssignee}
       />
-      title: {task.title},
-      assignee: {task.assignee},
-      location: x: {task.location.x.toString()}, y: {task.location.y.toString()},
-      done: {task.isDone.toString()},
-      status: {status}
     </li>
   );
 }

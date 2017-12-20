@@ -1,0 +1,20 @@
+.taskCard {
+  font-size: 20px;
+  line-height: 28px;
+  position: absolute;
+  display: block;
+  padding: 8px 4px;
+  width: 200px;
+}
+
+.taskCard.done {
+  background-color: #bfc;
+}
+
+.taskCard.doable {
+  background-color: #eee;
+}
+
+.taskCard.blocked {
+  background-color: #fba;
+}
