@@ -10,7 +10,11 @@ export interface Props {
 export default function ({ label, value, onChangeValue }: Props) {
   return (
     <div className="textField">
-      {label}: <input type="text" value={value} onChange={(event) => onChangeValue(event.target.value)} />
+      {label}: <input
+        type="text"
+        value={value}
+        onChange={(event) => onChangeValue(event.target.value)}
+      />
     </div>
   );
 }

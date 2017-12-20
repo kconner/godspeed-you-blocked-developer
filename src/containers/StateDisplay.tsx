@@ -14,7 +14,7 @@ function component({ state }: Props) {
       <ul>
         {
           Object.keys(state).map(key => (
-            <li>{key}: {state[key].toString()}</li>
+            <li key={key}>{key}: {state[key].toString()}</li>
           ))
         }
       </ul>

@@ -1,26 +1,27 @@
 import * as React from 'react';
-import { Plan, tasksInPlan, prerequisitesForTaskInPlan, statusForTaskInPlan } from '../types/index';
+import { Plan, tasksInPlan, statusForTaskInPlan } from '../types/index';
+import TaskCard from './TaskCard';
 // TODO: import './Canvas.css';
 
 export interface Props {
   plan: Plan | undefined;
+  onChangeTaskTitle: (taskID: string, value: string) => void;
 }
 
-export default function ({ plan }: Props) {
+export default function ({ plan, onChangeTaskTitle }: Props) {
   return (
     <div className="canvas">
       {
         !plan ? null : <ul>
           {
             tasksInPlan(plan).map(task =>
-              <li key={task.id}>{task.id}:
-              title: {task.title},
-              assignee: {task.assignee},
-              location: x: {task.location.x.toString()}, y: {task.location.y.toString()},
-              done: {task.isDone.toString()},
-              prerequisites: {prerequisitesForTaskInPlan(task, plan).toString()},
-              status: {statusForTaskInPlan(task, plan)}
-              </li>
+              <TaskCard
+                key={task.id}
+                task={task}
+                status={statusForTaskInPlan(task, plan)}
+                onChangeTitle={(value: string) => onChangeTaskTitle(task.id, value)}
+              />
+              // prerequisites: {prerequisitesForTaskInPlan(task, plan).toString()},
             )
           }
         </ul>

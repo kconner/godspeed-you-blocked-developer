@@ -1,2 +1,5 @@
 export const SET_CURRENT_PLAN_ID = 'SET_CURRENT_PLAN_ID';
 export type SET_CURRENT_PLAN_ID = typeof SET_CURRENT_PLAN_ID;
+
+export const SET_TASK_TITLE = 'SET_TASK_TITLE';
+export type SET_TASK_TITLE = typeof SET_TASK_TITLE;
