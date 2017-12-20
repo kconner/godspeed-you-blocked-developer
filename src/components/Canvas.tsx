@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Plan, tasksInPlan, statusForTaskInPlan } from '../types/index';
+import { Plan, Point, tasksInPlan, statusForTaskInPlan } from '../types/index';
 import TaskCard from './TaskCard';
 // TODO: import './Canvas.css';
 
@@ -7,9 +7,10 @@ export interface Props {
   plan: Plan | undefined;
   setTaskTitle: (taskID: string, value: string) => void;
   setTaskAssignee: (taskID: string, value: string) => void;
+  setTaskLocation: (taskID: string, value: Point) => void;
 }
 
-export default function ({ plan, setTaskTitle, setTaskAssignee }: Props) {
+export default function ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation }: Props) {
   return (
     <div className="canvas">
       {
@@ -22,6 +23,7 @@ export default function ({ plan, setTaskTitle, setTaskAssignee }: Props) {
                 status={statusForTaskInPlan(task, plan)}
                 setTitle={(value: string) => setTaskTitle(task.id, value)}
                 setAssignee={(value: string) => setTaskAssignee(task.id, value)}
+                setLocation={(value: Point) => setTaskLocation(task.id, value)}
               />
               // prerequisites: {prerequisitesForTaskInPlan(task, plan).toString()},
             )

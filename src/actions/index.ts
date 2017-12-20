@@ -1,4 +1,5 @@
 import * as constants from '../constants';
+import { Point } from '../types';
 
 export interface SetCurrentPlanID {
   type: constants.SET_CURRENT_PLAN_ID;
@@ -17,7 +18,13 @@ export interface SetTaskAssignee {
   assignee: string;
 }
 
-export type Action = SetCurrentPlanID | SetTaskTitle | SetTaskAssignee;
+export interface SetTaskLocation {
+  type: constants.SET_TASK_LOCATION;
+  taskID: string;
+  location: Point;
+}
+
+export type Action = SetCurrentPlanID | SetTaskTitle | SetTaskAssignee | SetTaskLocation;
 
 export const setCurrentPlanID = (planID: string): SetCurrentPlanID => ({
   type: constants.SET_CURRENT_PLAN_ID,
@@ -34,4 +41,10 @@ export const setTaskAssignee = (taskID: string, assignee: string): SetTaskAssign
   type: constants.SET_TASK_ASSIGNEE,
   taskID,
   assignee
+});
+
+export const setTaskLocation = (taskID: string, location: Point): SetTaskLocation => ({
+  type: constants.SET_TASK_LOCATION,
+  taskID,
+  location
 });

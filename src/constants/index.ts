@@ -6,3 +6,6 @@ export type SET_TASK_TITLE = typeof SET_TASK_TITLE;
 
 export const SET_TASK_ASSIGNEE = 'SET_TASK_ASSIGNEE';
 export type SET_TASK_ASSIGNEE = typeof SET_TASK_ASSIGNEE;
+
+export const SET_TASK_LOCATION = 'SET_TASK_LOCATION';
+export type SET_TASK_LOCATION = typeof SET_TASK_LOCATION;

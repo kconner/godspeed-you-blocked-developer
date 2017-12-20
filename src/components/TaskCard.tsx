@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Task, TaskStatus } from '../types/index';
+import { Task, TaskStatus, Point } from '../types/index';
 import TextField from './TextField';
 // TODO: import './TaskCard.css';
 
@@ -8,11 +8,15 @@ export interface Props {
   status: TaskStatus;
   setTitle: (value: string) => void;
   setAssignee: (value: string) => void;
+  setLocation: (value: Point) => void;
 }
 
-export default function ({ task, status, setTitle, setAssignee }: Props) {
+export default function ({ task, status, setTitle, setAssignee, setLocation }: Props) {
   return (
-    <li>{task.id}:
+    <li
+      draggable={true}
+      onDrag={event => setLocation({ x: event.pageX, y: event.pageY })}
+    >{task.id}:
       <TextField
         label="Title"
         value={task.title}
