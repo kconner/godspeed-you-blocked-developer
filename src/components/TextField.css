@@ -2,13 +2,15 @@
     font-size: 20px;
 }
 
-.textField :hover, .textField :focus {
-    background-color: #ddffff;
+.textField input {
+    background-color: #fff9;
+    font-size: 20px;
+    border: none;
+    padding: 5px;
+    width: 188px;
+    margin: 3px 0;
 }
 
-.textField input {
-    font-size: 20px;
-    font-weight: 500;
-    border: none;
-    width: 198px;
+.textField input :hover, .textField input :focus {
+    background-color: #dff;
 }

@@ -1,9 +1,9 @@
 .taskCard {
   font-size: 20px;
-  line-height: 28px;
+  line-height: 36px;
   position: absolute;
   display: block;
-  padding: 8px 4px;
+  padding: 6px 8px;
   width: 200px;
 }
 
@@ -16,5 +16,5 @@
 }
 
 .taskCard.blocked {
-  background-color: #fba;
+  background-color: #fb9;
 }

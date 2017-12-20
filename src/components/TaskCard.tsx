@@ -22,10 +22,12 @@ export default function ({ task, status, setTitle, setAssignee, setLocation, set
       style={{ left: task.location.x, top: task.location.y }}
     >
       <Checkbox
+        id={task.id + '-isDone'}
+        label={status}
         checked={task.isDone}
         enabled={status !== TaskStatus.blocked}
         onChangeChecked={setDone}
-      /> {status}:
+      />
       <TextField
         placeholder="title"
         value={task.title}
