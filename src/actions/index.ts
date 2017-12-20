@@ -24,7 +24,13 @@ export interface SetTaskLocation {
   location: Point;
 }
 
-export type Action = SetCurrentPlanID | SetTaskTitle | SetTaskAssignee | SetTaskLocation;
+export interface SetTaskDone {
+  type: constants.SET_TASK_DONE;
+  taskID: string;
+  isDone: boolean;
+}
+
+export type Action = SetCurrentPlanID | SetTaskTitle | SetTaskAssignee | SetTaskLocation | SetTaskDone;
 
 export const setCurrentPlanID = (planID: string): SetCurrentPlanID => ({
   type: constants.SET_CURRENT_PLAN_ID,
@@ -47,4 +53,10 @@ export const setTaskLocation = (taskID: string, location: Point): SetTaskLocatio
   type: constants.SET_TASK_LOCATION,
   taskID,
   location
+});
+
+export const setTaskDone = (taskID: string, isDone: boolean): SetTaskDone => ({
+  type: constants.SET_TASK_DONE,
+  taskID,
+  isDone
 });

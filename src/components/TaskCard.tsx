@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Task, TaskStatus, Point } from '../types/index';
 import TextField from './TextField';
+import Checkbox from './Checkbox';
 // TODO: import './TaskCard.css';
 
 export interface Props {
@@ -9,14 +10,20 @@ export interface Props {
   setTitle: (value: string) => void;
   setAssignee: (value: string) => void;
   setLocation: (value: Point) => void;
+  setDone: (value: boolean) => void;
 }
 
-export default function ({ task, status, setTitle, setAssignee, setLocation }: Props) {
+export default function ({ task, status, setTitle, setAssignee, setLocation, setDone }: Props) {
   return (
     <li
       draggable={true}
       onDrag={event => setLocation({ x: event.pageX, y: event.pageY })}
-    >{task.id}:
+    >
+      <Checkbox
+        checked={task.isDone}
+        enabled={status !== TaskStatus.blocked}
+        onChangeChecked={setDone}
+      /> {task.id}:
       <TextField
         label="Title"
         value={task.title}

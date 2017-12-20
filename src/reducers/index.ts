@@ -1,6 +1,12 @@
 import { Action } from '../actions';
 import { StoreState, Plan, Task } from '../types/index';
-import { SET_CURRENT_PLAN_ID, SET_TASK_TITLE, SET_TASK_ASSIGNEE, SET_TASK_LOCATION } from '../constants/index';
+import {
+  SET_CURRENT_PLAN_ID,
+  SET_TASK_TITLE,
+  SET_TASK_ASSIGNEE,
+  SET_TASK_LOCATION,
+  SET_TASK_DONE
+} from '../constants/index';
 
 export default (state: StoreState, action: Action): StoreState => {
   switch (action.type) {
@@ -9,6 +15,7 @@ export default (state: StoreState, action: Action): StoreState => {
     case SET_TASK_TITLE:
     case SET_TASK_ASSIGNEE:
     case SET_TASK_LOCATION:
+    case SET_TASK_DONE:
       const { currentPlanID, plans } = state;
       const plan = plans[currentPlanID];
       if (!plan) {
@@ -32,6 +39,7 @@ const reducePlan = (plan: Plan, action: Action): Plan => {
     case SET_TASK_TITLE:
     case SET_TASK_ASSIGNEE:
     case SET_TASK_LOCATION:
+    case SET_TASK_DONE:
       const { taskID } = action;
       const { tasks } = plan;
       const task = tasks[taskID];
@@ -62,6 +70,9 @@ const reduceTask = (task: Task, action: Action): Task => {
     case SET_TASK_LOCATION:
       const { location } = action;
       return { ...task, location };
+    case SET_TASK_DONE:
+      const { isDone } = action;
+      return { ...task, isDone };
     default:
       return task;
   }

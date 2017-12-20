@@ -8,9 +8,10 @@ export interface Props {
   setTaskTitle: (taskID: string, value: string) => void;
   setTaskAssignee: (taskID: string, value: string) => void;
   setTaskLocation: (taskID: string, value: Point) => void;
+  setTaskDone: (taskID: string, value: boolean) => void;
 }
 
-export default function ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation }: Props) {
+export default function ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation, setTaskDone }: Props) {
   return (
     <div className="canvas">
       {
@@ -24,6 +25,7 @@ export default function ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation 
                 setTitle={(value: string) => setTaskTitle(task.id, value)}
                 setAssignee={(value: string) => setTaskAssignee(task.id, value)}
                 setLocation={(value: Point) => setTaskLocation(task.id, value)}
+                setDone={(value: boolean) => setTaskDone(task.id, value)}
               />
               // prerequisites: {prerequisitesForTaskInPlan(task, plan).toString()},
             )
