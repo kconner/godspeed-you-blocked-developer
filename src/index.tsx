@@ -19,8 +19,8 @@ const store = createStore<StoreState>(
         tasks: {
           'task 1': {
             id: 'task 1',
-            title: '',
-            assignee: '',
+            title: 'First task',
+            assignee: 'you',
             location: {
               x: 100,
               y: 100
@@ -52,14 +52,14 @@ const store = createStore<StoreState>(
           },
           'task 4': {
             id: 'task 4',
-            title: 'Next task',
-            assignee: 'me',
+            title: '',
+            assignee: '',
             location: {
               x: 400,
               y: 300
             },
             isDone: false,
-            prerequisiteTaskIDs: ['task 3']
+            prerequisiteTaskIDs: []
           },
           'task 5': {
             id: 'task 5',
@@ -70,7 +70,7 @@ const store = createStore<StoreState>(
               y: 200
             },
             isDone: false,
-            prerequisiteTaskIDs: ['task 2', 'task 4']
+            prerequisiteTaskIDs: ['task 2']
           }
         }
       }

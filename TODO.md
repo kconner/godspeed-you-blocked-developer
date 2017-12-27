@@ -32,17 +32,15 @@
 - [ ] Prerequisite tasks
     - [x] Research and prototype a little
     - [x] Represent them visually with SVG paths
-    - [ ] Use drag and drop to create them
-        - I will need handles on Task cards to drag from and to
-        - Drag from the first task's right side (output) to the second task's right side (input)
-        - Outgoing arrows all spring from the right center where the handle is
-        - Incoming arrows (prerequisites) are arranged top to bottom on the left edge
-            - Order is established based on the Y coordinate of prerequisites, with X breaking ties
-            - X might need to break ties in opposite directions above / below center, so if you make a square… just trust me
+    - [x] Use drag and drop to create them
     - [ ] Destroy them somehow
         - I will need click targets for deleting dependencies
         - Or maybe I can reuse drag handles if I'm clever
         - Since you create by dragging left to right, you can destroy by dragging right to left
         - That is, each prerequisite arrowhead pointing into the left side of a task card is also the drag handle used to either relocate it (drop on another card) or delete it (drop in the background)
         - OK. So that means I can make prerequisites' arrows in SVG, drawn in the background, and the only things I need in the DOM otherwise are the outgoing handle for creating and the incoming handle for redirecting / deleting
+    - [ ] Improve the appearance of multiple incoming arrows
+        - Incoming arrows (prerequisites) are arranged top to bottom on the left edge
+        - Order is established based on the Y coordinate of prerequisites, with X breaking ties
+        - X might need to break ties in opposite directions above / below center, so if you make a square… just trust me
 - [ ] Store state in browser local storage
