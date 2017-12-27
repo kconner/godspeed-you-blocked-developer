@@ -10,11 +10,11 @@ export interface Props {
 }
 
 export default ({ source, destination, plan }: Props) => {
-  // Draw from the right edge of the prerequisite to the left edge of the following task.
+  // Draw from the right edge of the source to the left edge of the destination.
   const p0 = offsetPoint(source.location, offsetToTaskCardRightCenter);
   const p3 = offsetPoint(destination.location, offsetToTaskCardLeftCenter);
 
-  // Curve the line harder depending on how far separated the endpoints are
+  // Curve the line harder depending on how far separated the endpoints are.
   const controlPointOffset = Math.max(100, Math.abs((p3.x - p0.x) * 0.5));
   const p1 = offsetPoint(p0, { width: controlPointOffset, height: 0 });
   const p2 = offsetPoint(p3, { width: -controlPointOffset, height: 0 });
