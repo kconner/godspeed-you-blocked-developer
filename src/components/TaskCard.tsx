@@ -11,6 +11,7 @@ export interface Props {
   setAssignee: (value: string) => void;
   setLocation: (value: Point) => void;
   setDone: (value: boolean) => void;
+  addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
 }
 
 export interface State {
@@ -26,6 +27,7 @@ const padding: Size = {
   width: 8,
   height: 6
 };
+const addPrerequisiteMimeType = 'application/x-add-prerequisite';
 
 export const size: Size = {
   width: contentSize.width + padding.width + padding.width,
@@ -42,7 +44,11 @@ export default class TaskCard extends React.Component<Props, State> {
     };
   }
 
-  onDragStart(event: React.DragEvent<HTMLDivElement>, taskLocation: Point) {
+  card_onDragStart(event: React.DragEvent<HTMLDivElement>) {
+    event.dataTransfer.effectAllowed = 'none';
+
+    const taskLocation = this.props.task.location;
+
     this.setState({
       dragOffset: {
         width: event.pageX - taskLocation.x,
@@ -51,17 +57,44 @@ export default class TaskCard extends React.Component<Props, State> {
     });
   }
 
-  onDrag(event: React.DragEvent<HTMLDivElement>, dragOffset: Size) {
+  card_onDrag(event: React.DragEvent<HTMLDivElement>) {
     this.props.setLocation({
-      x: event.pageX - dragOffset.width,
-      y: event.pageY - dragOffset.height
+      x: event.pageX - this.state.dragOffset.width,
+      y: event.pageY - this.state.dragOffset.height
     });
+  }
+
+  handle_onDragStart(event: React.DragEvent<HTMLDivElement>) {
+    const sourceTaskID = this.props.task.id;
+    event.dataTransfer.effectAllowed = 'link';
+    event.dataTransfer.setData(addPrerequisiteMimeType, sourceTaskID);
+  }
+
+  card_onDragOver(event: React.DragEvent<HTMLDivElement>) {
+    if (event.dataTransfer.types.indexOf(addPrerequisiteMimeType) < 0) {
+      return;
+    }
+
+    event.dataTransfer.dropEffect = 'link';
+    event.preventDefault();
+  }
+
+  card_onDrop(event: React.DragEvent<HTMLDivElement>) {
+    if (event.dataTransfer.types.indexOf(addPrerequisiteMimeType) < 0) {
+      return;
+    }
+
+    const sourceTaskID = event.dataTransfer.getData(addPrerequisiteMimeType);
+    const destinationTaskID = this.props.task.id;
+    if (sourceTaskID === destinationTaskID) {
+      return;
+    }
+
+    this.props.addPrerequisiteTask(sourceTaskID, destinationTaskID);
   }
 
   render() {
     const { task, status, setTitle, setAssignee, setDone } = this.props;
-    const { location: taskLocation } = task;
-    const { dragOffset } = this.state;
 
     return (
       <li
@@ -73,8 +106,10 @@ export default class TaskCard extends React.Component<Props, State> {
       >
         <div
           draggable={true}
-          onDragStart={event => this.onDragStart(event, taskLocation)}
-          onDrag={event => this.onDrag(event, dragOffset)}
+          onDragStart={event => this.card_onDragStart(event)}
+          onDrag={event => this.card_onDrag(event)}
+          onDragOver={event => this.card_onDragOver(event)}
+          onDrop={event => this.card_onDrop(event)}
           className={['taskCardContent', status].join(' ')}
           style={{
             width: contentSize.width,
@@ -107,7 +142,7 @@ export default class TaskCard extends React.Component<Props, State> {
             left: size.width - 12,
           }}
           draggable={true}
-          onDrag={event => { window.console.log(event); event.preventDefault(); }}
+          onDragStart={event => this.handle_onDragStart(event)}
         />
       </li>
     );

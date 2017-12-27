@@ -30,7 +30,19 @@ export interface SetTaskDone {
   isDone: boolean;
 }
 
-export type Action = SetCurrentPlanID | SetTaskTitle | SetTaskAssignee | SetTaskLocation | SetTaskDone;
+export interface AddPrerequisiteTask {
+  type: constants.ADD_PREREQUISITE_TASK;
+  prerequisiteTaskID: string;
+  taskID: string;
+}
+
+export type Action =
+  SetCurrentPlanID
+  | SetTaskTitle
+  | SetTaskAssignee
+  | SetTaskLocation
+  | SetTaskDone
+  | AddPrerequisiteTask;
 
 export const setCurrentPlanID = (planID: string): SetCurrentPlanID => ({
   type: constants.SET_CURRENT_PLAN_ID,
@@ -59,4 +71,10 @@ export const setTaskDone = (taskID: string, isDone: boolean): SetTaskDone => ({
   type: constants.SET_TASK_DONE,
   taskID,
   isDone
+});
+
+export const addPrerequisiteTask = (prerequisiteTaskID: string, taskID: string): AddPrerequisiteTask => ({
+  type: constants.ADD_PREREQUISITE_TASK,
+  prerequisiteTaskID,
+  taskID,
 });

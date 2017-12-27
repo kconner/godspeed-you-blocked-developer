@@ -5,7 +5,8 @@ import {
   SET_TASK_TITLE,
   SET_TASK_ASSIGNEE,
   SET_TASK_LOCATION,
-  SET_TASK_DONE
+  SET_TASK_DONE,
+  ADD_PREREQUISITE_TASK
 } from '../constants/index';
 
 export default (state: StoreState, action: Action): StoreState => {
@@ -16,6 +17,7 @@ export default (state: StoreState, action: Action): StoreState => {
     case SET_TASK_ASSIGNEE:
     case SET_TASK_LOCATION:
     case SET_TASK_DONE:
+    case ADD_PREREQUISITE_TASK:
       const { currentPlanID, plans } = state;
       const plan = plans[currentPlanID];
       if (!plan) {
@@ -40,6 +42,7 @@ const reducePlan = (plan: Plan, action: Action): Plan => {
     case SET_TASK_ASSIGNEE:
     case SET_TASK_LOCATION:
     case SET_TASK_DONE:
+    case ADD_PREREQUISITE_TASK:
       const { taskID } = action;
       const { tasks } = plan;
       const task = tasks[taskID];
@@ -73,6 +76,17 @@ const reduceTask = (task: Task, action: Action): Task => {
     case SET_TASK_DONE:
       const { isDone } = action;
       return { ...task, isDone };
+    case ADD_PREREQUISITE_TASK:
+      const { prerequisiteTaskID } = action;
+      if (prerequisiteTaskID === task.id
+        || 0 <= task.prerequisiteTaskIDs.indexOf(prerequisiteTaskID)) {
+        return task;
+      }
+
+      return {
+        ...task,
+        prerequisiteTaskIDs: [...task.prerequisiteTaskIDs, prerequisiteTaskID]
+      };
     default:
       return task;
   }

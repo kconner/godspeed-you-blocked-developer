@@ -9,9 +9,10 @@ export interface Props {
   setTaskAssignee: (taskID: string, value: string) => void;
   setTaskLocation: (taskID: string, value: Point) => void;
   setTaskDone: (taskID: string, value: boolean) => void;
+  addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
 }
 
-export default ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation, setTaskDone }: Props) => (
+export default ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation, setTaskDone, addPrerequisiteTask }: Props) => (
   <div className="canvas">
     <TaskArcImage plan={plan} />
     {
@@ -26,6 +27,7 @@ export default ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation, setTaskD
               setAssignee={(value: string) => setTaskAssignee(task.id, value)}
               setLocation={(value: Point) => setTaskLocation(task.id, value)}
               setDone={(value: boolean) => setTaskDone(task.id, value)}
+              addPrerequisiteTask={addPrerequisiteTask}
             />
           )
         }
