@@ -1,0 +1,16 @@
+.taskArc {
+  stroke-width: 4px;
+  fill: transparent;
+}
+
+.taskArc.done {
+  stroke: #bfc;
+}
+
+.taskArc.doable {
+  stroke: #eee;
+}
+
+.taskArc.blocked {
+  stroke: #fb9;
+}

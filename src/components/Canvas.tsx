@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Plan, Point, tasksInPlan, statusForTaskInPlan } from '../types/index';
 import TaskArcImage from './TaskArcImage';
 import TaskCard from './TaskCard';
-import './Canvas.css';
 
 export interface Props {
   plan: Plan | undefined;

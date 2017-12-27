@@ -31,11 +31,7 @@
 - [x] Style it
 - [ ] Prerequisite tasks
     - [x] Research and prototype a little
-    - [ ] Represent them visually
-        - I need my tasks to be connected by lines, like in a flowchart
-        - But tasks can be arranged in any possible way
-        - Maybe… I can build SVG curves and arrange them? Is that bonkers?
-        - Hm. You can have SVG elements detect clicks and such because an SVG tree is a DOM in some sense. That's cool. Can I use that? Can I drag and drop those? Or is it better to just do it without?
+    - [x] Represent them visually with SVG paths
     - [ ] Use drag and drop to create them
         - I will need handles on Task cards to drag from and to
         - Drag from the first task's right side (output) to the second task's right side (input)
