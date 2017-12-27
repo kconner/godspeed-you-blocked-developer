@@ -29,7 +29,7 @@
     - [x] TextField
     - [x] Checkbox
 - [x] Style it
-- [ ] Prerequisites
+- [ ] Prerequisite tasks
     - [x] Research and prototype a little
     - [ ] Represent them visually
         - I need my tasks to be connected by lines, like in a flowchart
