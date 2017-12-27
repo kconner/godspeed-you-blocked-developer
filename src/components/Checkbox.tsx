@@ -9,17 +9,15 @@ export interface Props {
   onChangeChecked: (value: boolean) => void;
 }
 
-export default function ({ id, label, checked, enabled, onChangeChecked }: Props) {
-  return (
-    <span className="checkbox">
-      <input
-        id={id}
-        type="checkbox"
-        checked={checked}
-        disabled={!enabled}
-        onChange={event => onChangeChecked(event.target.checked)}
-      />
-      <label htmlFor={id}> {label}</label>
-    </span>
-  );
-}
+export default ({ id, label, checked, enabled, onChangeChecked }: Props) => (
+  <span className="checkbox">
+    <input
+      id={id}
+      type="checkbox"
+      checked={checked}
+      disabled={!enabled}
+      onChange={event => onChangeChecked(event.target.checked)}
+    />
+    <label htmlFor={id}> {label}</label>
+  </span>
+);

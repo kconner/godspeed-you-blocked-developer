@@ -7,15 +7,13 @@ export interface Props {
   onChangeValue: (value: string) => void;
 }
 
-export default function ({ placeholder, value, onChangeValue }: Props) {
-  return (
-    <div className="textField">
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={value}
-        onChange={event => onChangeValue(event.target.value)}
-      />
-    </div>
-  );
-}
+export default ({ placeholder, value, onChangeValue }: Props) => (
+  <div className="textField">
+    <input
+      type="text"
+      placeholder={placeholder}
+      value={value}
+      onChange={event => onChangeValue(event.target.value)}
+    />
+  </div>
+);

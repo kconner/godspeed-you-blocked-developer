@@ -6,7 +6,7 @@ export interface Props {
   plan: Plan | undefined;
 }
 
-export default function ({ plan }: Props) {
+export default ({ plan }: Props) => {
   // TODO: Remove this prototype code.
   let firstTaskLocation: Point = { x: 0, y: 0 };
   if (plan) {
@@ -15,6 +15,8 @@ export default function ({ plan }: Props) {
       firstTaskLocation = task.location;
     }
   }
+
+  // prerequisites: {prerequisitesForTaskInPlan(task, plan).toString()},
 
   return (
     <svg
@@ -41,4 +43,4 @@ export default function ({ plan }: Props) {
       <path d="M10 10 C 20 20, 40 20, 50 10" stroke="black" fill="transparent" />
     </svg>
   );
-}
+};

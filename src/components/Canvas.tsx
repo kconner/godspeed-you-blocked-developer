@@ -12,28 +12,25 @@ export interface Props {
   setTaskDone: (taskID: string, value: boolean) => void;
 }
 
-export default function ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation, setTaskDone }: Props) {
-  return (
-    <div className="canvas">
-      <TaskArcImage plan={plan} />
-      {
-        !plan ? null : <ul>
-          {
-            tasksInPlan(plan).map(task =>
-              <TaskCard
-                key={task.id}
-                task={task}
-                status={statusForTaskInPlan(task, plan)}
-                setTitle={(value: string) => setTaskTitle(task.id, value)}
-                setAssignee={(value: string) => setTaskAssignee(task.id, value)}
-                setLocation={(value: Point) => setTaskLocation(task.id, value)}
-                setDone={(value: boolean) => setTaskDone(task.id, value)}
-              />
-              // prerequisites: {prerequisitesForTaskInPlan(task, plan).toString()},
-            )
-          }
-        </ul>
-      }
-    </div>
-  );
-}
+export default ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation, setTaskDone }: Props) => (
+  <div className="canvas">
+    <TaskArcImage plan={plan} />
+    {
+      !plan ? null : <ul>
+        {
+          tasksInPlan(plan).map(task =>
+            <TaskCard
+              key={task.id}
+              task={task}
+              status={statusForTaskInPlan(task, plan)}
+              setTitle={(value: string) => setTaskTitle(task.id, value)}
+              setAssignee={(value: string) => setTaskAssignee(task.id, value)}
+              setLocation={(value: Point) => setTaskLocation(task.id, value)}
+              setDone={(value: boolean) => setTaskDone(task.id, value)}
+            />
+          )
+        }
+      </ul>
+    }
+  </div>
+);
