@@ -1,19 +1,39 @@
 .taskCard {
-  font-size: 20px;
-  line-height: 36px;
   position: absolute;
   display: block;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
-.taskCard.done {
+.taskCartContent {
+  font-size: 20px;
+  line-height: 36px;
+}
+
+.taskCardContent.done {
   background-color: #bfc;
 }
 
-.taskCard.doable {
+.taskCardContent.doable {
   background-color: #eee;
 }
 
-.taskCard.blocked {
+.taskCardContent.blocked {
+  background-color: #fb9;
+}
+
+.taskCardHandle {
+  z-index: -1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.taskCardHandle.done {
+  background-color: #bfc;
+}
+
+.taskCardHandle.doable {
+  background-color: #eee;
+}
+
+.taskCardHandle.blocked {
   background-color: #fb9;
 }

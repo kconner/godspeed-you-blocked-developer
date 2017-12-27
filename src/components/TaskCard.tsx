@@ -30,33 +30,53 @@ export const size: Size = {
 
 export default ({ task, status, setTitle, setAssignee, setLocation, setDone }: Props) => (
   <li
-    draggable={true}
-    onDrag={event => setLocation({ x: event.pageX, y: event.pageY })}
-    className={['taskCard', status].join(' ')}
+    className="taskCard"
     style={{
       left: task.location.x,
       top: task.location.y,
-      width: contentSize.width,
-      height: contentSize.height,
-      padding: `${padding.height}px ${padding.width}px`
     }}
   >
-    <Checkbox
-      id={task.id + '-isDone'}
-      label={status}
-      checked={task.isDone}
-      enabled={status !== TaskStatus.blocked}
-      onChangeChecked={setDone}
-    />
-    <TextField
-      placeholder="title"
-      value={task.title}
-      onChangeValue={setTitle}
-    />
-    <TextField
-      placeholder="assignee"
-      value={task.assignee}
-      onChangeValue={setAssignee}
+    <div
+      draggable={true}
+      onDrag={event => setLocation({ x: event.pageX, y: event.pageY })}
+      className={['taskCardContent', status].join(' ')}
+      style={{
+        width: contentSize.width,
+        height: contentSize.height,
+        padding: `${padding.height}px ${padding.width}px`
+      }}
+    >
+      <Checkbox
+        id={task.id + '-isDone'}
+        label={status}
+        checked={task.isDone}
+        enabled={status !== TaskStatus.blocked}
+        onChangeChecked={setDone}
+      />
+      <TextField
+        placeholder="title"
+        value={task.title}
+        onChangeValue={setTitle}
+      />
+      <TextField
+        placeholder="assignee"
+        value={task.assignee}
+        onChangeValue={setAssignee}
+      />
+    </div>
+    <div
+      className={['taskCardHandle', status].join(' ')}
+      style={{
+        position: 'absolute',
+        top: size.height / 2 - 15,
+        left: size.width,
+        width: 12,
+        height: 30,
+        borderTopRightRadius: 12,
+        borderBottomRightRadius: 12,
+      }}
+      draggable={true}
+      onDrag={event => { window.console.log(event); event.preventDefault(); }}
     />
   </li>
 );
