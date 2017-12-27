@@ -18,6 +18,6 @@ export default ({ id, label, checked, enabled, onChangeChecked }: Props) => (
       disabled={!enabled}
       onChange={event => onChangeChecked(event.target.checked)}
     />
-    <label htmlFor={id}> {label}</label>
+    <label htmlFor={id} className={enabled ? "" : "disabled"}> {label}</label>
   </span>
 );
