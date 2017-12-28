@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Task, TaskStatus, Point, Size } from '../types/index';
+import { Task, TaskStatus, Point, Size, prerequisitesOrderedForTask } from '../types/index';
 import TextField from './TextField';
 import Checkbox from './Checkbox';
 import './TaskCard.css';
@@ -33,6 +33,12 @@ const padding: Size = {
 export const size: Size = {
   width: contentSize.width + padding.width + padding.width,
   height: contentSize.height + padding.height + padding.height
+};
+
+export const handleCenterForConnectionIndexAndCount = (index: number, count: number): number => {
+  const segmentHeight = size.height / count;
+  const segmentTop = segmentHeight * index;
+  return segmentTop + segmentHeight / 2;
 };
 
 export default class TaskCard extends React.Component<Props, State> {
@@ -108,8 +114,16 @@ export default class TaskCard extends React.Component<Props, State> {
     }
   }
 
+  handleTopForConnectionIndexAndCount(index: number, count: number): number {
+    const halfHandleHeight = 12;
+    return handleCenterForConnectionIndexAndCount(index, count) - halfHandleHeight;
+  }
+
   render() {
     const { task, prerequisiteTasks, status, setTitle, setAssignee, setDone } = this.props;
+
+    const prerequisiteTaskCount = prerequisiteTasks.length;
+    const orderedPrerequisiteTasks = prerequisitesOrderedForTask(prerequisiteTasks, task);
 
     return (
       <li
@@ -151,13 +165,12 @@ export default class TaskCard extends React.Component<Props, State> {
           />
         </div>
         {
-          prerequisiteTasks.map(prerequisiteTask =>
+          orderedPrerequisiteTasks.map((prerequisiteTask, index) =>
             <div
               key={prerequisiteTask.id}
               className={['taskCardHandle', status].join(' ')}
               style={{
-                // TODO: Order prerequisites by location.y, and space them out.
-                top: size.height / 2 - 12,
+                top: this.handleTopForConnectionIndexAndCount(index, prerequisiteTaskCount),
                 left: -18,
               }}
               draggable={true}
@@ -168,7 +181,7 @@ export default class TaskCard extends React.Component<Props, State> {
         <div
           className={['taskCardHandle', status].join(' ')}
           style={{
-            top: size.height / 2 - 12,
+            top: this.handleTopForConnectionIndexAndCount(0, 1),
             left: size.width - 12,
           }}
           draggable={true}

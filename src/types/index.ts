@@ -47,6 +47,22 @@ export const prerequisitesForTaskInPlan = (task: Task, plan: Plan): Task[] =>
     task.prerequisiteTaskIDs.map(prerequisiteTaskID => plan.tasks[prerequisiteTaskID])
   );
 
+export const prerequisitesOrderedForTask = (prerequisites: Task[], task: Task) =>
+  [...prerequisites].sort((lhs, rhs) =>
+    slopeFromTaskToPrerequisite(task, rhs) - slopeFromTaskToPrerequisite(task, lhs)
+  );
+
+const slopeFromTaskToPrerequisite = (task: Task, prerequisite: Task): number => {
+  const p0 = task.location;
+  const p1 = prerequisite.location;
+  const vector = {
+    x: p1.x - p0.x,
+    y: p1.y - p0.y
+  };
+  const slope = vector.y / vector.x;
+  return isFinite(slope) ? slope : 1000;
+};
+
 export const statusForTaskInPlan = (task: Task, plan: Plan): TaskStatus =>
   task.isDone
     ? TaskStatus.done
