@@ -30,15 +30,15 @@ const padding: Size = {
   height: 6
 };
 
-const modifyPrerequisiteMimeType = 'application/x-modify-prerequisite';
-const addPrerequisiteMimeType = 'application/x-add-prerequisite';
-
 export const size: Size = {
   width: contentSize.width + padding.width + padding.width,
   height: contentSize.height + padding.height + padding.height
 };
 
 export default class TaskCard extends React.Component<Props, State> {
+
+  static readonly modifyPrerequisiteMimeType = 'application/x-modify-prerequisite';
+  static readonly addPrerequisiteMimeType = 'application/x-add-prerequisite';
 
   constructor(props: Props) {
     super(props);
@@ -73,19 +73,19 @@ export default class TaskCard extends React.Component<Props, State> {
     event.dataTransfer.effectAllowed = 'linkMove';
 
     const jsonString = JSON.stringify({ sourceTaskID, destinationTaskID });
-    event.dataTransfer.setData(modifyPrerequisiteMimeType, jsonString);
+    event.dataTransfer.setData(TaskCard.modifyPrerequisiteMimeType, jsonString);
   }
 
   rightHandle_onDragStart(event: React.DragEvent<HTMLDivElement>) {
     const sourceTaskID = this.props.task.id;
     event.dataTransfer.effectAllowed = 'link';
 
-    event.dataTransfer.setData(addPrerequisiteMimeType, sourceTaskID);
+    event.dataTransfer.setData(TaskCard.addPrerequisiteMimeType, sourceTaskID);
   }
 
   card_onDragOver(event: React.DragEvent<HTMLDivElement>) {
-    if (0 <= event.dataTransfer.types.indexOf(modifyPrerequisiteMimeType)
-      || 0 <= event.dataTransfer.types.indexOf(addPrerequisiteMimeType)
+    if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)
+      || 0 <= event.dataTransfer.types.indexOf(TaskCard.addPrerequisiteMimeType)
     ) {
       event.dataTransfer.dropEffect = 'link';
       event.preventDefault();
@@ -93,15 +93,15 @@ export default class TaskCard extends React.Component<Props, State> {
   }
 
   card_onDrop(event: React.DragEvent<HTMLDivElement>) {
-    if (0 <= event.dataTransfer.types.indexOf(modifyPrerequisiteMimeType)) {
-      const jsonString = event.dataTransfer.getData(modifyPrerequisiteMimeType);
+    if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
+      const jsonString = event.dataTransfer.getData(TaskCard.modifyPrerequisiteMimeType);
       const { sourceTaskID, destinationTaskID } = JSON.parse(jsonString);
       const newDestinationTaskID = this.props.task.id;
 
       this.props.removePrerequisiteTask(sourceTaskID, destinationTaskID);
       this.props.addPrerequisiteTask(sourceTaskID, newDestinationTaskID);
-    } else if (0 <= event.dataTransfer.types.indexOf(addPrerequisiteMimeType)) {
-      const sourceTaskID = event.dataTransfer.getData(addPrerequisiteMimeType);
+    } else if (0 <= event.dataTransfer.types.indexOf(TaskCard.addPrerequisiteMimeType)) {
+      const sourceTaskID = event.dataTransfer.getData(TaskCard.addPrerequisiteMimeType);
       const destinationTaskID = this.props.task.id;
 
       this.props.addPrerequisiteTask(sourceTaskID, destinationTaskID);

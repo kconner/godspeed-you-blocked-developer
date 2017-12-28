@@ -34,7 +34,7 @@
     - [x] Represent them visually with SVG paths
     - [x] Create them by dragging out from the right edge of a card
     - [x] Modify them by dragging back from the left edge of a card
-    - [ ] Destroy them by dragging to the background
+    - [x] Destroy them by dragging to the background
     - [ ] Improve the appearance of multiple incoming arrows
         - Incoming arrows (prerequisites) are arranged top to bottom on the left edge
         - Order is established based on the Y coordinate of prerequisites, with X breaking ties

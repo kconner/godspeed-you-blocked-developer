@@ -9,7 +9,9 @@ const mapStateToProps = ({ currentPlanID }: StoreState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.Action>) => ({
-  onChangeValue: (value: string) => dispatch(actions.setCurrentPlanID(value))
+  onChangeValue: (value: string) => {
+    dispatch(actions.setCurrentPlanID(value));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TextField);
