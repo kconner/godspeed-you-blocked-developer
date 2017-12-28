@@ -26,7 +26,7 @@ export default ({ plan }: Props) => (
             key={`${prerequisite.id} -> ${task.id}`}
             source={prerequisite}
             destination={task}
-            status={statusForTaskInPlan(task, plan)}
+            status={statusForTaskInPlan(prerequisite, plan)}
             index={index}
             count={prerequisiteCount}
           />

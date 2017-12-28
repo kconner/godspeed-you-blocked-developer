@@ -49,6 +49,7 @@ export default class Canvas extends React.Component<Props> {
               tasksInPlan(plan).map(task =>
                 <TaskCard
                   key={task.id}
+                  plan={plan}
                   task={task}
                   prerequisiteTasks={prerequisitesForTaskInPlan(task, plan)}
                   status={statusForTaskInPlan(task, plan)}

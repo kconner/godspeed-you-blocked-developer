@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Task, TaskStatus, Point, Size, prerequisitesOrderedForTask } from '../types/index';
+import { Plan, Task, TaskStatus, Point, Size, prerequisitesOrderedForTask, statusForTaskInPlan } from '../types/index';
 import TextField from './TextField';
 import Checkbox from './Checkbox';
 import './TaskCard.css';
 
 export interface Props {
+  plan: Plan;
   task: Task;
   prerequisiteTasks: Task[];
   status: TaskStatus;
@@ -95,6 +96,8 @@ export default class TaskCard extends React.Component<Props, State> {
     ) {
       event.dataTransfer.dropEffect = 'link';
       event.preventDefault();
+
+      event.stopPropagation();
     }
   }
 
@@ -106,11 +109,15 @@ export default class TaskCard extends React.Component<Props, State> {
 
       this.props.removePrerequisiteTask(sourceTaskID, destinationTaskID);
       this.props.addPrerequisiteTask(sourceTaskID, newDestinationTaskID);
+
+      event.stopPropagation();
     } else if (0 <= event.dataTransfer.types.indexOf(TaskCard.addPrerequisiteMimeType)) {
       const sourceTaskID = event.dataTransfer.getData(TaskCard.addPrerequisiteMimeType);
       const destinationTaskID = this.props.task.id;
 
       this.props.addPrerequisiteTask(sourceTaskID, destinationTaskID);
+
+      event.stopPropagation();
     }
   }
 
@@ -120,7 +127,7 @@ export default class TaskCard extends React.Component<Props, State> {
   }
 
   render() {
-    const { task, prerequisiteTasks, status, setTitle, setAssignee, setDone } = this.props;
+    const { plan, task, prerequisiteTasks, status, setTitle, setAssignee, setDone } = this.props;
 
     const prerequisiteTaskCount = prerequisiteTasks.length;
     const orderedPrerequisiteTasks = prerequisitesOrderedForTask(prerequisiteTasks, task);
@@ -168,7 +175,7 @@ export default class TaskCard extends React.Component<Props, State> {
           orderedPrerequisiteTasks.map((prerequisiteTask, index) =>
             <div
               key={prerequisiteTask.id}
-              className={['taskCardHandle', status].join(' ')}
+              className={['taskCardHandle', statusForTaskInPlan(prerequisiteTask, plan)].join(' ')}
               style={{
                 top: this.handleTopForConnectionIndexAndCount(index, prerequisiteTaskCount),
                 left: -18,
