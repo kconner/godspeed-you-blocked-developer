@@ -14,7 +14,7 @@
 }
 
 .taskCardContent.doable {
-  background-color: #eee;
+  background-color: #fea;
 }
 
 .taskCardContent.blocked {
@@ -34,7 +34,7 @@
 }
 
 .taskCardHandle.doable {
-  background-color: #eee;
+  background-color: #fea;
 }
 
 .taskCardHandle.blocked {
