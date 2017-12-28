@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Plan, Point, tasksInPlan, statusForTaskInPlan } from '../types/index';
+import { Plan, Point, prerequisitesForTaskInPlan, tasksInPlan, statusForTaskInPlan } from '../types/index';
 import TaskArcImage from './TaskArcImage';
 import TaskCard from './TaskCard';
 
@@ -10,28 +10,41 @@ export interface Props {
   setTaskLocation: (taskID: string, value: Point) => void;
   setTaskDone: (taskID: string, value: boolean) => void;
   addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
+  removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
 }
 
-export default ({ plan, setTaskTitle, setTaskAssignee, setTaskLocation, setTaskDone, addPrerequisiteTask }: Props) => (
-  <div className="canvas">
-    <TaskArcImage plan={plan} />
-    {
-      !plan ? null : <ul>
-        {
-          tasksInPlan(plan).map(task =>
-            <TaskCard
-              key={task.id}
-              task={task}
-              status={statusForTaskInPlan(task, plan)}
-              setTitle={(value: string) => setTaskTitle(task.id, value)}
-              setAssignee={(value: string) => setTaskAssignee(task.id, value)}
-              setLocation={(value: Point) => setTaskLocation(task.id, value)}
-              setDone={(value: boolean) => setTaskDone(task.id, value)}
-              addPrerequisiteTask={addPrerequisiteTask}
-            />
-          )
-        }
-      </ul>
-    }
-  </div>
-);
+export default (
+  {
+    plan,
+    setTaskTitle,
+    setTaskAssignee,
+    setTaskLocation,
+    setTaskDone,
+    addPrerequisiteTask,
+    removePrerequisiteTask
+  }: Props
+) => (
+    <div className="canvas">
+      <TaskArcImage plan={plan} />
+      {
+        !plan ? null : <ul>
+          {
+            tasksInPlan(plan).map(task =>
+              <TaskCard
+                key={task.id}
+                task={task}
+                prerequisiteTasks={prerequisitesForTaskInPlan(task, plan)}
+                status={statusForTaskInPlan(task, plan)}
+                setTitle={(value: string) => setTaskTitle(task.id, value)}
+                setAssignee={(value: string) => setTaskAssignee(task.id, value)}
+                setLocation={(value: Point) => setTaskLocation(task.id, value)}
+                setDone={(value: boolean) => setTaskDone(task.id, value)}
+                addPrerequisiteTask={addPrerequisiteTask}
+                removePrerequisiteTask={removePrerequisiteTask}
+              />
+            )
+          }
+        </ul>
+      }
+    </div>
+  );

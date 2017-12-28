@@ -6,7 +6,8 @@ import {
   SET_TASK_ASSIGNEE,
   SET_TASK_LOCATION,
   SET_TASK_DONE,
-  ADD_PREREQUISITE_TASK
+  ADD_PREREQUISITE_TASK,
+  REMOVE_PREREQUISITE_TASK
 } from '../constants/index';
 
 export default (state: StoreState, action: Action): StoreState => {
@@ -18,6 +19,7 @@ export default (state: StoreState, action: Action): StoreState => {
     case SET_TASK_LOCATION:
     case SET_TASK_DONE:
     case ADD_PREREQUISITE_TASK:
+    case REMOVE_PREREQUISITE_TASK:
       const { currentPlanID, plans } = state;
       const plan = plans[currentPlanID];
       if (!plan) {
@@ -43,6 +45,7 @@ const reducePlan = (plan: Plan, action: Action): Plan => {
     case SET_TASK_LOCATION:
     case SET_TASK_DONE:
     case ADD_PREREQUISITE_TASK:
+    case REMOVE_PREREQUISITE_TASK:
       const { taskID } = action;
       const { tasks } = plan;
       const task = tasks[taskID];
@@ -77,16 +80,30 @@ const reduceTask = (task: Task, action: Action): Task => {
       const { isDone } = action;
       return { ...task, isDone };
     case ADD_PREREQUISITE_TASK:
-      const { prerequisiteTaskID } = action;
-      if (prerequisiteTaskID === task.id
-        || 0 <= task.prerequisiteTaskIDs.indexOf(prerequisiteTaskID)) {
-        return task;
-      }
+      {
+        const { prerequisiteTaskID } = action;
+        if (prerequisiteTaskID === task.id
+          || 0 <= task.prerequisiteTaskIDs.indexOf(prerequisiteTaskID)) {
+          return task;
+        }
 
-      return {
-        ...task,
-        prerequisiteTaskIDs: [...task.prerequisiteTaskIDs, prerequisiteTaskID]
-      };
+        return {
+          ...task,
+          prerequisiteTaskIDs: [...task.prerequisiteTaskIDs, prerequisiteTaskID]
+        };
+      }
+    case REMOVE_PREREQUISITE_TASK:
+      {
+        const { prerequisiteTaskID } = action;
+        if (task.prerequisiteTaskIDs.indexOf(prerequisiteTaskID) < 0) {
+          return task;
+        }
+
+        return {
+          ...task,
+          prerequisiteTaskIDs: task.prerequisiteTaskIDs.filter(id => id !== prerequisiteTaskID)
+        };
+      }
     default:
       return task;
   }

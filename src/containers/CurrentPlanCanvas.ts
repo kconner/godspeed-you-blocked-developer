@@ -16,6 +16,8 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.Action>) => ({
   setTaskDone: (taskID: string, value: boolean) => dispatch(actions.setTaskDone(taskID, value)),
   addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) =>
     dispatch(actions.addPrerequisiteTask(prerequisiteTaskID, taskID)),
+  removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) =>
+    dispatch(actions.removePrerequisiteTask(prerequisiteTaskID, taskID)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Canvas);

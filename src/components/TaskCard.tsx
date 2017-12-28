@@ -6,12 +6,14 @@ import './TaskCard.css';
 
 export interface Props {
   task: Task;
+  prerequisiteTasks: Task[];
   status: TaskStatus;
   setTitle: (value: string) => void;
   setAssignee: (value: string) => void;
   setLocation: (value: Point) => void;
   setDone: (value: boolean) => void;
   addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
+  removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
 }
 
 export interface State {
@@ -27,6 +29,8 @@ const padding: Size = {
   width: 8,
   height: 6
 };
+
+const modifyPrerequisiteMimeType = 'application/x-modify-prerequisite';
 const addPrerequisiteMimeType = 'application/x-add-prerequisite';
 
 export const size: Size = {
@@ -64,37 +68,48 @@ export default class TaskCard extends React.Component<Props, State> {
     });
   }
 
-  handle_onDragStart(event: React.DragEvent<HTMLDivElement>) {
+  leftHandle_onDragStart(event: React.DragEvent<HTMLDivElement>, sourceTaskID: string) {
+    const destinationTaskID = this.props.task.id;
+    event.dataTransfer.effectAllowed = 'linkMove';
+
+    const jsonString = JSON.stringify({ sourceTaskID, destinationTaskID });
+    event.dataTransfer.setData(modifyPrerequisiteMimeType, jsonString);
+  }
+
+  rightHandle_onDragStart(event: React.DragEvent<HTMLDivElement>) {
     const sourceTaskID = this.props.task.id;
     event.dataTransfer.effectAllowed = 'link';
+
     event.dataTransfer.setData(addPrerequisiteMimeType, sourceTaskID);
   }
 
   card_onDragOver(event: React.DragEvent<HTMLDivElement>) {
-    if (event.dataTransfer.types.indexOf(addPrerequisiteMimeType) < 0) {
-      return;
+    if (0 <= event.dataTransfer.types.indexOf(modifyPrerequisiteMimeType)
+      || 0 <= event.dataTransfer.types.indexOf(addPrerequisiteMimeType)
+    ) {
+      event.dataTransfer.dropEffect = 'link';
+      event.preventDefault();
     }
-
-    event.dataTransfer.dropEffect = 'link';
-    event.preventDefault();
   }
 
   card_onDrop(event: React.DragEvent<HTMLDivElement>) {
-    if (event.dataTransfer.types.indexOf(addPrerequisiteMimeType) < 0) {
-      return;
-    }
+    if (0 <= event.dataTransfer.types.indexOf(modifyPrerequisiteMimeType)) {
+      const jsonString = event.dataTransfer.getData(modifyPrerequisiteMimeType);
+      const { sourceTaskID, destinationTaskID } = JSON.parse(jsonString);
+      const newDestinationTaskID = this.props.task.id;
 
-    const sourceTaskID = event.dataTransfer.getData(addPrerequisiteMimeType);
-    const destinationTaskID = this.props.task.id;
-    if (sourceTaskID === destinationTaskID) {
-      return;
-    }
+      this.props.removePrerequisiteTask(sourceTaskID, destinationTaskID);
+      this.props.addPrerequisiteTask(sourceTaskID, newDestinationTaskID);
+    } else if (0 <= event.dataTransfer.types.indexOf(addPrerequisiteMimeType)) {
+      const sourceTaskID = event.dataTransfer.getData(addPrerequisiteMimeType);
+      const destinationTaskID = this.props.task.id;
 
-    this.props.addPrerequisiteTask(sourceTaskID, destinationTaskID);
+      this.props.addPrerequisiteTask(sourceTaskID, destinationTaskID);
+    }
   }
 
   render() {
-    const { task, status, setTitle, setAssignee, setDone } = this.props;
+    const { task, prerequisiteTasks, status, setTitle, setAssignee, setDone } = this.props;
 
     return (
       <li
@@ -135,6 +150,21 @@ export default class TaskCard extends React.Component<Props, State> {
             onChangeValue={setAssignee}
           />
         </div>
+        {
+          prerequisiteTasks.map(prerequisiteTask =>
+            <div
+              key={prerequisiteTask.id}
+              className={['taskCardHandle', status].join(' ')}
+              style={{
+                // TODO: Order prerequisites by location.y, and space them out.
+                top: size.height / 2 - 12,
+                left: -18,
+              }}
+              draggable={true}
+              onDragStart={event => this.leftHandle_onDragStart(event, prerequisiteTask.id)}
+            />
+          )
+        }
         <div
           className={['taskCardHandle', status].join(' ')}
           style={{
@@ -142,7 +172,7 @@ export default class TaskCard extends React.Component<Props, State> {
             left: size.width - 12,
           }}
           draggable={true}
-          onDragStart={event => this.handle_onDragStart(event)}
+          onDragStart={event => this.rightHandle_onDragStart(event)}
         />
       </li>
     );
