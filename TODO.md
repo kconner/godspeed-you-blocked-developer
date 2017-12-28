@@ -29,14 +29,16 @@
     - [x] TextField
     - [x] Checkbox
 - [x] Style it
-- [ ] Prerequisite tasks
+- [x] Prerequisite tasks
     - [x] Research and prototype a little
     - [x] Represent them visually with SVG paths
     - [x] Create them by dragging out from the right edge of a card
     - [x] Modify them by dragging back from the left edge of a card
     - [x] Destroy them by dragging to the background
-    - [ ] Improve the appearance of multiple incoming arrows
-        - Incoming arrows (prerequisites) are arranged top to bottom on the left edge
-        - Order is established based on the Y coordinate of prerequisites, with X breaking ties
-        - X might need to break ties in opposite directions above / below center, so if you make a square… just trust me
+    - [x] Improve the appearance of multiple incoming arrows
+- [ ] Create and destroy tasks
+    - [ ] Click in canvas to create
+    - [ ] Drag out to destroy
+- [ ] Hint about what plans exist
+    - Typing suggestions?
 - [ ] Store state in browser local storage
