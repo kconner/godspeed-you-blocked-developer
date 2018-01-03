@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Plan, Point, prerequisitesForTaskInPlan, tasksInPlan, statusForTaskInPlan } from '../types/index';
-import TaskCardSource from '../components/TaskCardSource';
+import TaskCardBin from '../components/TaskCardBin';
 import TaskArcImage from './TaskArcImage';
 import TaskCard from './TaskCard';
 
@@ -24,7 +24,7 @@ export default class Canvas extends React.Component<Props> {
     } else if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
       event.dataTransfer.dropEffect = 'move';
       event.preventDefault();
-    } else if (0 <= event.dataTransfer.types.indexOf(TaskCardSource.addTaskMimeType)) {
+    } else if (0 <= event.dataTransfer.types.indexOf(TaskCardBin.addTaskMimeType)) {
       event.dataTransfer.dropEffect = 'copy';
       event.preventDefault();
     }
@@ -46,7 +46,7 @@ export default class Canvas extends React.Component<Props> {
       const { sourceTaskID, destinationTaskID } = JSON.parse(jsonString);
 
       this.props.removePrerequisiteTask(sourceTaskID, destinationTaskID);
-    } else if (0 <= event.dataTransfer.types.indexOf(TaskCardSource.addTaskMimeType)) {
+    } else if (0 <= event.dataTransfer.types.indexOf(TaskCardBin.addTaskMimeType)) {
       const location = { x: event.pageX, y: event.pageY };
       this.props.addTask(location);
     }

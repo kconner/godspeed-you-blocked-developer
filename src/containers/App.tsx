@@ -1,14 +1,12 @@
 import * as React from 'react';
 import CurrentPlanIDForm from './CurrentPlanIDForm';
-import TaskCardSource from '../components/TaskCardSource';
-import TaskCardTrash from './TaskCardTrash';
+import TaskCardBin from './TaskCardBin';
 import CurrentPlanCanvas from './CurrentPlanCanvas';
 
 export default () => (
   <div>
     <CurrentPlanIDForm />
-    <TaskCardSource />
-    <TaskCardTrash />
+    <TaskCardBin />
     <CurrentPlanCanvas />
   </div>
 );

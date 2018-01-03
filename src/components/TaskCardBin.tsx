@@ -1,12 +1,19 @@
 import * as React from 'react';
 import TaskCard from './TaskCard';
-import './TaskCardTrash.css';
+import './TaskCardBin.css';
 
 interface Props {
   removeTask: (taskID: string) => void;
 }
 
-export default class TaskCardTrash extends React.Component<Props> {
+export default class TaskCardBin extends React.Component<Props> {
+
+  static readonly addTaskMimeType = 'application/x-add-task';
+
+  onDragStart(event: React.DragEvent<HTMLDivElement>) {
+    event.dataTransfer.effectAllowed = 'copy';
+    event.dataTransfer.setData(TaskCardBin.addTaskMimeType, '+');
+  }
 
   onDragOver(event: React.DragEvent<HTMLDivElement>) {
     if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyTaskMimeType)) {
@@ -27,11 +34,13 @@ export default class TaskCardTrash extends React.Component<Props> {
   render() {
     return (
       <div
+        draggable={true}
+        onDragStart={event => this.onDragStart(event)}
         onDragOver={event => this.onDragOver(event)}
         onDrop={event => this.onDrop(event)}
-        className="taskCardTrash"
+        className="taskCardBin"
       >
-        Drop here!
+        ~style me~
       </div>
     );
   }
