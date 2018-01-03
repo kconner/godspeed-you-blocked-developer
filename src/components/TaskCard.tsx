@@ -17,7 +17,7 @@ export interface Props {
   removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
 }
 
-const contentSize: Size = {
+export const contentSize: Size = {
   width: 200,
   height: 114
 };

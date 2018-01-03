@@ -47,7 +47,14 @@ export default class Canvas extends React.Component<Props> {
 
       this.props.removePrerequisiteTask(sourceTaskID, destinationTaskID);
     } else if (0 <= event.dataTransfer.types.indexOf(TaskCardBin.addTaskMimeType)) {
-      const location = { x: event.pageX, y: event.pageY };
+      const jsonString = event.dataTransfer.getData(TaskCardBin.addTaskMimeType);
+      const { dragOffset } = JSON.parse(jsonString);
+
+      const location = {
+        x: event.pageX - dragOffset.width,
+        y: event.pageY - dragOffset.height
+      };
+
       this.props.addTask(location);
     }
   }

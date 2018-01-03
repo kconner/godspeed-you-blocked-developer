@@ -5,7 +5,9 @@ import CurrentPlanCanvas from './CurrentPlanCanvas';
 
 export default () => (
   <div>
-    <CurrentPlanIDForm />
+    <div style={{ position: 'absolute', display: 'block', top: 20, left: 20 }}>
+      <CurrentPlanIDForm />
+    </div>
     <TaskCardBin />
     <CurrentPlanCanvas />
   </div>

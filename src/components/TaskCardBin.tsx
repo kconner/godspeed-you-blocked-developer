@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { TaskCard, padding as taskCardPadding } from './TaskCard';
+import {
+  TaskCard,
+  contentSize as taskCardContentSize,
+  padding as taskCardPadding
+} from './TaskCard';
 import './TaskCardBin.css';
 
 interface Props {
@@ -12,7 +16,15 @@ export default class TaskCardBin extends React.Component<Props> {
 
   onDragStart(event: React.DragEvent<HTMLDivElement>) {
     event.dataTransfer.effectAllowed = 'copy';
-    event.dataTransfer.setData(TaskCardBin.addTaskMimeType, '+');
+
+    const dragOffset = {
+      width: event.pageX - event.currentTarget.offsetLeft,
+      height: event.pageY - event.currentTarget.offsetTop
+    };
+
+    const jsonString = JSON.stringify({ dragOffset });
+
+    event.dataTransfer.setData(TaskCardBin.addTaskMimeType, jsonString);
   }
 
   onDragOver(event: React.DragEvent<HTMLDivElement>) {
@@ -41,12 +53,14 @@ export default class TaskCardBin extends React.Component<Props> {
         className="taskCardBin"
       >
         <div
-          className="taskCardContent"
+          className="taskCardBinContent"
           style={{
+            width: taskCardContentSize.width,
+            height: taskCardContentSize.height,
             padding: `${taskCardPadding.height}px ${taskCardPadding.width}px`
           }}
         >
-          Tasks
+          Task bin
         </div>
       </div>
     );

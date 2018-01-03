@@ -41,6 +41,7 @@
         - [x] Also drag into canvas to create a new plan if none matches the name
     - [x] Drag to trash to destroy
     - [x] Make the source and trash look nice
+    - [x] When dragging from the source, drop using a defined drag offset
 - [ ] Hint about what plans exist
     - Typing suggestions?
 - [ ] Store state in browser local storage
