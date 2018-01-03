@@ -39,7 +39,8 @@
 - [ ] Create and destroy tasks
     - [x] Drag into canvas to create
         - [x] Also drag into canvas to create a new plan if none matches the name
-    - [ ] Drag out to destroy
+    - [x] Drag to trash to destroy
+    - [ ] Make the source and trash look nice
 - [ ] Hint about what plans exist
     - Typing suggestions?
 - [ ] Store state in browser local storage

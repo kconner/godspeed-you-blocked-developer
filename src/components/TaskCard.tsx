@@ -17,10 +17,6 @@ export interface Props {
   removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
 }
 
-export interface State {
-  dragOffset: Size;
-}
-
 const contentSize: Size = {
   width: 200,
   height: 114
@@ -42,37 +38,28 @@ export const handleCenterForConnectionIndexAndCount = (index: number, count: num
   return segmentTop + segmentHeight / 2;
 };
 
-export default class TaskCard extends React.Component<Props, State> {
+export default class TaskCard extends React.Component<Props> {
 
+  static readonly modifyTaskMimeType = 'application/x-modify-task';
   static readonly modifyPrerequisiteMimeType = 'application/x-modify-prerequisite';
   static readonly addPrerequisiteMimeType = 'application/x-add-prerequisite';
 
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      dragOffset: { width: 0, height: 0 }
-    };
   }
 
-  card_onDragStart(event: React.DragEvent<HTMLDivElement>) {
-    event.dataTransfer.effectAllowed = 'none';
+  card_onDragStart(event: React.DragEvent<HTMLDivElement>, taskID: string) {
+    event.dataTransfer.effectAllowed = 'move';
 
     const taskLocation = this.props.task.location;
 
-    this.setState({
-      dragOffset: {
-        width: event.pageX - taskLocation.x,
-        height: event.pageY - taskLocation.y
-      }
-    });
-  }
+    const dragOffset = {
+      width: event.pageX - taskLocation.x,
+      height: event.pageY - taskLocation.y
+    };
 
-  card_onDrag(event: React.DragEvent<HTMLDivElement>) {
-    this.props.setLocation({
-      x: event.pageX - this.state.dragOffset.width,
-      y: event.pageY - this.state.dragOffset.height
-    });
+    const jsonString = JSON.stringify({ taskID, dragOffset });
+    event.dataTransfer.setData(TaskCard.modifyTaskMimeType, jsonString);
   }
 
   leftHandle_onDragStart(event: React.DragEvent<HTMLDivElement>, sourceTaskID: string) {
@@ -142,8 +129,7 @@ export default class TaskCard extends React.Component<Props, State> {
       >
         <div
           draggable={true}
-          onDragStart={event => this.card_onDragStart(event)}
-          onDrag={event => this.card_onDrag(event)}
+          onDragStart={event => this.card_onDragStart(event, task.id)}
           onDragOver={event => this.card_onDragOver(event)}
           onDrop={event => this.card_onDrop(event)}
           className={['taskCardContent', status].join(' ')}

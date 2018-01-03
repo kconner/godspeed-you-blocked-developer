@@ -2,13 +2,14 @@ import { Action } from '../actions';
 import { StoreState, Plan, Task, newPlan, newTask } from '../types/index';
 import {
   SET_CURRENT_PLAN_ID,
+  ADD_TASK,
+  REMOVE_TASK,
   SET_TASK_TITLE,
   SET_TASK_ASSIGNEE,
   SET_TASK_LOCATION,
   SET_TASK_DONE,
   ADD_PREREQUISITE_TASK,
   REMOVE_PREREQUISITE_TASK,
-  ADD_TASK
 } from '../constants/index';
 
 export default (state: StoreState, action: Action): StoreState => {
@@ -16,6 +17,7 @@ export default (state: StoreState, action: Action): StoreState => {
     case SET_CURRENT_PLAN_ID:
       return { ...state, currentPlanID: action.planID };
     case ADD_TASK:
+    case REMOVE_TASK:
     case SET_TASK_TITLE:
     case SET_TASK_ASSIGNEE:
     case SET_TASK_LOCATION:
@@ -53,6 +55,37 @@ const reducePlan = (plan: Plan, action: Action): Plan => {
           ...tasks,
           [task.id]: task
         }
+      };
+    }
+    case REMOVE_TASK: {
+      const { taskID } = action;
+      const { tasks } = plan;
+
+      const prunedTasks: { [id: string]: Task | undefined } = {};
+      window.console.log('one');
+      for (const existingTaskID in tasks) {
+        // Omit the identified task from the plan
+        if (existingTaskID === taskID) {
+          continue;
+        }
+
+        const existingTask = tasks[existingTaskID];
+        if (!existingTask) {
+          continue;
+        }
+
+        // Omit the identified task from other tasks' prerequisites
+        const prunedPrerequisiteTaskIDs = existingTask.prerequisiteTaskIDs.filter(id => id !== taskID);
+
+        prunedTasks[existingTaskID] = {
+          ...existingTask,
+          prerequisiteTaskIDs: prunedPrerequisiteTaskIDs
+        };
+      }
+
+      return {
+        ...plan,
+        tasks: prunedTasks
       };
     }
     case SET_TASK_TITLE:

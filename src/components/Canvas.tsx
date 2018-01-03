@@ -18,7 +18,10 @@ export interface Props {
 export default class Canvas extends React.Component<Props> {
 
   onDragOver(event: React.DragEvent<HTMLDivElement>) {
-    if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
+    if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyTaskMimeType)) {
+      event.dataTransfer.dropEffect = 'move';
+      event.preventDefault();
+    } else if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
       event.dataTransfer.dropEffect = 'move';
       event.preventDefault();
     } else if (0 <= event.dataTransfer.types.indexOf(TaskCardSource.addTaskMimeType)) {
@@ -28,7 +31,17 @@ export default class Canvas extends React.Component<Props> {
   }
 
   onDrop(event: React.DragEvent<HTMLDivElement>) {
-    if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
+    if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyTaskMimeType)) {
+      const jsonString = event.dataTransfer.getData(TaskCard.modifyTaskMimeType);
+      const { taskID, dragOffset } = JSON.parse(jsonString);
+
+      const location = {
+        x: event.pageX - dragOffset.width,
+        y: event.pageY - dragOffset.height
+      };
+
+      this.props.setTaskLocation(taskID, location);
+    } else if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
       const jsonString = event.dataTransfer.getData(TaskCard.modifyPrerequisiteMimeType);
       const { sourceTaskID, destinationTaskID } = JSON.parse(jsonString);
 
