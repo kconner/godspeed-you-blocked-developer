@@ -6,13 +6,13 @@ import TaskCard from './TaskCard';
 
 export interface Props {
   plan: Plan | undefined;
+  addTask: (location: Point) => void;
   setTaskTitle: (taskID: string, value: string) => void;
   setTaskAssignee: (taskID: string, value: string) => void;
   setTaskLocation: (taskID: string, value: Point) => void;
   setTaskDone: (taskID: string, value: boolean) => void;
   addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
   removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
-  addTask: (location: Point) => void;
 }
 
 export default class Canvas extends React.Component<Props> {

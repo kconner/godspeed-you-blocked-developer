@@ -15,13 +15,13 @@ export default (state: StoreState, action: Action): StoreState => {
   switch (action.type) {
     case SET_CURRENT_PLAN_ID:
       return { ...state, currentPlanID: action.planID };
+    case ADD_TASK:
     case SET_TASK_TITLE:
     case SET_TASK_ASSIGNEE:
     case SET_TASK_LOCATION:
     case SET_TASK_DONE:
     case ADD_PREREQUISITE_TASK:
     case REMOVE_PREREQUISITE_TASK:
-    case ADD_TASK:
       const { currentPlanID, plans } = state;
       let plan = plans[currentPlanID];
       if (!plan) {
@@ -42,6 +42,19 @@ export default (state: StoreState, action: Action): StoreState => {
 
 const reducePlan = (plan: Plan, action: Action): Plan => {
   switch (action.type) {
+    case ADD_TASK: {
+      const { location } = action;
+      const { tasks } = plan;
+      const task = newTask(location);
+
+      return {
+        ...plan,
+        tasks: {
+          ...tasks,
+          [task.id]: task
+        }
+      };
+    }
     case SET_TASK_TITLE:
     case SET_TASK_ASSIGNEE:
     case SET_TASK_LOCATION:
@@ -60,19 +73,6 @@ const reducePlan = (plan: Plan, action: Action): Plan => {
         tasks: {
           ...tasks,
           [taskID]: reduceTask(task, action)
-        }
-      };
-    }
-    case ADD_TASK: {
-      const { location } = action;
-      const { tasks } = plan;
-      const task = newTask(location);
-
-      return {
-        ...plan,
-        tasks: {
-          ...tasks,
-          [task.id]: task
         }
       };
     }

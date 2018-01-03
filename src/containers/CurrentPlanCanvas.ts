@@ -10,6 +10,9 @@ const mapStateToProps = ({ plans, currentPlanID }: StoreState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.Action>) => ({
   // Can I accomplish this with some partial appliation pattern?
+  addTask: (location: Point) => {
+    dispatch(actions.addTask(location));
+  },
   setTaskTitle: (taskID: string, value: string) => {
     dispatch(actions.setTaskTitle(taskID, value));
   },
@@ -27,9 +30,6 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.Action>) => ({
   },
   removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => {
     dispatch(actions.removePrerequisiteTask(prerequisiteTaskID, taskID));
-  },
-  addTask: (location: Point) => {
-    dispatch(actions.addTask(location));
   },
 });
 

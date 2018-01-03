@@ -6,6 +6,11 @@ export interface SetCurrentPlanID {
   planID: string;
 }
 
+export interface AddTask {
+  type: constants.ADD_TASK;
+  location: Point;
+}
+
 export interface SetTaskTitle {
   type: constants.SET_TASK_TITLE;
   taskID: string;
@@ -42,24 +47,24 @@ export interface RemovePrerequisiteTask {
   taskID: string;
 }
 
-export interface AddTask {
-  type: constants.ADD_TASK;
-  location: Point;
-}
-
 export type Action =
   SetCurrentPlanID
+  | AddTask
   | SetTaskTitle
   | SetTaskAssignee
   | SetTaskLocation
   | SetTaskDone
   | AddPrerequisiteTask
-  | RemovePrerequisiteTask
-  | AddTask;
+  | RemovePrerequisiteTask;
 
 export const setCurrentPlanID = (planID: string): SetCurrentPlanID => ({
   type: constants.SET_CURRENT_PLAN_ID,
   planID
+});
+
+export const addTask = (location: Point): AddTask => ({
+  type: constants.ADD_TASK,
+  location
 });
 
 export const setTaskTitle = (taskID: string, title: string): SetTaskTitle => ({
@@ -96,9 +101,4 @@ export const removePrerequisiteTask = (prerequisiteTaskID: string, taskID: strin
   type: constants.REMOVE_PREREQUISITE_TASK,
   prerequisiteTaskID,
   taskID,
-});
-
-export const addTask = (location: Point): AddTask => ({
-  type: constants.ADD_TASK,
-  location
 });
