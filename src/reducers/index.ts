@@ -1,5 +1,5 @@
 import { Action } from '../actions';
-import { StoreState, Plan, Task, newTask } from '../types/index';
+import { StoreState, Plan, Task, newPlan, newTask } from '../types/index';
 import {
   SET_CURRENT_PLAN_ID,
   SET_TASK_TITLE,
@@ -23,9 +23,9 @@ export default (state: StoreState, action: Action): StoreState => {
     case REMOVE_PREREQUISITE_TASK:
     case ADD_TASK:
       const { currentPlanID, plans } = state;
-      const plan = plans[currentPlanID];
+      let plan = plans[currentPlanID];
       if (!plan) {
-        return state;
+        plan = newPlan(currentPlanID);
       }
 
       return {

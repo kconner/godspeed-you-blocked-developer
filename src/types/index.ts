@@ -39,6 +39,13 @@ export enum TaskStatus {
   done = 'done',
 }
 
+export const newPlan = (id: string): Plan => (
+  {
+    id,
+    tasks: {}
+  }
+);
+
 export const newTask = (location: Point): Task => (
   {
     id: uuid.v4(),
