@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import CurrentPlanIDForm from './containers/CurrentPlanIDForm';
-import CurrentPlanCanvas from './containers/CurrentPlanCanvas';
+import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { Provider } from 'react-redux';
@@ -80,10 +79,7 @@ const store = createStore<StoreState>(
 
 const rootReactElement = (
   <Provider store={store}>
-    <div>
-      <CurrentPlanIDForm />
-      <CurrentPlanCanvas />
-    </div>
+    <App />
   </Provider>
 );
 
