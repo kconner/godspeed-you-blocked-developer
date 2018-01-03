@@ -1,3 +1,5 @@
+import * as uuid from 'uuid';
+
 export interface StoreState {
   currentPlanID: string;
   plans: {
@@ -36,6 +38,17 @@ export enum TaskStatus {
   doable = 'doable',
   done = 'done',
 }
+
+export const newTask = (location: Point): Task => (
+  {
+    id: uuid.v4(),
+    title: '',
+    assignee: '',
+    location,
+    isDone: false,
+    prerequisiteTaskIDs: []
+  }
+);
 
 export const tasksInPlan = (plan: Plan): Task[] =>
   definedElementsOfArray(

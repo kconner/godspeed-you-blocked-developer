@@ -37,7 +37,8 @@
     - [x] Destroy them by dragging to the background
     - [x] Improve the appearance of multiple incoming arrows
 - [ ] Create and destroy tasks
-    - [ ] Click in canvas to create
+    - [x] Drag into canvas to create
+        - [ ] Also drag into canvas to create a new plan if none matches the name
     - [ ] Drag out to destroy
 - [ ] Hint about what plans exist
     - Typing suggestions?

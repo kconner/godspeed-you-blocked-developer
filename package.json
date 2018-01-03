@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@types/react-redux": "^5.0.14",
+    "@types/uuid": "^3.4.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-scripts-ts": "2.8.0",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "uuid": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",

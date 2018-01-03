@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Plan, Point, prerequisitesForTaskInPlan, tasksInPlan, statusForTaskInPlan } from '../types/index';
+import TaskCardSource from '../components/TaskCardSource';
 import TaskArcImage from './TaskArcImage';
 import TaskCard from './TaskCard';
 
@@ -11,6 +12,7 @@ export interface Props {
   setTaskDone: (taskID: string, value: boolean) => void;
   addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
   removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
+  addTask: (location: Point) => void;
 }
 
 export default class Canvas extends React.Component<Props> {
@@ -18,6 +20,9 @@ export default class Canvas extends React.Component<Props> {
   onDragOver(event: React.DragEvent<HTMLDivElement>) {
     if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
       event.dataTransfer.dropEffect = 'move';
+      event.preventDefault();
+    } else if (0 <= event.dataTransfer.types.indexOf(TaskCardSource.addTaskMimeType)) {
+      event.dataTransfer.dropEffect = 'copy';
       event.preventDefault();
     }
   }
@@ -28,6 +33,9 @@ export default class Canvas extends React.Component<Props> {
       const { sourceTaskID, destinationTaskID } = JSON.parse(jsonString);
 
       this.props.removePrerequisiteTask(sourceTaskID, destinationTaskID);
+    } else if (0 <= event.dataTransfer.types.indexOf(TaskCardSource.addTaskMimeType)) {
+      const location = { x: event.pageX, y: event.pageY };
+      this.props.addTask(location);
     }
   }
 

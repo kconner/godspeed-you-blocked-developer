@@ -1,5 +1,5 @@
 import { Action } from '../actions';
-import { StoreState, Plan, Task } from '../types/index';
+import { StoreState, Plan, Task, newTask } from '../types/index';
 import {
   SET_CURRENT_PLAN_ID,
   SET_TASK_TITLE,
@@ -7,7 +7,8 @@ import {
   SET_TASK_LOCATION,
   SET_TASK_DONE,
   ADD_PREREQUISITE_TASK,
-  REMOVE_PREREQUISITE_TASK
+  REMOVE_PREREQUISITE_TASK,
+  ADD_TASK
 } from '../constants/index';
 
 export default (state: StoreState, action: Action): StoreState => {
@@ -20,6 +21,7 @@ export default (state: StoreState, action: Action): StoreState => {
     case SET_TASK_DONE:
     case ADD_PREREQUISITE_TASK:
     case REMOVE_PREREQUISITE_TASK:
+    case ADD_TASK:
       const { currentPlanID, plans } = state;
       const plan = plans[currentPlanID];
       if (!plan) {
@@ -45,7 +47,7 @@ const reducePlan = (plan: Plan, action: Action): Plan => {
     case SET_TASK_LOCATION:
     case SET_TASK_DONE:
     case ADD_PREREQUISITE_TASK:
-    case REMOVE_PREREQUISITE_TASK:
+    case REMOVE_PREREQUISITE_TASK: {
       const { taskID } = action;
       const { tasks } = plan;
       const task = tasks[taskID];
@@ -56,10 +58,24 @@ const reducePlan = (plan: Plan, action: Action): Plan => {
       return {
         ...plan,
         tasks: {
-          ...plan.tasks,
+          ...tasks,
           [taskID]: reduceTask(task, action)
         }
       };
+    }
+    case ADD_TASK: {
+      const { location } = action;
+      const { tasks } = plan;
+      const task = newTask(location);
+
+      return {
+        ...plan,
+        tasks: {
+          ...tasks,
+          [task.id]: task
+        }
+      };
+    }
     default:
       return plan;
   }
