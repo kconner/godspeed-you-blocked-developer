@@ -22,7 +22,7 @@ const contentSize: Size = {
   height: 114
 };
 
-const padding: Size = {
+export const padding: Size = {
   width: 8,
   height: 6
 };
@@ -38,7 +38,7 @@ export const handleCenterForConnectionIndexAndCount = (index: number, count: num
   return segmentTop + segmentHeight / 2;
 };
 
-export default class TaskCard extends React.Component<Props> {
+export class TaskCard extends React.Component<Props> {
 
   static readonly modifyTaskMimeType = 'application/x-modify-task';
   static readonly modifyPrerequisiteMimeType = 'application/x-modify-prerequisite';
@@ -185,3 +185,5 @@ export default class TaskCard extends React.Component<Props> {
   }
 
 }
+
+export default TaskCard;

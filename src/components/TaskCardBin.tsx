@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TaskCard from './TaskCard';
+import { TaskCard, padding as taskCardPadding } from './TaskCard';
 import './TaskCardBin.css';
 
 interface Props {
@@ -40,7 +40,14 @@ export default class TaskCardBin extends React.Component<Props> {
         onDrop={event => this.onDrop(event)}
         className="taskCardBin"
       >
-        ~style me~
+        <div
+          className="taskCardContent"
+          style={{
+            padding: `${taskCardPadding.height}px ${taskCardPadding.width}px`
+          }}
+        >
+          Tasks
+        </div>
       </div>
     );
   }
