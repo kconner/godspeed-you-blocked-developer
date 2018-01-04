@@ -7,15 +7,6 @@
   background-color: #fff;
 }
 
-.appSidebar .textField {
-  margin: 12px 0;
-}
-
-.appSidebar .textField input {
-  padding: 8px;
-  width: 200px;
-}
-
 .appTitle {
   font-size: 20px;
 }
@@ -23,4 +14,25 @@
 .appGitHubLink {
   font-size: 14px;
   margin: 4px 0;
+}
+
+.appSidebar .textField {
+  margin: 12px 0 0 0;
+}
+
+.appSidebar .textField input {
+  padding: 8px;
+  width: 200px;
+}
+
+.appSidebar .select {
+  margin: 12px 0 0 0;
+}
+
+.appSidebar .select select {
+  width: 216px;
+}
+
+.appSidebar .taskCardBin {
+  margin: 12px 0 0 0;
 }

@@ -66,6 +66,14 @@ export const snapToGrid = (point: Point): Point => (
   }
 );
 
+export const nonemptyPlanIDsInState = (state: StoreState): string[] =>
+  Object.keys(state.plans)
+    .filter(planID => {
+      const plan = state.plans[planID];
+      return plan && 0 < Object.keys(plan.tasks).length;
+    })
+    .sort();
+
 export const tasksInPlan = (plan: Plan): Task[] =>
   definedElementsOfArray(
     Object.keys(plan.tasks).map(taskID => plan.tasks[taskID])

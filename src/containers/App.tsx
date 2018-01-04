@@ -1,7 +1,8 @@
 import * as React from 'react';
-import CurrentPlanIDForm from './CurrentPlanIDForm';
-import TaskCardBin from './TaskCardBin';
 import CurrentPlanCanvas from './CurrentPlanCanvas';
+import CurrentPlanIDForm from './CurrentPlanIDForm';
+import NonemptyPlanIDsSelect from './NonemptyPlanIDsSelect';
+import TaskCardBin from './TaskCardBin';
 import './App.css';
 
 export default () => (
@@ -14,6 +15,7 @@ export default () => (
       <div className="appGitHubLink">
         <a href="https://github.com/kconner/CriticalPath">GitHub</a>
       </div>
+      <NonemptyPlanIDsSelect />
       <CurrentPlanIDForm />
       <TaskCardBin />
     </div>

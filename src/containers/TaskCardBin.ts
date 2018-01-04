@@ -3,7 +3,9 @@ import * as actions from '../actions/index';
 import { StoreState } from '../types/index';
 import { connect, Dispatch } from 'react-redux';
 
-const mapStateToProps = (state: StoreState) => ({});
+const mapStateToProps = ({ currentPlanID }: StoreState) => ({
+  currentPlanID
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.Action>) => ({
   removeTask: (taskID: string) => {

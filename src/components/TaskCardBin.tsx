@@ -7,6 +7,7 @@ import {
 import './TaskCardBin.css';
 
 interface Props {
+  currentPlanID: string;
   removeTask: (taskID: string) => void;
 }
 
@@ -46,7 +47,7 @@ export default class TaskCardBin extends React.Component<Props> {
   }
 
   render() {
-    return (
+    return this.props.currentPlanID.length <= 0 ? null : (
       <div
         draggable={true}
         onDragStart={event => this.onDragStart(event)}
@@ -62,7 +63,7 @@ export default class TaskCardBin extends React.Component<Props> {
             padding: `${taskCardPadding.height}px ${taskCardPadding.width}px`
           }}
         >
-          Task bin
+          Task
         </div>
       </div>
     );

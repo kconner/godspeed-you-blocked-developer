@@ -25,6 +25,10 @@ export default (state: StoreState, action: Action): StoreState => {
     case ADD_PREREQUISITE_TASK:
     case REMOVE_PREREQUISITE_TASK:
       const { currentPlanID, plans } = state;
+      if (currentPlanID.length <= 0) {
+        return state;
+      }
+
       let plan = plans[currentPlanID];
       if (!plan) {
         plan = newPlan(currentPlanID);
