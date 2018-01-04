@@ -9,7 +9,10 @@
 }
 
 .appTitle {
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: normal;
+  margin: 0;
+  width: 216px;
 }
 
 .appGitHubLink {
@@ -24,6 +27,7 @@
 .appSidebar .textField input {
   padding: 8px;
   width: 200px;
+  border-radius: 12px;
 }
 
 .appSidebar .select {

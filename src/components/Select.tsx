@@ -1,5 +1,4 @@
 import * as React from 'react';
-import './Select.css';
 
 export interface Props {
   optionValues: string[];

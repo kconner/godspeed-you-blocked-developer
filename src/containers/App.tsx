@@ -9,9 +9,9 @@ export default () => (
   <div className="app">
     <CurrentPlanCanvas />
     <div className="appSidebar">
-      <div className="appTitle">
-        Critical Path
-      </div>
+      <h1 className="appTitle">
+        Godspeed You! Blocked Developer
+      </h1>
       <div className="appGitHubLink">
         <a href="https://github.com/kconner/CriticalPath">GitHub</a>
       </div>
