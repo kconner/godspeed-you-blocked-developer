@@ -7,8 +7,9 @@
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
   font-size: 20px;
   border: none;
-  padding: 5px;
+  padding: 5px 6px;
   width: 188px;
+  border-radius: 5px;
 }
 
 .textField input :hover, .textField input :focus {

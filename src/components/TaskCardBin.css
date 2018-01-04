@@ -3,6 +3,7 @@
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
   background-color: #fea;
   cursor: grab;
+  border-radius: 12px;
 }
 
 .taskCardBinContent {

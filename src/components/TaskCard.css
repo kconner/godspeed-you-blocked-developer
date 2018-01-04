@@ -1,13 +1,14 @@
 .taskCard {
   position: absolute;
   display: block;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
 .taskCardContent {
   font-size: 20px;
   line-height: 36px;
   cursor: grab;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
 .taskCardContent.done {
@@ -22,8 +23,12 @@
   background-color: #fb9;
 }
 
-.taskCardContent .textField input {
+.taskCardContent .textField {
   margin: 3px 0;
+}
+
+.taskCardContent .textField input {
+  margin: 0;
 }
 
 .taskCardHandle {
