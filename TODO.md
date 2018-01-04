@@ -44,6 +44,6 @@
     - [x] When dragging from the source, drop using a defined drag offset
     - [x] Shine up the appearance
 - [x] Indicate which plans already exist
-- [ ] Store state in browser local storage
+- [x] Store state in browser local storage
 - [ ] Pick better colors
 - [ ] Write a decent README

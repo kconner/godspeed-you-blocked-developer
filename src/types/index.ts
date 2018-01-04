@@ -39,6 +39,29 @@ export enum TaskStatus {
   done = 'done',
 }
 
+// Thanks! https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage
+export const loadState = (): StoreState | undefined => {
+  try {
+    const serializedState = localStorage.getItem('state');
+    if (!serializedState) {
+      return undefined;
+    }
+
+    return JSON.parse(serializedState);
+  } catch (error) {
+    return undefined;
+  }
+};
+
+export const saveState = (state: StoreState) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('state', serializedState);
+  } catch (error) {
+    window.console.log(error);
+  }
+};
+
 export const newPlan = (id: string): Plan => (
   {
     id,
