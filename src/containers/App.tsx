@@ -13,7 +13,7 @@ export default () => (
         Godspeed You! Blocked Developer
       </h1>
       <div className="appGitHubLink">
-        <a href="https://github.com/kconner/CriticalPath">GitHub</a>
+        <a href="https://github.com/kconner/godspeed-you-blocked-developer">GitHub</a>
       </div>
       <NonemptyPlanIDsSelect />
       <CurrentPlanIDForm />
