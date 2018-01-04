@@ -45,7 +45,7 @@
     - [x] Shine up the appearance
 - [x] Indicate which plans already exist
 - [x] Store state in browser local storage
-- [ ] Pick a better name
+- [x] Pick a better name
     - Block
         - I Blocked the Sheriff, but I Did Not Block the Deputy
         - Godspeed You! Blocked Developer
@@ -64,5 +64,5 @@
         - Godspeed You! Blocked Developer
         - Particle Plan
         - I Have No Plan and I Must Team
-- [ ] Pick better colors
+- [x] Pick better colors
 - [ ] Write a decent README
