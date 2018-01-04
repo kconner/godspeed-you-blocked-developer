@@ -46,5 +46,23 @@
 - [x] Indicate which plans already exist
 - [x] Store state in browser local storage
 - [ ] Pick a better name
+    - Block
+        - I Blocked the Sheriff, but I Did Not Block the Deputy
+        - Godspeed You! Blocked Developer
+    - Plan
+        - I Have No Plan and I Must Team
+        - Plan in the Mirror
+        - Superplan
+        - Batplan
+        - Spider-Plan
+        - Here Comes Your Plan
+        - Mega Plan X
+        - Particle Plan
+        - The Secret of Planna
+        - Soul Plan
+    - Favorites
+        - Godspeed You! Blocked Developer
+        - Particle Plan
+        - I Have No Plan and I Must Team
 - [ ] Pick better colors
 - [ ] Write a decent README
