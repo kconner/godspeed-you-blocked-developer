@@ -3,12 +3,9 @@ body {
   padding: 0;
   font-family: system-ui, sans-serif;
   font-weight: 300;
+  background-color: #012;
 }
 
 a {
-  color: #7b8;
-}
-
-a:visited {
-  color: #697;
+  color: #0fc;
 }

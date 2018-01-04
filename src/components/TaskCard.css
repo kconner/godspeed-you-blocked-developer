@@ -12,15 +12,16 @@
 }
 
 .taskCardContent.done {
-  background-color: #bfc;
+  background-color: #247;
+  color: #fff;
 }
 
 .taskCardContent.doable {
-  background-color: #fea;
+  background-color: #0db;
 }
 
 .taskCardContent.blocked {
-  background-color: #fb9;
+  background-color: #db0;
 }
 
 .taskCardContent .textField {
@@ -41,13 +42,13 @@
 }
 
 .taskCardHandle.done {
-  background-color: #bfc;
+  background-color: #247;
 }
 
 .taskCardHandle.doable {
-  background-color: #fea;
+  background-color: #0db;
 }
 
 .taskCardHandle.blocked {
-  background-color: #fb9;
+  background-color: #db0;
 }

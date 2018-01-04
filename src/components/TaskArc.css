@@ -4,13 +4,13 @@
 }
 
 .taskArc.done {
-  stroke: #bfc;
+  stroke: #247;
 }
 
 .taskArc.doable {
-  stroke: #fea;
+  stroke: #0db;
 }
 
 .taskArc.blocked {
-  stroke: #fb9;
+  stroke: #db0;
 }

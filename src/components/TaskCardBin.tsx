@@ -63,7 +63,7 @@ export default class TaskCardBin extends React.Component<Props> {
             padding: `${taskCardPadding.height}px ${taskCardPadding.width}px`
           }}
         >
-          🖐 Add
+          🖐🏾 Add
           <br />
           🗑 Remove
         </div>
