@@ -1,5 +1,5 @@
 import { Action } from '../actions';
-import { StoreState, Plan, Task, newPlan, newTask } from '../types/index';
+import { StoreState, Plan, Task, newPlan, newTask, snapToGrid } from '../types/index';
 import {
   SET_CURRENT_PLAN_ID,
   ADD_TASK,
@@ -47,7 +47,9 @@ const reducePlan = (plan: Plan, action: Action): Plan => {
     case ADD_TASK: {
       const { location } = action;
       const { tasks } = plan;
-      const task = newTask(location);
+
+      const snappedLocation = snapToGrid(location);
+      const task = newTask(snappedLocation);
 
       return {
         ...plan,
@@ -124,7 +126,8 @@ const reduceTask = (task: Task, action: Action): Task => {
       return { ...task, assignee };
     case SET_TASK_LOCATION:
       const { location } = action;
-      return { ...task, location };
+      const snappedLocation = snapToGrid(location);
+      return { ...task, location: snappedLocation };
     case SET_TASK_DONE:
       const { isDone } = action;
       return { ...task, isDone };

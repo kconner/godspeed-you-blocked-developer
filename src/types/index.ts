@@ -57,6 +57,15 @@ export const newTask = (location: Point): Task => (
   }
 );
 
+const gridSize = 50;
+
+export const snapToGrid = (point: Point): Point => (
+  {
+    x: Math.round(point.x / gridSize) * gridSize,
+    y: Math.round(point.y / gridSize) * gridSize,
+  }
+);
+
 export const tasksInPlan = (plan: Plan): Task[] =>
   definedElementsOfArray(
     Object.keys(plan.tasks).map(taskID => plan.tasks[taskID])
