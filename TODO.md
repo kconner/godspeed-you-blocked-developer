@@ -45,5 +45,6 @@
     - [x] Shine up the appearance
 - [x] Indicate which plans already exist
 - [x] Store state in browser local storage
+- [ ] Pick a better name
 - [ ] Pick better colors
 - [ ] Write a decent README
