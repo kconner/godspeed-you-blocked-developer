@@ -43,8 +43,7 @@
     - [x] Make the source and trash look nice
     - [x] When dragging from the source, drop using a defined drag offset
     - [x] Shine up the appearance
-- [ ] Hint about what plans exist
-    - Typing suggestions?
+- [x] Indicate which plans already exist
 - [ ] Store state in browser local storage
 - [ ] Pick better colors
 - [ ] Write a decent README
