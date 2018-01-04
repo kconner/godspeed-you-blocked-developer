@@ -6,6 +6,7 @@ import { connect, Dispatch } from 'react-redux';
 const mapStateToProps = ({ currentPlanID }: StoreState) => ({
   placeholder: 'plan',
   value: currentPlanID,
+  autofocus: true,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<actions.Action>) => ({
