@@ -10,7 +10,7 @@ export default () => (
     <CurrentPlanCanvas />
     <div className="appSidebar">
       <h1 className="appTitle">
-        Particle Plan
+        Godspeed You! Blocked Developer
       </h1>
       <div className="appGitHubLink">
         <a href="https://github.com/kconner/CriticalPath">GitHub</a>
