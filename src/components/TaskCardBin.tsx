@@ -17,9 +17,11 @@ export default class TaskCardBin extends React.Component<Props> {
   onDragStart(event: React.DragEvent<HTMLDivElement>) {
     event.dataTransfer.effectAllowed = 'copy';
 
+    const boundingRect = event.currentTarget.getBoundingClientRect();
+
     const dragOffset = {
-      width: event.pageX - event.currentTarget.offsetLeft,
-      height: event.pageY - event.currentTarget.offsetTop
+      width: event.pageX - boundingRect.left,
+      height: event.pageY - boundingRect.top
     };
 
     const jsonString = JSON.stringify({ dragOffset });

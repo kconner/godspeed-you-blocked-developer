@@ -21,6 +21,10 @@
   background-color: #fb9;
 }
 
+.taskCardContent .textField input {
+  margin: 3px 0;
+}
+
 .taskCardHandle {
   position: absolute;
   width: 30px;

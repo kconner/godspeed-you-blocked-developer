@@ -1,0 +1,26 @@
+.appSidebar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+}
+
+.appSidebar .textField {
+  margin: 12px 0;
+}
+
+.appSidebar .textField input {
+  padding: 8px;
+  width: 200px;
+}
+
+.appTitle {
+  font-size: 20px;
+}
+
+.appGitHubLink {
+  font-size: 14px;
+  margin: 4px 0;
+}

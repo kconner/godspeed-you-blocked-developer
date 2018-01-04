@@ -4,3 +4,11 @@ body {
   font-family: system-ui, sans-serif;
   font-weight: 300;
 }
+
+a {
+  color: #7b8;
+}
+
+a:visited {
+  color: #697;
+}
