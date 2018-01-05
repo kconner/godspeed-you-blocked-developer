@@ -1,6 +1,6 @@
 # Godspeed You! Blocked Developer
 
-GYBD is a simple planning tool. Teams can use it as a dashboard to coordinate a day's work. Individuals can use it to make sense of a complicated task.
+GYBD is a simple planning tool. Teams can use it as a dashboard to coordinate a day's work. Individuals can use it to make sense of a complicated job.
 
 In this tool, you:
 
@@ -45,4 +45,4 @@ Each task can have any number of prerequisite tasks.
 
 I built GYBD tool while learning some web technologies, so it does not have a mature feature set.
 
-Contributions are welcome! Please send me a pull request. To discuss a feature before you build, please make a GitHub issue.
+Contributions are welcome! Please send me a pull request. To discuss a feature before you build, please make a GitHub issue. Be sure you're happy with the [license](LICENSE).
