@@ -65,6 +65,5 @@
         - Particle Plan
         - I Have No Plan and I Must Team
 - [x] Pick better colors
-- [ ] Write a decent README
-- [ ] Figure out how to distribute this in static files
-    - Can Webpack do that?
+- [x] Figure out how to distribute this in static files
+- [x] Write a decent README
