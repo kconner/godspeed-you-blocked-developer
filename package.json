@@ -1,5 +1,6 @@
 {
   "name": "critical-path-tool",
+  "homepage": "https://kconner.github.io/godspeed-you-blocked-developer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,7 +17,9 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.5",
@@ -27,6 +30,8 @@
     "@types/react-dom": "^16.0.3",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
-    "react-addons-test-utils": "^15.6.2"
+    "gh-pages": "^1.1.0",
+    "react-addons-test-utils": "^15.6.2",
+    "webpack": "^3.10.0"
   }
 }
