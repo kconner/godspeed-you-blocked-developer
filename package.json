@@ -1,6 +1,6 @@
 {
-  "name": "critical-path-tool",
-  "homepage": "https://kconner.github.io/godspeed-you-blocked-developer",
+  "name": "godspeed-you-blocked-developer",
+  "homepage": "http://godspeed-you-blocked-developer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "build": "react-scripts-ts build && cp src/CNAME build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "predeploy": "npm run build",
