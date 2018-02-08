@@ -41,8 +41,12 @@ Each task can have any number of prerequisite tasks.
 - GYBD uses your browser's [local storage](https://en.wikipedia.org/wiki/Web_storage) to keep your data. Data can be lost when you clear your browser cache.
 - At present there is no way to import, export, or share your data.
 
-### Contributing
+## Contributing
 
 I built GYBD tool while learning some web technologies, so it does not have a mature feature set.
 
 Contributions are welcome! Please send me a pull request. To discuss a feature before you build, please make a GitHub issue. Be sure you're happy with the [license](LICENSE).
+
+### Developer documentation
+
+- [Architecture decisions](docs/architecture)
