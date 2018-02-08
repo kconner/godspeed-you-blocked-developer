@@ -4,6 +4,9 @@ node_modules
 # build products
 build
 
+# serverless
+.serverless
+
 # misc
 .DS_Store
 .env.local
