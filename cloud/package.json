@@ -5,5 +5,8 @@
   "description": "Godspeed You! Blocked Developer cloud services",
   "license": "MIT",
   "private": true,
-  "author": "Kevin Conner (https://github.com/kconner)"
+  "author": "Kevin Conner (https://github.com/kconner)",
+  "devDependencies": {
+    "serverless": "^1.26.0"
+  }
 }
