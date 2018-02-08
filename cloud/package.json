@@ -1,0 +1,9 @@
+{
+  "name": "godspeed-you-blocked-developer-cloud",
+  "homepage": "http://godspeed-you-blocked-developer.com",
+  "version": "0.2.0",
+  "description": "Godspeed You! Blocked Developer cloud services",
+  "license": "MIT",
+  "private": true,
+  "author": "Kevin Conner (https://github.com/kconner)"
+}

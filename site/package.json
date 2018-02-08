@@ -2,7 +2,18 @@
   "name": "godspeed-you-blocked-developer-site",
   "homepage": "http://godspeed-you-blocked-developer.com",
   "version": "0.1.0",
+  "description": "Godspeed You! Blocked Developer website",
+  "license": "MIT",
   "private": true,
+  "author": "Kevin Conner (https://github.com/kconner)",
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build && cp src/CNAME build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
   "dependencies": {
     "@types/react-redux": "^5.0.14",
     "@types/uuid": "^3.4.3",
@@ -12,14 +23,6 @@
     "react-scripts-ts": "2.8.0",
     "redux": "^3.7.2",
     "uuid": "^3.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build && cp src/CNAME build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.5",
