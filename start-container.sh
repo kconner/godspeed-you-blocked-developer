@@ -17,7 +17,7 @@ if [ "$AWS_ACCESS_KEY_ID" == "" ] || [ "$AWS_SECRET_ACCESS_KEY" == "" ] || [ "$A
     exit
 fi
 
-docker build -t godspeed-you-blocked-developer-cloud .
+docker build -t godspeed-you-blocked-developer-cloud cloud
 
 docker run \
     -e APP_STAGE="$APP_STAGE" \
