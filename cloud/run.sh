@@ -4,7 +4,13 @@ if [ $# -gt 0 ]; then
     case "$1" in
         shipit)
         shift # command
+        ./run.sh build
         ./run.sh serverless deploy
+        ;;
+
+        build|tsc)
+        shift # command
+        node_modules/.bin/tsc $@
         ;;
 
         serverless|sls)
@@ -18,6 +24,6 @@ if [ $# -gt 0 ]; then
         ;;
     esac
 else
-    echo "Specify a command like 'serverless'."
+    echo "Specify a command like 'build' or 'serverless'."
 fi
 

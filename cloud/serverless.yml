@@ -6,7 +6,7 @@ provider:
   stage: ${env:APP_STAGE}
   region: ${env:AWS_REGION}
   apiKeys:
-      - gybd-${self:provider.stage}-api-key
+  - gybd-${self:provider.stage}-api-key
   usagePlan:
     quota:
       limit: 1000
@@ -16,13 +16,19 @@ provider:
       burstLimit: 100
       rateLimit: 1
 
+package:
+  exclude:
+  - ./**
+  include:
+  - build/**
+
 functions:
   helloWorld:
-    handler: src/handler.helloWorld
+    handler: build/handler.helloWorld
     events:
-      - http:
-          path: hello-world
-          method: get
-          cors: true
-          private: true
+    - http:
+        path: hello-world
+        method: get
+        cors: true
+        private: true
 

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "lib": [
+      "esnext"
+    ],
+    "outDir": "./build",
+    "rootDir": "./src",
+    "strict": true,
+    "sourceMap": true
+  }
+}

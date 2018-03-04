@@ -7,6 +7,11 @@
   "private": true,
   "author": "Kevin Conner (https://github.com/kconner)",
   "devDependencies": {
-    "serverless": "^1.26.0"
+    "@types/aws-lambda": "0.0.33",
+    "@types/node": "^9.4.6",
+    "aws-sdk": "^2.205.0",
+    "serverless": "^1.26.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
   }
 }

@@ -27,6 +27,18 @@ APP_STAGE=<stage> AWS_PROFILE=<profile name> ./start-container.sh
 ./run.sh shipit
 ```
 
+### Build TypeScript files
+
+```
+./run.sh build
+```
+
+### Create or update an AWS stack
+
+```
+./run.sh serverless deploy
+```
+
 ### Test a lambda function
 
 ```
