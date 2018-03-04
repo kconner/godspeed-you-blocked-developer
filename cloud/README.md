@@ -18,7 +18,7 @@ aws configure --profile <profile name>
 ## Work in Docker
 
 ```
-APP_STAGE=<stage> AWS_PROFILE=<profile name> ./start-container.sh
+AWS_REGION=<region> AWS_PROFILE=<profile> APP_STAGE=<stage> ./start-container.sh
 ```
 
 ### Build and deploy the AWS stack
