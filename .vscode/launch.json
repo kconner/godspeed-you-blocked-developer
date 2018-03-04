@@ -18,7 +18,9 @@
       "runtimeArgs": ["run-script", "debug"],
       "port": 5858,
       "env": {
-        "APP_STAGE": "kevinc"
+        "APP_STAGE": "kevinc",
+        "AWS_PROFILE": "kevinc-personal",
+        "AWS_REGION": "us-east-1"
       }
     }
   ]

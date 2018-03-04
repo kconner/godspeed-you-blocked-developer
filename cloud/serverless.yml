@@ -3,13 +3,18 @@ service: gybd
 plugins:
 - serverless-offline
 
+custom:
+  stackName: ${self:service}-${self:provider.stage}
+
 provider:
   name: aws
   runtime: nodejs6.10
   stage: ${env:APP_STAGE}
   region: ${env:AWS_REGION}
+  environment:
+    GYBD_TABLE_STATES: ${self:custom.stackName}-states
   apiKeys:
-  - gybd-${self:provider.stage}-api-key
+  - ${self:custom.stackName}-api-key
   usagePlan:
     quota:
       limit: 1000
@@ -18,7 +23,11 @@ provider:
     throttle:
       burstLimit: 100
       rateLimit: 1
-
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+    - dynamodb:GetItem
+    Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.stackName}-*"
 package:
   exclude:
   - ./**
@@ -26,11 +35,27 @@ package:
   - build/**
 
 functions:
-  helloWorld:
-    handler: build/handler.helloWorld
+  getState:
+    handler: build/states.getState
     events:
     - http:
-        path: hello-world
+        path: states/{stateID}
         method: get
         cors: true
         private: true
+
+resources:
+  Resources:
+    StatesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.GYBD_TABLE_STATES}
+        AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
