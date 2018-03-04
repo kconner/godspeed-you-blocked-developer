@@ -24,29 +24,23 @@ APP_STAGE=<stage> AWS_PROFILE=<profile name> ./start-container.sh
 ### Build and deploy the AWS stack
 
 ```
-./run.sh shipit
+npm run shipit
 ```
 
 ### Build TypeScript files
 
 ```
-./run.sh build
-```
-
-### Create or update an AWS stack
-
-```
-./run.sh serverless deploy
+npm run build
 ```
 
 ### Test a lambda function
 
 ```
-./run.sh serverless invoke --function helloWorld
+npm run serverless -- invoke --function helloWorld
 ```
 
 ### Destroy an AWS stack
 
 ```
-./run.sh serverless remove
+npm run serverless -- remove
 ```

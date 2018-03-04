@@ -34,4 +34,3 @@ functions:
         method: get
         cors: true
         private: true
-

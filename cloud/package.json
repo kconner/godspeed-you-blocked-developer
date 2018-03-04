@@ -6,6 +6,12 @@
   "license": "MIT",
   "private": true,
   "author": "Kevin Conner (https://github.com/kconner)",
+  "scripts": {
+    "build": "node_modules/.bin/tsc",
+    "start": "node_modules/.bin/serverless offline",
+    "serverless": "node_modules/.bin/serverless",
+    "shipit": "npm run build && npm run serverless deploy"
+  },
   "devDependencies": {
     "@types/aws-lambda": "0.0.33",
     "@types/node": "^9.4.6",

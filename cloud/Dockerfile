@@ -17,7 +17,6 @@ WORKDIR /app
 RUN npm install
 
 # Source
-ADD ./run.sh /app/run.sh
 ADD ./serverless.yml /app/serverless.yml
 ADD ./tsconfig.json /app/tsconfig.json
 ADD ./src /app/src
