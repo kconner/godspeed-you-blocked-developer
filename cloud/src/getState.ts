@@ -1,13 +1,13 @@
-import { APIGatewayProxyEvent, APIGatewayProxyHandler } from "aws-lambda";
+import * as Lambda from "aws-lambda";
 import { DynamoDB } from "aws-sdk";
-import { GetItemInput } from "aws-sdk/clients/dynamodb";
-import * as adapter from "./adapter";
+import * as gateway from "./APIGatewayAdapter";
+import * as dynamo from "./DynamoDBAdapter";
 
-export const getState: APIGatewayProxyHandler = (event, context, callback) => {
+export const getState: Lambda.APIGatewayProxyHandler = (event, context, callback) => {
   try {
-    const input = tryMakeInput(process.env, event);
+    const input = tryInputFromRequest(process.env, event);
     new DynamoDB().getItem(input, (error, output) => {
-      const response = adapter.makeGetItemResponse(error, output, makeState);
+      const response = gateway.responseForGetItem(error, output, stateFromItem);
       callback(null, response);
     });
   } catch (errorResponse) {
@@ -15,19 +15,13 @@ export const getState: APIGatewayProxyHandler = (event, context, callback) => {
   }
 };
 
-const tryMakeInput = (env: NodeJS.ProcessEnv, event: APIGatewayProxyEvent): GetItemInput => {
-  const tableName = adapter.tryRequireEnvironmentVariable(process.env, "GYBD_TABLE_STATES");
-  const stateID = adapter.tryRequirePathParameter(event, "stateID");
+const tryInputFromRequest = (env: NodeJS.ProcessEnv, event: Lambda.APIGatewayProxyEvent): DynamoDB.GetItemInput =>
+  dynamo.inputForGetItem(
+    gateway.tryEnvironmentVariable(process.env, "GYBD_TABLE_STATES"),
+    gateway.tryPathParameter(event, "stateID"),
+  );
 
-  return {
-    TableName: tableName,
-    Key: {
-      id: { S: stateID },
-    },
-  };
-};
-
-const makeState = (item: DynamoDB.AttributeMap): object => ({
-  id: item.id.S || "",
-  value: item.value.M || {},
+const stateFromItem = (item: DynamoDB.AttributeMap): object => ({
+  id: dynamo.stringFromAttribute(item, "id"),
+  value: dynamo.mapFromAttribute(item, "value"),
 });
