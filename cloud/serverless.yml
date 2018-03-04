@@ -9,8 +9,12 @@ custom:
 provider:
   name: aws
   runtime: nodejs6.10
+  # Default stage and region are sourced from environment variables, so must be explicit.
+  # --stage and --region will still override these if supplied.
   stage: ${env:APP_STAGE}
   region: ${env:AWS_REGION}
+  # Resource names are supplied to Lambda by environment variables.
+  # Create them all here and use them in resource definitions.
   environment:
     GYBD_TABLE_STATES: ${self:custom.stackName}-states
   apiKeys:
