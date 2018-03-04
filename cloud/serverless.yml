@@ -36,7 +36,7 @@ package:
 
 functions:
   getState:
-    handler: build/states.getState
+    handler: build/getState.getState
     events:
     - http:
         path: states/{stateID}
