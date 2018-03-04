@@ -1,4 +1,8 @@
 {
   "editor.tabSize": 2,
+  "editor.formatOnSave": true,
   "tslint.autoFixOnSave": true,
+  "[typescript]": {
+    "editor.formatOnSave": false
+  }
 }
