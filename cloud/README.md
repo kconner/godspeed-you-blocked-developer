@@ -18,17 +18,23 @@ aws configure --profile <profile name>
 ## Work in Docker
 
 ```
-AWS_PROFILE=<profile name> ./start-container.sh
+APP_STAGE=<stage> AWS_PROFILE=<profile name> ./start-container.sh
 ```
 
-### Create or update an AWS stack
+### Build and deploy the AWS stack
 
 ```
-../node_modules/.bin/serverless deploy
+./run.sh shipit
+```
+
+### Test a lambda function
+
+```
+./run.sh serverless invoke --function helloWorld
 ```
 
 ### Destroy an AWS stack
 
 ```
-../node_modules/.bin/serverless remove
+./run.sh serverless remove
 ```

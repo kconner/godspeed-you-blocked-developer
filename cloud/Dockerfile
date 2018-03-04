@@ -11,11 +11,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && pip install awscli \
     && rm -f /tmp/get-pip.py
 
+# Build environment
 ADD ./package.json /app/package.json
 WORKDIR /app
 RUN npm install
 
+# Source
+ADD ./run.sh /app/run.sh
+ADD ./serverless.yml /app/serverless.yml
 ADD ./src /app/src
-WORKDIR /app/src
 
 CMD bash

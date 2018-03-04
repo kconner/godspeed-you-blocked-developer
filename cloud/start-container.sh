@@ -1,5 +1,10 @@
 #!/bin/sh -e
 
+if [ "$APP_STAGE" == "" ] ; then
+    echo 'APP_STAGE must be defined.'
+    exit
+fi
+
 if [ ! "$AWS_PROFILE" == "" ] ; then
     AWS_ACCESS_KEY_ID=$( aws configure get aws_access_key_id --profile "$AWS_PROFILE" )
     AWS_SECRET_ACCESS_KEY=$( aws configure get aws_secret_access_key --profile "$AWS_PROFILE" )
@@ -15,6 +20,7 @@ fi
 docker build -t godspeed-you-blocked-developer-cloud .
 
 docker run \
+    -e APP_STAGE="$APP_STAGE" \
     -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
     -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
     -e AWS_REGION="$AWS_REGION" \

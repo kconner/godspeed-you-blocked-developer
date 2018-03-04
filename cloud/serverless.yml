@@ -1,0 +1,28 @@
+service: gybd
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: ${env:APP_STAGE}
+  region: ${env:AWS_REGION}
+  apiKeys:
+      - gybd-${self:provider.stage}-api-key
+  usagePlan:
+    quota:
+      limit: 1000
+      offset: 0
+      period: DAY
+    throttle:
+      burstLimit: 100
+      rateLimit: 1
+
+functions:
+  helloWorld:
+    handler: src/handler.helloWorld
+    events:
+      - http:
+          path: hello-world
+          method: get
+          cors: true
+          private: true
+
