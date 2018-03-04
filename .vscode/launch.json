@@ -1,0 +1,25 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Debug with the serverless-offline plugin.
+      // https://medium.com/@OneMuppet_/debugging-lambada-functions-locally-in-vscode-with-actual-break-points-deee6235f590
+      // Start this up, set breakpoints, and make HTTP calls to lambda entry points.
+      "name": "Debug API",
+      "type": "node",
+      "request": "launch",
+      "protocol": "legacy", // The protocol changed since the article was published
+      "outFiles": ["${workspaceRoot}/cloud/build/**/*.js"], // Use sourcemaps for these files
+      "cwd": "${workspaceRoot}/cloud",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "debug"],
+      "port": 5858,
+      "env": {
+        "APP_STAGE": "kevinc"
+      }
+    }
+  ]
+}
