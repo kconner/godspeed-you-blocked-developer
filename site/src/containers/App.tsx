@@ -1,9 +1,9 @@
-import * as React from 'react';
-import CurrentPlanCanvas from './CurrentPlanCanvas';
-import CurrentPlanIDForm from './CurrentPlanIDForm';
-import NonemptyPlanIDsSelect from './NonemptyPlanIDsSelect';
-import TaskCardBin from './TaskCardBin';
-import './App.css';
+import * as React from 'react'
+import CurrentPlanCanvas from './CurrentPlanCanvas'
+import CurrentPlanIDForm from './CurrentPlanIDForm'
+import NonemptyPlanIDsSelect from './NonemptyPlanIDsSelect'
+import TaskCardBin from './TaskCardBin'
+import './App.css'
 
 export default () => (
   <div className="app">
@@ -20,4 +20,4 @@ export default () => (
       <TaskCardBin />
     </div>
   </div>
-);
+)

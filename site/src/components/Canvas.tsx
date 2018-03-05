@@ -1,68 +1,68 @@
-import * as React from 'react';
-import { Plan, Point, prerequisitesForTaskInPlan, tasksInPlan, statusForTaskInPlan } from '../types/index';
-import TaskCardBin from '../components/TaskCardBin';
-import TaskArcImage from './TaskArcImage';
-import TaskCard from './TaskCard';
+import * as React from 'react'
+import { Plan, Point, prerequisitesForTaskInPlan, tasksInPlan, statusForTaskInPlan } from '../types/index'
+import TaskCardBin from '../components/TaskCardBin'
+import TaskArcImage from './TaskArcImage'
+import TaskCard from './TaskCard'
 
 export interface Props {
-  plan: Plan | undefined;
-  addTask: (location: Point) => void;
-  setTaskTitle: (taskID: string, value: string) => void;
-  setTaskAssignee: (taskID: string, value: string) => void;
-  setTaskLocation: (taskID: string, value: Point) => void;
-  setTaskDone: (taskID: string, value: boolean) => void;
-  addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
-  removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void;
+  plan: Plan | undefined
+  addTask: (location: Point) => void
+  setTaskTitle: (taskID: string, value: string) => void
+  setTaskAssignee: (taskID: string, value: string) => void
+  setTaskLocation: (taskID: string, value: Point) => void
+  setTaskDone: (taskID: string, value: boolean) => void
+  addPrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void
+  removePrerequisiteTask: (prerequisiteTaskID: string, taskID: string) => void
 }
 
 export default class Canvas extends React.Component<Props> {
 
   onDragOver(event: React.DragEvent<HTMLDivElement>) {
     if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyTaskMimeType)) {
-      event.dataTransfer.dropEffect = 'move';
-      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move'
+      event.preventDefault()
     } else if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
-      event.dataTransfer.dropEffect = 'move';
-      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move'
+      event.preventDefault()
     } else if (0 <= event.dataTransfer.types.indexOf(TaskCardBin.addTaskMimeType)) {
-      event.dataTransfer.dropEffect = 'copy';
-      event.preventDefault();
+      event.dataTransfer.dropEffect = 'copy'
+      event.preventDefault()
     }
   }
 
   onDrop(event: React.DragEvent<HTMLDivElement>) {
     if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyTaskMimeType)) {
-      const jsonString = event.dataTransfer.getData(TaskCard.modifyTaskMimeType);
-      const { taskID, dragOffset } = JSON.parse(jsonString);
+      const jsonString = event.dataTransfer.getData(TaskCard.modifyTaskMimeType)
+      const { taskID, dragOffset } = JSON.parse(jsonString)
 
       const location = {
         x: event.pageX - dragOffset.width,
         y: event.pageY - dragOffset.height
-      };
+      }
 
-      this.props.setTaskLocation(taskID, location);
+      this.props.setTaskLocation(taskID, location)
     } else if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyPrerequisiteMimeType)) {
-      const jsonString = event.dataTransfer.getData(TaskCard.modifyPrerequisiteMimeType);
-      const { sourceTaskID, destinationTaskID } = JSON.parse(jsonString);
+      const jsonString = event.dataTransfer.getData(TaskCard.modifyPrerequisiteMimeType)
+      const { sourceTaskID, destinationTaskID } = JSON.parse(jsonString)
 
-      this.props.removePrerequisiteTask(sourceTaskID, destinationTaskID);
+      this.props.removePrerequisiteTask(sourceTaskID, destinationTaskID)
     } else if (0 <= event.dataTransfer.types.indexOf(TaskCardBin.addTaskMimeType)) {
-      const jsonString = event.dataTransfer.getData(TaskCardBin.addTaskMimeType);
-      const { dragOffset } = JSON.parse(jsonString);
+      const jsonString = event.dataTransfer.getData(TaskCardBin.addTaskMimeType)
+      const { dragOffset } = JSON.parse(jsonString)
 
       const location = {
         x: event.pageX - dragOffset.width,
         y: event.pageY - dragOffset.height
-      };
+      }
 
-      this.props.addTask(location);
+      this.props.addTask(location)
     }
   }
 
   render() {
     const {
       plan, setTaskTitle, setTaskAssignee, setTaskLocation, setTaskDone, addPrerequisiteTask, removePrerequisiteTask
-    } = this.props;
+    } = this.props
 
     return (
       <div
@@ -93,7 +93,7 @@ export default class Canvas extends React.Component<Props> {
           </ul>
         }
       </div>
-    );
+    )
   }
 
 }

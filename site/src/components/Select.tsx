@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from 'react'
 
 export interface Props {
-  optionValues: string[];
-  value: string;
-  onChangeValue: (value: string) => void;
+  optionValues: string[]
+  value: string
+  onChangeValue: (value: string) => void
 }
 
 export default ({ optionValues, value, onChangeValue }: Props) => (
@@ -19,4 +19,4 @@ export default ({ optionValues, value, onChangeValue }: Props) => (
       }
     </select>
   </div>
-);
+)

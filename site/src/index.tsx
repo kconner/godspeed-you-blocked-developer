@@ -1,19 +1,19 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import registerServiceWorker from './registerServiceWorker'
 
-import { createStore } from 'redux';
-import { StoreState, loadState, saveState } from './types/index';
-import reduce from './reducers/index';
+import { createStore } from 'redux'
+import { StoreState, loadState, saveState } from './types/index'
+import reduce from './reducers/index'
 
-import { Provider } from 'react-redux';
-import App from './containers/App';
-import './index.css';
+import { Provider } from 'react-redux'
+import App from './containers/App'
+import './index.css'
 
 const initialState = loadState() || {
   currentPlanID: '',
   plans: {
-    'sample': {
+    sample: {
       id: 'sample',
       tasks: {
         'task 1': {
@@ -52,24 +52,24 @@ const initialState = loadState() || {
       }
     }
   }
-};
+}
 
-const store = createStore<StoreState>(reduce, initialState);
+const store = createStore<StoreState>(reduce, initialState)
 
 store.subscribe(() => {
-  saveState(store.getState());
-});
+  saveState(store.getState())
+})
 
 const rootReactElement = (
   <Provider store={store}>
     <App />
   </Provider>
-);
+)
 
-const rootDOMElement = document.getElementById('root');
+const rootDOMElement = document.getElementById('root')
 if (rootDOMElement == null) {
-  throw new Error('Root DOM element not found');
+  throw new Error('Root DOM element not found')
 }
 
-ReactDOM.render(rootReactElement, rootDOMElement);
-registerServiceWorker();
+ReactDOM.render(rootReactElement, rootDOMElement)
+registerServiceWorker()

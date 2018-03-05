@@ -1,48 +1,48 @@
-import * as React from 'react';
+import * as React from 'react'
 import {
   TaskCard,
   contentSize as taskCardContentSize,
   padding as taskCardPadding
-} from './TaskCard';
-import './TaskCardBin.css';
+} from './TaskCard'
+import './TaskCardBin.css'
 
 interface Props {
-  currentPlanID: string;
-  removeTask: (taskID: string) => void;
+  currentPlanID: string
+  removeTask: (taskID: string) => void
 }
 
 export default class TaskCardBin extends React.Component<Props> {
 
-  static readonly addTaskMimeType = 'application/x-add-task';
+  static readonly addTaskMimeType = 'application/x-add-task'
 
   onDragStart(event: React.DragEvent<HTMLDivElement>) {
-    event.dataTransfer.effectAllowed = 'copy';
+    event.dataTransfer.effectAllowed = 'copy'
 
-    const boundingRect = event.currentTarget.getBoundingClientRect();
+    const boundingRect = event.currentTarget.getBoundingClientRect()
 
     const dragOffset = {
       width: event.pageX - boundingRect.left,
       height: event.pageY - boundingRect.top
-    };
+    }
 
-    const jsonString = JSON.stringify({ dragOffset });
+    const jsonString = JSON.stringify({ dragOffset })
 
-    event.dataTransfer.setData(TaskCardBin.addTaskMimeType, jsonString);
+    event.dataTransfer.setData(TaskCardBin.addTaskMimeType, jsonString)
   }
 
   onDragOver(event: React.DragEvent<HTMLDivElement>) {
     if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyTaskMimeType)) {
-      event.dataTransfer.dropEffect = 'move';
-      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move'
+      event.preventDefault()
     }
   }
 
   onDrop(event: React.DragEvent<HTMLDivElement>) {
     if (0 <= event.dataTransfer.types.indexOf(TaskCard.modifyTaskMimeType)) {
-      const jsonString = event.dataTransfer.getData(TaskCard.modifyTaskMimeType);
-      const { taskID } = JSON.parse(jsonString);
+      const jsonString = event.dataTransfer.getData(TaskCard.modifyTaskMimeType)
+      const { taskID } = JSON.parse(jsonString)
 
-      this.props.removeTask(taskID);
+      this.props.removeTask(taskID)
     }
   }
 
@@ -68,7 +68,7 @@ export default class TaskCardBin extends React.Component<Props> {
           🗑 Remove
         </div>
       </div>
-    );
+    )
   }
 
 }

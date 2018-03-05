@@ -1,11 +1,11 @@
-import * as React from 'react';
-import './TextField.css';
+import * as React from 'react'
+import './TextField.css'
 
 export interface Props {
-  placeholder: string;
-  value: string;
-  autofocus?: boolean;
-  onChangeValue: (value: string) => void;
+  placeholder: string
+  value: string
+  autofocus?: boolean
+  onChangeValue: (value: string) => void
 }
 
 export default ({ placeholder, value, autofocus, onChangeValue }: Props) => (
@@ -18,4 +18,4 @@ export default ({ placeholder, value, autofocus, onChangeValue }: Props) => (
       onChange={event => onChangeValue(event.target.value)}
     />
   </div>
-);
+)
