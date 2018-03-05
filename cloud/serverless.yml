@@ -49,13 +49,6 @@ functions:
         private: true
 
 resources:
-  Outputs:
-    UserPoolID:
-      Value:
-        Ref: UserPool
-    SiteClientID:
-      Value:
-        Ref: SiteClient
   Resources:
     StatesTable:
       Type: AWS::DynamoDB::Table
@@ -70,22 +63,3 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-    UserPool:
-      Type: AWS::Cognito::UserPool
-      Properties:
-        UserPoolName: ${self:custom.stackName}-user-pool
-        Policies:
-          PasswordPolicy:
-            MinimumLength: 12
-    SiteClient:
-      Type: AWS::Cognito::UserPoolClient
-      Properties:
-        ClientName: ${self:custom.stackName}-site-client
-        UserPoolId:
-          Ref: UserPool
-        GenerateSecret: true
-        ReadAttributes:
-        - email
-        - email_verified
-        WriteAttributes:
-        - email
