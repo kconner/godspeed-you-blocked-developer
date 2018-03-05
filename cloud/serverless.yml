@@ -39,6 +39,8 @@ package:
   - build/**
 
 functions:
+  authorize:
+    handler: build/authorize.authorize
   getState:
     handler: build/getState.getState
     events:
@@ -47,6 +49,7 @@ functions:
         method: get
         cors: true
         private: true
+        authorizer: authorize
 
 resources:
   Resources:
