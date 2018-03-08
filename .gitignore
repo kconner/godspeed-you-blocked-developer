@@ -7,6 +7,9 @@ build
 # serverless
 .serverless
 
+# terraform
+.terraform
+
 # misc
 .DS_Store
 .env.local
