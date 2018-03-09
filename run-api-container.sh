@@ -21,7 +21,7 @@ if [ "$APP_STAGE" == "" ] ; then
     exit
 fi
 
-name=godspeed-you-blocked-developer
+name=gybd
 image="$name-api"
 
 docker build -t "$image" api

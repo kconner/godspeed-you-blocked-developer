@@ -21,7 +21,7 @@ if [ "$APP_STAGE" == "" ] ; then
     exit
 fi
 
-name=godspeed-you-blocked-developer
+name=gybd
 image="$name-terraform"
 
 docker build -t "$image" terraform
