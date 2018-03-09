@@ -110,7 +110,7 @@ resource "aws_api_gateway_authorizer" "authorize" {
   name                   = "authorize"
 }
 
-## Resources
+## Endpoints
 
 ### /states
 resource "aws_api_gateway_resource" "states" {
@@ -126,8 +126,7 @@ resource "aws_api_gateway_resource" "states-stateID" {
   path_part   = "{stateID}"
 }
 
-## Methods
-
+### GET /states/:stateID
 resource "aws_api_gateway_method" "states-stateID-get" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   resource_id = "${aws_api_gateway_resource.states-stateID.id}"
@@ -139,6 +138,7 @@ resource "aws_api_gateway_method" "states-stateID-get" {
   authorizer_id = "${aws_api_gateway_authorizer.authorize.id}"
 }
 
+### GET /states/:stateID -> Lambda
 resource "aws_api_gateway_integration" "states-stateID-get-integration" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   resource_id = "${aws_api_gateway_resource.states-stateID.id}"
@@ -149,6 +149,7 @@ resource "aws_api_gateway_integration" "states-stateID-get-integration" {
   uri                     = "${module.getState-function.invocation-arn}"
 }
 
+### Allow invoking Lambda
 resource "aws_lambda_permission" "getState-apigateway-invocation-permission" {
   statement_id  = "APIGatewayInvocation"
   principal     = "apigateway.amazonaws.com"
