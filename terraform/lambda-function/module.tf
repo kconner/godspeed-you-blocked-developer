@@ -1,3 +1,6 @@
+# Produces a Lambda function with a log group and access to create it and write to it.
+# Add additional policies to the execution role externally.
+
 # "${var.app-name}-${var.app-stage}-foo"
 variable "qualified-name" {}
 
@@ -36,7 +39,7 @@ resource "aws_iam_role" "lambda-execution" {
   name               = "${var.qualified-name}-lambda-execution"
 }
 
-data "aws_iam_policy_document" "execution-policy-document" {
+data "aws_iam_policy_document" "log-group-policy-document" {
   statement {
     sid       = "1"
     actions   = ["logs:CreateLogStream"]
@@ -50,10 +53,10 @@ data "aws_iam_policy_document" "execution-policy-document" {
   }
 }
 
-resource "aws_iam_role_policy" "execution-policy" {
+resource "aws_iam_role_policy" "log-group-policy" {
   role   = "${aws_iam_role.lambda-execution.id}"
-  policy = "${data.aws_iam_policy_document.execution-policy-document.json}"
-  name   = "${var.qualified-name}-execution-policy"
+  policy = "${data.aws_iam_policy_document.log-group-policy-document.json}"
+  name   = "${var.qualified-name}-log-group-policy"
 }
 
 resource "aws_lambda_function" "function" {
@@ -67,4 +70,12 @@ resource "aws_lambda_function" "function" {
   environment {
     variables = "${var.environment-variables}"
   }
+}
+
+output "qualified-name" {
+  value = "${var.qualified-name}"
+}
+
+output "execution-role-name" {
+  value = "${aws_iam_role.lambda-execution.name}"
 }

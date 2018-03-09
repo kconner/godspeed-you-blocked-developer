@@ -1,11 +1,3 @@
-variable "aws-region" {}
-variable "app-name" {}
-variable "app-stage" {}
-
-locals {
-  app-prefix = "${var.app-name}-${var.app-stage}"
-}
-
 terraform {
   backend "s3" {}
 }
@@ -15,7 +7,15 @@ provider "aws" {
   version = "~> 1.10"
 }
 
-# DynamoDB tables
+variable "aws-region" {}
+variable "app-name" {}
+variable "app-stage" {}
+
+locals {
+  app-prefix = "${var.app-name}-${var.app-stage}"
+}
+
+# DynamoDB
 
 resource "aws_dynamodb_table" "states" {
   name     = "${local.app-prefix}-states"
@@ -30,8 +30,9 @@ resource "aws_dynamodb_table" "states" {
   write_capacity = 1
 }
 
-# Lambda functions
+# Lambda
 
+## authorize
 module "authorize-function" {
   source         = "./lambda-function"
   qualified-name = "${local.app-prefix}-authorize"
@@ -39,6 +40,7 @@ module "authorize-function" {
   artifact-file  = "api.zip"
 }
 
+## getState
 module "getState-function" {
   source         = "./lambda-function"
   qualified-name = "${local.app-prefix}-getState"
@@ -50,24 +52,33 @@ module "getState-function" {
   }
 }
 
-# resource "aws_cloudwatch_log_group" "lambda-getStates" {
-#   name = "/aws/lambda/${local.app-prefix}-getStates"
-# }
+data "aws_iam_policy_document" "getState-policy-document" {
+  statement {
+    actions   = ["dynamodb:GetItem"]
+    resources = ["${aws_dynamodb_table.states.arn}"]
+  }
+}
 
-# REST API
+resource "aws_iam_role_policy" "getState-policy" {
+  role   = "${module.getState-function.execution-role-name}"
+  policy = "${data.aws_iam_policy_document.getState-policy-document.json}"
+  name   = "${module.getState-function.qualified-name}-dynamo-policy"
+}
+
+# API Gateway
 
 resource "aws_api_gateway_rest_api" "api" {
   name = "${local.app-prefix}-api"
 }
 
-# /states
+## /states
 resource "aws_api_gateway_resource" "states" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   parent_id   = "${aws_api_gateway_rest_api.api.root_resource_id}"
   path_part   = "states"
 }
 
-# /states/:stateID
+## /states/:stateID
 resource "aws_api_gateway_resource" "states-stateID" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   parent_id   = "${aws_api_gateway_resource.states.id}"
