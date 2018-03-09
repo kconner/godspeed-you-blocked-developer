@@ -22,7 +22,7 @@ bucket="$name-$stage-terraform"
 key="terraform.tfstate"
 
 
-if $( ! aws s3api head-bucket --bucket "$bucket" ) ; then
+if $( ! aws s3api head-bucket --region "$region" --bucket "$bucket" ) ; then
     echo "Didn't find Terraform state bucket $bucket."
     echo 'To create it now, type "initialize".'
 
@@ -32,7 +32,7 @@ if $( ! aws s3api head-bucket --bucket "$bucket" ) ; then
         exit 1
     fi
 
-    aws s3api create-bucket --bucket "$bucket"
+    aws s3api create-bucket --region "$region" --bucket "$bucket"
 fi
 
 echo "Using S3 bucket $bucket"
