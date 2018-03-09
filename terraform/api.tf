@@ -44,9 +44,9 @@ data "aws_iam_policy_document" "authorize-assume-role" {
   }
 }
 
-resource "aws_iam_role" "authorize-execution" {
+resource "aws_iam_role" "lambda-execution-authorize" {
   assume_role_policy = "${data.aws_iam_policy_document.authorize-assume-role.json}"
-  name               = "${var.app-name}-${var.app-stage}-authorize-execution"
+  name               = "${var.app-name}-${var.app-stage}-lambda-execution-authorize"
 }
 
 data "aws_iam_policy_document" "authorize" {
@@ -64,9 +64,18 @@ data "aws_iam_policy_document" "authorize" {
 }
 
 resource "aws_iam_role_policy" "authorize-policy" {
-  role   = "${aws_iam_role.authorize-execution.id}"
+  role   = "${aws_iam_role.lambda-execution-authorize.id}"
   policy = "${data.aws_iam_policy_document.authorize.json}"
   name   = "authorize-policy"
+}
+
+resource "aws_lambda_function" "authorize" {
+  function_name    = "${var.app-name}-${var.app-stage}-authorize"
+  handler          = "authorize.authorize"
+  filename         = "api.zip"
+  source_code_hash = "${base64sha256(file("api.zip"))}"
+  runtime          = "nodejs6.10"
+  role             = "${aws_iam_role.lambda-execution-authorize.arn}"
 }
 
 # resource "aws_cloudwatch_log_group" "lambda-getStates" {
