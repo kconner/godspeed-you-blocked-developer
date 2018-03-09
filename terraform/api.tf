@@ -8,6 +8,7 @@ provider "aws" {
 }
 
 variable "aws-region" {}
+variable "aws-account-id" {}
 variable "app-name" {}
 variable "app-stage" {}
 
@@ -71,21 +72,7 @@ resource "aws_api_gateway_rest_api" "api" {
   name = "${local.app-prefix}-api"
 }
 
-## /states
-resource "aws_api_gateway_resource" "states" {
-  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
-  parent_id   = "${aws_api_gateway_rest_api.api.root_resource_id}"
-  path_part   = "states"
-}
-
-## /states/:stateID
-resource "aws_api_gateway_resource" "states-stateID" {
-  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
-  parent_id   = "${aws_api_gateway_resource.states.id}"
-  path_part   = "{stateID}"
-}
-
-# Authorizer
+## Authorizer
 
 data "aws_iam_policy_document" "authorize-invocation-assume-role-policy-document" {
   statement {
@@ -118,7 +105,56 @@ resource "aws_iam_role_policy" "authorize-invocation-permission-policy" {
 
 resource "aws_api_gateway_authorizer" "authorize" {
   rest_api_id            = "${aws_api_gateway_rest_api.api.id}"
-  authorizer_uri         = "${module.authorize-function.invoke-arn}"
+  authorizer_uri         = "${module.authorize-function.invocation-arn}"
   authorizer_credentials = "${aws_iam_role.authorize-invocation.arn}"
   name                   = "authorize"
+}
+
+## Resources
+
+### /states
+resource "aws_api_gateway_resource" "states" {
+  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
+  parent_id   = "${aws_api_gateway_rest_api.api.root_resource_id}"
+  path_part   = "states"
+}
+
+### /states/:stateID
+resource "aws_api_gateway_resource" "states-stateID" {
+  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
+  parent_id   = "${aws_api_gateway_resource.states.id}"
+  path_part   = "{stateID}"
+}
+
+## Methods
+
+resource "aws_api_gateway_method" "states-stateID-get" {
+  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
+  resource_id = "${aws_api_gateway_resource.states-stateID.id}"
+  http_method = "GET"
+
+  api_key_required = true
+
+  authorization = "CUSTOM"
+  authorizer_id = "${aws_api_gateway_authorizer.authorize.id}"
+}
+
+resource "aws_api_gateway_integration" "states-stateID-get-integration" {
+  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
+  resource_id = "${aws_api_gateway_resource.states-stateID.id}"
+  http_method = "${aws_api_gateway_method.states-stateID-get.http_method}"
+
+  type                    = "AWS_PROXY"
+  integration_http_method = "POST"
+  uri                     = "${module.getState-function.invocation-arn}"
+}
+
+resource "aws_lambda_permission" "getState-apigateway-invocation-permission" {
+  statement_id  = "APIGatewayInvocation"
+  principal     = "apigateway.amazonaws.com"
+  action        = "lambda:InvokeFunction"
+  function_name = "${module.getState-function.arn}"
+
+  # TODO: replace * with ${var.app-stage}
+  source_arn = "arn:aws:execute-api:${var.aws-region}:${var.aws-account-id}:${aws_api_gateway_rest_api.api.id}/*/${aws_api_gateway_method.states-stateID-get.http_method}${aws_api_gateway_resource.states-stateID.path}"
 }

@@ -16,11 +16,11 @@ if [ "$APP_STAGE" == "" ] ; then
 fi
 
 region="$AWS_REGION"
+account_id=$( aws sts get-caller-identity --output text --query Account )
 name="$APP_NAME"
 stage="$APP_STAGE"
 bucket="$name-$stage-terraform"
 key="terraform.tfstate"
-
 
 if $( ! aws s3api head-bucket --region "$region" --bucket "$bucket" ) ; then
     echo "Didn't find Terraform state bucket $bucket."
@@ -47,6 +47,7 @@ echo "Using environment $stage for $name"
 backend_config_file="current-environment.auto.tfvars"
 cat <<EOF > "$backend_config_file"
 aws-region = "$region"
+aws-account-id = "$account_id"
 app-name = "$name"
 app-stage = "$stage"
 EOF

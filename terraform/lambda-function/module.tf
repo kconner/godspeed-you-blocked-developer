@@ -77,7 +77,7 @@ output "arn" {
   value = "${aws_lambda_function.function.arn}"
 }
 
-output "invoke-arn" {
+output "invocation-arn" {
   value = "${aws_lambda_function.function.invoke_arn}"
 }
 
