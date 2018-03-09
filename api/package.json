@@ -1,8 +1,8 @@
 {
-  "name": "godspeed-you-blocked-developer-cloud",
+  "name": "godspeed-you-blocked-developer-api",
   "homepage": "http://godspeed-you-blocked-developer.com",
   "version": "0.2.0",
-  "description": "Godspeed You! Blocked Developer cloud services",
+  "description": "Godspeed You! Blocked Developer API",
   "license": "MIT",
   "private": true,
   "author": "Kevin Conner (https://github.com/kconner)",

@@ -16,20 +16,9 @@ RUN mkdir -p /tmp \
 # AWS CLI
 RUN pip install awscli
 
-# Terraform
-RUN mkdir -p /tmp \
-    && cd /tmp \
-    && curl -O https://releases.hashicorp.com/terraform/0.11.3/terraform_0.11.3_linux_amd64.zip \
-    && unzip terraform_0.11.3_linux_amd64.zip \
-    && mv terraform /usr/local/bin/
-
-# Infrastructure definition
-ADD ./*.tf /app/
-WORKDIR /app
-RUN terraform init
-
 # Build environment
 ADD ./package.json /app/package.json
+WORKDIR /app
 RUN npm install
 
 # Source

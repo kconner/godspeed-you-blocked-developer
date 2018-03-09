@@ -21,7 +21,7 @@ if [ "$APP_STAGE" == "" ] ; then
     exit
 fi
 
-docker build -t godspeed-you-blocked-developer-cloud cloud
+docker build -t godspeed-you-blocked-developer-api api
 
 docker run \
     -e AWS_REGION="$AWS_REGION" \
@@ -29,4 +29,4 @@ docker run \
     -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
     -e APP_STAGE="$APP_STAGE" \
     --interactive --tty \
-    godspeed-you-blocked-developer-cloud
+    godspeed-you-blocked-developer-api
