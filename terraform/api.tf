@@ -2,6 +2,10 @@ variable "aws-region" {}
 variable "app-name" {}
 variable "app-stage" {}
 
+locals {
+  app-prefix = "${var.app-name}-${var.app-stage}"
+}
+
 terraform {
   backend "s3" {}
 }
@@ -14,7 +18,7 @@ provider "aws" {
 # DynamoDB tables
 
 resource "aws_dynamodb_table" "states" {
-  name     = "${var.app-name}-${var.app-stage}-states"
+  name     = "${local.app-prefix}-states"
   hash_key = "id"
 
   attribute {
@@ -30,14 +34,14 @@ resource "aws_dynamodb_table" "states" {
 
 module "authorize-function" {
   source         = "./lambda-function"
-  qualified-name = "${var.app-name}-${var.app-stage}-authorize"
+  qualified-name = "${local.app-prefix}-authorize"
   handler        = "authorize.authorize"
   artifact-file  = "api.zip"
 }
 
 module "getState-function" {
   source         = "./lambda-function"
-  qualified-name = "${var.app-name}-${var.app-stage}-getState"
+  qualified-name = "${local.app-prefix}-getState"
   handler        = "getState.getState"
   artifact-file  = "api.zip"
 
@@ -47,13 +51,13 @@ module "getState-function" {
 }
 
 # resource "aws_cloudwatch_log_group" "lambda-getStates" {
-#   name = "/aws/lambda/${var.app-name}-${var.app-stage}-getStates"
+#   name = "/aws/lambda/${local.app-prefix}-getStates"
 # }
 
 # REST API
 
 resource "aws_api_gateway_rest_api" "api" {
-  name = "${var.app-name}-${var.app-stage}-api"
+  name = "${local.app-prefix}-api"
 }
 
 # /states
