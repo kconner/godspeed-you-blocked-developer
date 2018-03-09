@@ -74,40 +74,19 @@ resource "aws_api_gateway_rest_api" "api" {
 
 ## Authorizer
 
-data "aws_iam_policy_document" "authorize-invocation-assume-role-policy-document" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["apigateway.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_role" "authorize-invocation" {
-  assume_role_policy = "${data.aws_iam_policy_document.authorize-invocation-assume-role-policy-document.json}"
-  name               = "${module.authorize-function.qualified-name}-invocation"
-}
-
-data "aws_iam_policy_document" "authorize-invocation-permission-policy-document" {
-  statement {
-    actions   = ["lambda:InvokeFunction"]
-    resources = ["${module.authorize-function.arn}"]
-  }
-}
-
-resource "aws_iam_role_policy" "authorize-invocation-permission-policy" {
-  role   = "${aws_iam_role.authorize-invocation.id}"
-  policy = "${data.aws_iam_policy_document.authorize-invocation-permission-policy-document.json}"
-  name   = "${module.authorize-function.qualified-name}-invocation-permission-policy"
-}
-
 resource "aws_api_gateway_authorizer" "authorize" {
-  rest_api_id            = "${aws_api_gateway_rest_api.api.id}"
-  authorizer_uri         = "${module.authorize-function.invocation-arn}"
-  authorizer_credentials = "${aws_iam_role.authorize-invocation.arn}"
-  name                   = "authorize"
+  rest_api_id    = "${aws_api_gateway_rest_api.api.id}"
+  authorizer_uri = "${module.authorize-function.invocation-arn}"
+  name           = "authorize"
+}
+
+resource "aws_lambda_permission" "authorizer-apigateway-invocation-permission" {
+  statement_id  = "APIGatewayInvocation"
+  principal     = "apigateway.amazonaws.com"
+  action        = "lambda:InvokeFunction"
+  function_name = "${module.authorize-function.arn}"
+
+  source_arn = "arn:aws:execute-api:${var.aws-region}:${var.aws-account-id}:${aws_api_gateway_rest_api.api.id}/authorizers/${aws_api_gateway_authorizer.authorize.id}"
 }
 
 ## Endpoints
