@@ -9,6 +9,7 @@ build
 
 # terraform
 .terraform
+current-environment.auto.tfvars
 
 # misc
 .DS_Store
