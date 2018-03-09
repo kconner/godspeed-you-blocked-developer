@@ -24,7 +24,6 @@ resource "aws_cloudwatch_log_group" "log-group" {
 
 data "aws_iam_policy_document" "assume-role-policy-document" {
   statement {
-    sid     = "1"
     actions = ["sts:AssumeRole"]
 
     principals {
@@ -41,13 +40,11 @@ resource "aws_iam_role" "lambda-execution" {
 
 data "aws_iam_policy_document" "log-group-policy-document" {
   statement {
-    sid       = "1"
     actions   = ["logs:CreateLogStream"]
     resources = ["${aws_cloudwatch_log_group.log-group.arn}"]
   }
 
   statement {
-    sid       = "2"
     actions   = ["logs:PutLogEvents"]
     resources = ["${aws_cloudwatch_log_group.log-group.arn}:*"]
   }
@@ -76,6 +73,14 @@ output "qualified-name" {
   value = "${var.qualified-name}"
 }
 
-output "execution-role-name" {
-  value = "${aws_iam_role.lambda-execution.name}"
+output "arn" {
+  value = "${aws_lambda_function.function.arn}"
+}
+
+output "invoke-arn" {
+  value = "${aws_lambda_function.function.invoke_arn}"
+}
+
+output "execution-role-id" {
+  value = "${aws_iam_role.lambda-execution.id}"
 }

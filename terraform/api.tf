@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "getState-policy-document" {
 }
 
 resource "aws_iam_role_policy" "getState-policy" {
-  role   = "${module.getState-function.execution-role-name}"
+  role   = "${module.getState-function.execution-role-id}"
   policy = "${data.aws_iam_policy_document.getState-policy-document.json}"
   name   = "${module.getState-function.qualified-name}-dynamo-policy"
 }
@@ -83,4 +83,42 @@ resource "aws_api_gateway_resource" "states-stateID" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   parent_id   = "${aws_api_gateway_resource.states.id}"
   path_part   = "{stateID}"
+}
+
+# Authorizer
+
+data "aws_iam_policy_document" "authorize-invocation-assume-role-policy-document" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["apigateway.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "authorize-invocation" {
+  assume_role_policy = "${data.aws_iam_policy_document.authorize-invocation-assume-role-policy-document.json}"
+  name               = "${module.authorize-function.qualified-name}-invocation"
+}
+
+data "aws_iam_policy_document" "authorize-invocation-permission-policy-document" {
+  statement {
+    actions   = ["lambda:InvokeFunction"]
+    resources = ["${module.authorize-function.arn}"]
+  }
+}
+
+resource "aws_iam_role_policy" "authorize-invocation-permission-policy" {
+  role   = "${aws_iam_role.authorize-invocation.id}"
+  policy = "${data.aws_iam_policy_document.authorize-invocation-permission-policy-document.json}"
+  name   = "${module.authorize-function.qualified-name}-invocation-permission-policy"
+}
+
+resource "aws_api_gateway_authorizer" "authorize" {
+  rest_api_id            = "${aws_api_gateway_rest_api.api.id}"
+  authorizer_uri         = "${module.authorize-function.invoke-arn}"
+  authorizer_credentials = "${aws_iam_role.authorize-invocation.arn}"
+  name                   = "authorize"
 }
