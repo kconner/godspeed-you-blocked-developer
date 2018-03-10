@@ -36,6 +36,5 @@ resource "aws_lambda_permission" "api_gateway_method" {
   action        = "lambda:InvokeFunction"
   function_name = "${var.function_arn}"
 
-  # TODO: replace * with ${var.app_stage}
   source_arn = "arn:aws:execute-api:${var.aws_region}:${var.aws_account_id}:${var.rest_api_id}/*/${aws_api_gateway_method.method.http_method}${var.resource_path}"
 }

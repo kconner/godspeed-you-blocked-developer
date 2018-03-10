@@ -13,8 +13,6 @@ variable "environment_variables" {
   }
 }
 
-# Outputs
-
 output "arn" {
   value = "${aws_lambda_function.function.arn}"
 }
