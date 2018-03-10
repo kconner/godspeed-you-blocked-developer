@@ -1,16 +1,16 @@
 # Produces a Lambda function with a log group and access to create it and write to it.
 # Add additional policies to the execution role externally.
 
-# "${var.app-name}-${var.app-stage}-foo"
-variable "qualified-name" {}
+# "${var.app_name}-${var.app_stage}-foo"
+variable "qualified_name" {}
 
 # "path/file.function"
 variable "handler" {}
 
 # "build-product.zip"
-variable "artifact-file" {}
+variable "artifact_file" {}
 
-variable "environment-variables" {
+variable "environment_variables" {
   type = "map"
 
   default = {
@@ -18,11 +18,15 @@ variable "environment-variables" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "log-group" {
-  name = "/aws/lambda/${var.qualified-name}"
+# Log group
+
+resource "aws_cloudwatch_log_group" "log_group" {
+  name = "/aws/lambda/${var.qualified_name}"
 }
 
-data "aws_iam_policy_document" "assume-role-policy-document" {
+# Execution role
+
+data "aws_iam_policy_document" "assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -33,54 +37,60 @@ data "aws_iam_policy_document" "assume-role-policy-document" {
   }
 }
 
-resource "aws_iam_role" "lambda-execution" {
-  assume_role_policy = "${data.aws_iam_policy_document.assume-role-policy-document.json}"
-  name               = "${var.qualified-name}-lambda-execution"
+resource "aws_iam_role" "execution" {
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
+  name               = "${var.qualified_name}-execution"
 }
 
-data "aws_iam_policy_document" "log-group-policy-document" {
+# Log group policy
+
+data "aws_iam_policy_document" "log_group" {
   statement {
     actions   = ["logs:CreateLogStream"]
-    resources = ["${aws_cloudwatch_log_group.log-group.arn}"]
+    resources = ["${aws_cloudwatch_log_group.log_group.arn}"]
   }
 
   statement {
     actions   = ["logs:PutLogEvents"]
-    resources = ["${aws_cloudwatch_log_group.log-group.arn}:*"]
+    resources = ["${aws_cloudwatch_log_group.log_group.arn}:*"]
   }
 }
 
-resource "aws_iam_role_policy" "log-group-policy" {
-  role   = "${aws_iam_role.lambda-execution.id}"
-  policy = "${data.aws_iam_policy_document.log-group-policy-document.json}"
-  name   = "${var.qualified-name}-log-group-policy"
+resource "aws_iam_role_policy" "log_group" {
+  role   = "${aws_iam_role.execution.id}"
+  policy = "${data.aws_iam_policy_document.log_group.json}"
+  name   = "log-group"
 }
+
+# Function
 
 resource "aws_lambda_function" "function" {
-  function_name    = "${var.qualified-name}"
+  function_name    = "${var.qualified_name}"
   handler          = "${var.handler}"
-  filename         = "${var.artifact-file}"
-  source_code_hash = "${base64sha256(file("${var.artifact-file}"))}"
+  filename         = "${var.artifact_file}"
+  source_code_hash = "${base64sha256(file("${var.artifact_file}"))}"
   runtime          = "nodejs6.10"
-  role             = "${aws_iam_role.lambda-execution.arn}"
+  role             = "${aws_iam_role.execution.arn}"
 
   environment {
-    variables = "${var.environment-variables}"
+    variables = "${var.environment_variables}"
   }
 }
 
-output "qualified-name" {
-  value = "${var.qualified-name}"
+# Outputs
+
+output "qualified_name" {
+  value = "${var.qualified_name}"
 }
 
 output "arn" {
   value = "${aws_lambda_function.function.arn}"
 }
 
-output "invocation-arn" {
+output "invocation_arn" {
   value = "${aws_lambda_function.function.invoke_arn}"
 }
 
-output "execution-role-id" {
-  value = "${aws_iam_role.lambda-execution.id}"
+output "execution_role_id" {
+  value = "${aws_iam_role.execution.id}"
 }

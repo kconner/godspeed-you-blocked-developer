@@ -4,6 +4,7 @@
   "recommendations": [
     // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
     "mauve.terraform",
+    "mindginative.terraform-snippets",
     "eg2.tslint",
     "esbenp.prettier-vscode",
     "waderyan.gitblame"

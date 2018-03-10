@@ -46,10 +46,10 @@ echo "Using environment $stage for $name"
 
 backend_config_file="current-environment.auto.tfvars"
 cat <<EOF > "$backend_config_file"
-aws-region = "$region"
-aws-account-id = "$account_id"
-app-name = "$name"
-app-stage = "$stage"
+aws_region = "$region"
+aws_account_id = "$account_id"
+app_name = "$name"
+app_stage = "$stage"
 EOF
 
 echo "Wrote $backend_config_file"

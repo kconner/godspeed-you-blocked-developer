@@ -3,23 +3,23 @@ terraform {
 }
 
 provider "aws" {
-  region  = "${var.aws-region}"
   version = "~> 1.10"
+  region  = "${var.aws_region}"
 }
 
-variable "aws-region" {}
-variable "aws-account-id" {}
-variable "app-name" {}
-variable "app-stage" {}
+variable "aws_region" {}
+variable "aws_account_id" {}
+variable "app_name" {}
+variable "app_stage" {}
 
 locals {
-  app-prefix = "${var.app-name}-${var.app-stage}"
+  app_prefix = "${var.app_name}-${var.app_stage}"
 }
 
 # DynamoDB
 
 resource "aws_dynamodb_table" "states" {
-  name     = "${local.app-prefix}-states"
+  name     = "${local.app_prefix}-states"
   hash_key = "id"
 
   attribute {
@@ -34,59 +34,59 @@ resource "aws_dynamodb_table" "states" {
 # Lambda
 
 ## authorize
-module "authorize-function" {
+module "authorize" {
   source         = "./lambda-function"
-  qualified-name = "${local.app-prefix}-authorize"
+  qualified_name = "${local.app_prefix}-authorize"
   handler        = "authorize.authorize"
-  artifact-file  = "api.zip"
+  artifact_file  = "api.zip"
 }
 
 ## getState
-module "getState-function" {
+module "getState" {
   source         = "./lambda-function"
-  qualified-name = "${local.app-prefix}-getState"
+  qualified_name = "${local.app_prefix}-getState"
   handler        = "getState.getState"
-  artifact-file  = "api.zip"
+  artifact_file  = "api.zip"
 
-  environment-variables {
+  environment_variables {
     GYBD_TABLE_STATES = "${aws_dynamodb_table.states.name}"
   }
 }
 
-data "aws_iam_policy_document" "getState-policy-document" {
+data "aws_iam_policy_document" "getState_dynamo" {
   statement {
     actions   = ["dynamodb:GetItem"]
     resources = ["${aws_dynamodb_table.states.arn}"]
   }
 }
 
-resource "aws_iam_role_policy" "getState-policy" {
-  role   = "${module.getState-function.execution-role-id}"
-  policy = "${data.aws_iam_policy_document.getState-policy-document.json}"
-  name   = "${module.getState-function.qualified-name}-dynamo-policy"
+resource "aws_iam_role_policy" "getState_dynamo" {
+  role   = "${module.getState.execution_role_id}"
+  policy = "${data.aws_iam_policy_document.getState_dynamo.json}"
+  name   = "dynamo"
 }
 
 # API Gateway
 
 resource "aws_api_gateway_rest_api" "api" {
-  name = "${local.app-prefix}-api"
+  name = "${local.app_prefix}-api"
 }
 
 ## Authorizer
 
 resource "aws_api_gateway_authorizer" "authorize" {
   rest_api_id    = "${aws_api_gateway_rest_api.api.id}"
-  authorizer_uri = "${module.authorize-function.invocation-arn}"
+  authorizer_uri = "${module.authorize.invocation_arn}"
   name           = "authorize"
 }
 
-resource "aws_lambda_permission" "authorizer-apigateway-invocation-permission" {
+resource "aws_lambda_permission" "authorizer_apigateway_invocation_permission" {
   statement_id  = "APIGatewayInvocation"
   principal     = "apigateway.amazonaws.com"
   action        = "lambda:InvokeFunction"
-  function_name = "${module.authorize-function.arn}"
+  function_name = "${module.authorize.arn}"
 
-  source_arn = "arn:aws:execute-api:${var.aws-region}:${var.aws-account-id}:${aws_api_gateway_rest_api.api.id}/authorizers/${aws_api_gateway_authorizer.authorize.id}"
+  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.aws_account_id}:${aws_api_gateway_rest_api.api.id}/authorizers/${aws_api_gateway_authorizer.authorize.id}"
 }
 
 ## Endpoints
@@ -99,16 +99,16 @@ resource "aws_api_gateway_resource" "states" {
 }
 
 ### /states/:stateID
-resource "aws_api_gateway_resource" "states-stateID" {
+resource "aws_api_gateway_resource" "states_stateID" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   parent_id   = "${aws_api_gateway_resource.states.id}"
   path_part   = "{stateID}"
 }
 
 ### GET /states/:stateID
-resource "aws_api_gateway_method" "states-stateID-get" {
+resource "aws_api_gateway_method" "states_stateID_get" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
-  resource_id = "${aws_api_gateway_resource.states-stateID.id}"
+  resource_id = "${aws_api_gateway_resource.states_stateID.id}"
   http_method = "GET"
 
   api_key_required = true
@@ -118,23 +118,23 @@ resource "aws_api_gateway_method" "states-stateID-get" {
 }
 
 ### GET /states/:stateID -> Lambda
-resource "aws_api_gateway_integration" "states-stateID-get-integration" {
+resource "aws_api_gateway_integration" "states_stateID_get_integration" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
-  resource_id = "${aws_api_gateway_resource.states-stateID.id}"
-  http_method = "${aws_api_gateway_method.states-stateID-get.http_method}"
+  resource_id = "${aws_api_gateway_resource.states_stateID.id}"
+  http_method = "${aws_api_gateway_method.states_stateID_get.http_method}"
 
   type                    = "AWS_PROXY"
   integration_http_method = "POST"
-  uri                     = "${module.getState-function.invocation-arn}"
+  uri                     = "${module.getState.invocation_arn}"
 }
 
 ### Allow invoking Lambda
-resource "aws_lambda_permission" "getState-apigateway-invocation-permission" {
+resource "aws_lambda_permission" "getState_apigateway_invocation_permission" {
   statement_id  = "APIGatewayInvocation"
   principal     = "apigateway.amazonaws.com"
   action        = "lambda:InvokeFunction"
-  function_name = "${module.getState-function.arn}"
+  function_name = "${module.getState.arn}"
 
-  # TODO: replace * with ${var.app-stage}
-  source_arn = "arn:aws:execute-api:${var.aws-region}:${var.aws-account-id}:${aws_api_gateway_rest_api.api.id}/*/${aws_api_gateway_method.states-stateID-get.http_method}${aws_api_gateway_resource.states-stateID.path}"
+  # TODO: replace * with ${var.app_stage}
+  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.aws_account_id}:${aws_api_gateway_rest_api.api.id}/*/${aws_api_gateway_method.states_stateID_get.http_method}${aws_api_gateway_resource.states_stateID.path}"
 }
