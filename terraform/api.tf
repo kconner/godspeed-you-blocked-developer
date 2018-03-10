@@ -9,8 +9,8 @@ module "api_authorizer" {
   aws_region              = "${var.aws_region}"
   aws_account_id          = "${var.aws_account_id}"
   rest_api_id             = "${aws_api_gateway_rest_api.api.id}"
-  function_arn            = "${module.authorize.arn}"
-  function_invocation_arn = "${module.authorize.invocation_arn}"
+  function_arn            = "${module.function_authorize.arn}"
+  function_invocation_arn = "${module.function_authorize.invocation_arn}"
   authorizer_name         = "authorize"
 }
 
@@ -42,7 +42,7 @@ module "endpoint_get_states_stateID" {
   resource_id             = "${aws_api_gateway_resource.states_stateID.id}"
   resource_path           = "${aws_api_gateway_resource.states_stateID.path}"
   http_method             = "GET"
-  function_arn            = "${module.getState.arn}"
-  function_invocation_arn = "${module.getState.invocation_arn}"
+  function_arn            = "${module.function_getState.arn}"
+  function_invocation_arn = "${module.function_getState.invocation_arn}"
   authorizer_id           = "${module.api_authorizer.authorizer_id}"
 }

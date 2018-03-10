@@ -1,6 +1,6 @@
 # authorize
 
-module "authorize" {
+module "function_authorize" {
   source        = "./lambda-function"
   function_name = "${local.app_prefix}-authorize"
   handler       = "authorize.authorize"
@@ -9,7 +9,7 @@ module "authorize" {
 
 # getState
 
-module "getState" {
+module "function_getState" {
   source        = "./lambda-function"
   function_name = "${local.app_prefix}-getState"
   handler       = "getState.getState"
@@ -20,15 +20,15 @@ module "getState" {
   }
 }
 
-data "aws_iam_policy_document" "getState_dynamo" {
+data "aws_iam_policy_document" "get_item_from_states_table" {
   statement {
     actions   = ["dynamodb:GetItem"]
     resources = ["${aws_dynamodb_table.states.arn}"]
   }
 }
 
-resource "aws_iam_role_policy" "getState_dynamo" {
-  role   = "${module.getState.execution_role_id}"
-  policy = "${data.aws_iam_policy_document.getState_dynamo.json}"
-  name   = "dynamo"
+resource "aws_iam_role_policy" "get_item_from_states_table" {
+  role   = "${module.function_getState.execution_role_id}"
+  policy = "${data.aws_iam_policy_document.get_item_from_states_table.json}"
+  name   = "get-item-from-states-table"
 }

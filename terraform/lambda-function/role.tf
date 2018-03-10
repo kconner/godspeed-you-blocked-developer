@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "assume_role" {
+data "aws_iam_policy_document" "lambda_may_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -10,13 +10,13 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "execution" {
-  assume_role_policy = "${data.aws_iam_policy_document.assume_role.json}"
+  assume_role_policy = "${data.aws_iam_policy_document.lambda_may_assume_role.json}"
   name               = "${var.function_name}-execution"
 }
 
 # Log group policy
 
-data "aws_iam_policy_document" "log_group" {
+data "aws_iam_policy_document" "write_to_log_streams" {
   statement {
     actions   = ["logs:CreateLogStream"]
     resources = ["${aws_cloudwatch_log_group.log_group.arn}"]
@@ -28,8 +28,8 @@ data "aws_iam_policy_document" "log_group" {
   }
 }
 
-resource "aws_iam_role_policy" "log_group" {
+resource "aws_iam_role_policy" "write_to_log_streams" {
   role   = "${aws_iam_role.execution.id}"
-  policy = "${data.aws_iam_policy_document.log_group.json}"
-  name   = "log-group"
+  policy = "${data.aws_iam_policy_document.write_to_log_streams.json}"
+  name   = "write-to-log-streams"
 }
