@@ -37,6 +37,9 @@ fi
 
 echo "Using S3 bucket $bucket"
 
+# TODO: Remove state only when the backend config file doesn't match what we will overwrite it with, which indicates we are talking about a different environment.
+rm .terraform/terraform.tfstate
+
 terraform init \
     -backend-config="region=$region" \
     -backend-config="bucket=$bucket" \
