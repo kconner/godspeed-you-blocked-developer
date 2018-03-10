@@ -30,8 +30,8 @@ resource "aws_api_gateway_integration" "integration" {
   uri                     = "${var.function_invocation_arn}"
 }
 
-resource "aws_lambda_permission" "api_gateway_method_invocation" {
-  statement_id  = "APIGatewayMethodInvocation"
+resource "aws_lambda_permission" "api_gateway_method" {
+  statement_id  = "api-gateway-method-${var.resource_id}-${var.http_method}"
   principal     = "apigateway.amazonaws.com"
   action        = "lambda:InvokeFunction"
   function_name = "${var.function_arn}"

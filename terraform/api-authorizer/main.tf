@@ -12,8 +12,8 @@ resource "aws_api_gateway_authorizer" "authorizer" {
   name           = "${var.authorizer_name}"
 }
 
-resource "aws_lambda_permission" "api_gateway_authorizer_invocation" {
-  statement_id  = "APIGatewayAuthorizerInvocation"
+resource "aws_lambda_permission" "api_gateway_authorizer" {
+  statement_id  = "api-gateway-authorizer-${aws_api_gateway_authorizer.authorizer.id}"
   principal     = "apigateway.amazonaws.com"
   action        = "lambda:InvokeFunction"
   function_name = "${var.function_arn}"
