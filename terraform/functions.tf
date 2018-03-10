@@ -4,6 +4,8 @@ module "function_authorize" {
   source        = "./lambda-function"
   function_name = "${local.app_prefix}-authorize"
   handler       = "authorize.authorize"
+
+  # TODO: We want to deploy an already-packaged artifact on S3, not a local file.
   artifact_file = "api.zip"
 }
 
