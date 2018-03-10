@@ -4,19 +4,14 @@ resource "aws_api_gateway_rest_api" "api" {
 
 # Authorizer
 
-resource "aws_api_gateway_authorizer" "authorize" {
-  rest_api_id    = "${aws_api_gateway_rest_api.api.id}"
-  authorizer_uri = "${module.authorize.invocation_arn}"
-  name           = "authorize"
-}
-
-resource "aws_lambda_permission" "authorizer_apigateway_invocation" {
-  statement_id  = "APIGatewayInvocation"
-  principal     = "apigateway.amazonaws.com"
-  action        = "lambda:InvokeFunction"
-  function_name = "${module.authorize.arn}"
-
-  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.aws_account_id}:${aws_api_gateway_rest_api.api.id}/authorizers/${aws_api_gateway_authorizer.authorize.id}"
+module "api_gateway_authorizer" {
+  source                  = "./api-gateway-authorizer"
+  aws_region              = "${var.aws_region}"
+  aws_account_id          = "${var.aws_account_id}"
+  rest_api_id             = "${aws_api_gateway_rest_api.api.id}"
+  function_arn            = "${module.authorize.arn}"
+  function_invocation_arn = "${module.authorize.invocation_arn}"
+  authorizer_name         = "authorize"
 }
 
 # /states
@@ -45,7 +40,7 @@ resource "aws_api_gateway_method" "states_stateID_get" {
   api_key_required = true
 
   authorization = "CUSTOM"
-  authorizer_id = "${aws_api_gateway_authorizer.authorize.id}"
+  authorizer_id = "${module.api_gateway_authorizer.authorizer_id}"
 }
 
 resource "aws_api_gateway_integration" "states_stateID_get" {
