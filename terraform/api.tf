@@ -4,8 +4,8 @@ resource "aws_api_gateway_rest_api" "api" {
 
 # Authorizer
 
-module "api_gateway_authorizer" {
-  source                  = "./api-gateway-authorizer"
+module "api_authorizer" {
+  source                  = "./api-authorizer"
   aws_region              = "${var.aws_region}"
   aws_account_id          = "${var.aws_account_id}"
   rest_api_id             = "${aws_api_gateway_rest_api.api.id}"
@@ -32,33 +32,17 @@ resource "aws_api_gateway_resource" "states_stateID" {
 
 # GET /states/:stateID
 
-resource "aws_api_gateway_method" "states_stateID_get" {
-  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
-  resource_id = "${aws_api_gateway_resource.states_stateID.id}"
-  http_method = "GET"
+module "endpoint_get_states_stateID" {
+  source = "./api-endpoint"
 
-  api_key_required = true
+  aws_region     = "${var.aws_region}"
+  aws_account_id = "${var.aws_account_id}"
 
-  authorization = "CUSTOM"
-  authorizer_id = "${module.api_gateway_authorizer.authorizer_id}"
-}
-
-resource "aws_api_gateway_integration" "states_stateID_get" {
-  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
-  resource_id = "${aws_api_gateway_resource.states_stateID.id}"
-  http_method = "${aws_api_gateway_method.states_stateID_get.http_method}"
-
-  type                    = "AWS_PROXY"
-  integration_http_method = "POST"
-  uri                     = "${module.getState.invocation_arn}"
-}
-
-resource "aws_lambda_permission" "getState_apigateway_invocation" {
-  statement_id  = "APIGatewayInvocation"
-  principal     = "apigateway.amazonaws.com"
-  action        = "lambda:InvokeFunction"
-  function_name = "${module.getState.arn}"
-
-  # TODO: replace * with ${var.app_stage}
-  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.aws_account_id}:${aws_api_gateway_rest_api.api.id}/*/${aws_api_gateway_method.states_stateID_get.http_method}${aws_api_gateway_resource.states_stateID.path}"
+  rest_api_id             = "${aws_api_gateway_rest_api.api.id}"
+  resource_id             = "${aws_api_gateway_resource.states_stateID.id}"
+  resource_path           = "${aws_api_gateway_resource.states_stateID.path}"
+  http_method             = "GET"
+  function_arn            = "${module.getState.arn}"
+  function_invocation_arn = "${module.getState.invocation_arn}"
+  authorizer_id           = "${module.api_authorizer.authorizer_id}"
 }
