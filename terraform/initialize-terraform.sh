@@ -31,9 +31,8 @@ echo
 echo "Preparing Terraform backend variables"
 
 backend_variables_file="current-backend.auto.tfvars"
-tmp_backend_variables_file="/tmp/$backend_variables_file"
 
-cat <<EOF > "$tmp_backend_variables_file"
+cat <<EOF > "$backend_variables_file"
 aws_region = "$region"
 aws_account_id = "$account_id"
 app_name = "$name"
@@ -41,25 +40,6 @@ app_stage = "$stage"
 artifact_bucket = "$artifact_bucket"
 EOF
 
-# When the new backend variables don't match the old ones, we are talking about a different backend.
-# That's probably because we are using a different stage, not because we have changed the backend storage location for a stage.
-# In that case, clear local state so we don't accidentally overwrite state on the new backend.
-if [ -e "$backend_variables_file" ] && ! diff -q "$backend_variables_file" "$tmp_backend_variables_file" ; then
-    echo
-    echo "This is a new backend configuration."
-    echo "  Local state .terraform/terraform.tfstate will be replaced by remote state."
-    echo "  Prior state will be backed up as .terraform/terraform.tfstate.backup."
-    echo 'To proceed, type "continue".'
-    read should_continue
-    if [ "continue" != "$should_continue" ] ; then
-        echo "Aborting."
-        exit 1
-    fi
-
-    mv .terraform/terraform.tfstate .terraform/terraform.tfstate.backup
-fi
-
-mv "$tmp_backend_variables_file" "$backend_variables_file"
 echo "  Wrote $backend_variables_file"
 
 # S3 bucket
@@ -84,6 +64,7 @@ echo
 # Initialize backend and modules
 
 terraform init \
+    -reconfigure \
     -backend-config="region=$region" \
     -backend-config="bucket=$terraform_bucket" \
     -backend-config="key=$key"
