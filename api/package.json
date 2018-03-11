@@ -8,18 +8,15 @@
   "author": "Kevin Conner (https://github.com/kconner)",
   "scripts": {
     "build": "node_modules/.bin/tsc",
-    "start": "node_modules/.bin/serverless offline",
-    "debug":
-      "export SLS_DEBUG=* && node --debug node_modules/.bin/serverless offline",
-    "serverless": "node_modules/.bin/serverless",
-    "shipit": "npm run build && npm run serverless deploy"
+    "package": "cd build && zip /tmp/api.zip *",
+    "publish":
+      "aws s3 mb s3://$ARTIFACT_BUCKET --region=$AWS_REGION && aws s3 cp /tmp/api.zip s3://$ARTIFACT_BUCKET/$ARTIFACT_VERSION/api.zip",
+    "shipit": "npm run build && npm run package && npm run publish"
   },
   "devDependencies": {
     "@types/aws-lambda": "0.0.33",
     "@types/node": "^9.4.6",
     "aws-sdk": "^2.205.0",
-    "serverless": "^1.26.0",
-    "serverless-offline": "^3.18.0",
     "tslint": "^5.9.1",
     "typescript": "^2.7.2"
   }

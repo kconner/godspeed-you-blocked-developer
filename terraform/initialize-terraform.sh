@@ -19,7 +19,8 @@ region="$AWS_REGION"
 account_id=$( aws sts get-caller-identity --output text --query Account )
 name="$APP_NAME"
 stage="$APP_STAGE"
-bucket="$name-$stage-terraform"
+artifact_bucket="$ARTIFACT_BUCKET"
+terraform_bucket="$name-$stage-terraform"
 key="terraform.tfstate"
 
 echo "Using stage $stage for $name"
@@ -37,6 +38,7 @@ aws_region = "$region"
 aws_account_id = "$account_id"
 app_name = "$name"
 app_stage = "$stage"
+artifact_bucket = "$artifact_bucket"
 EOF
 
 # When the new backend variables don't match the old ones, we are talking about a different backend.
@@ -63,8 +65,8 @@ echo "  Wrote $backend_variables_file"
 # S3 bucket
 
 echo
-if ! aws s3api head-bucket --region "$region" --bucket "$bucket" ; then
-    echo "Didn't find Terraform state bucket $bucket."
+if ! aws s3api head-bucket --region "$region" --bucket "$terraform_bucket" ; then
+    echo "Didn't find Terraform state bucket $terraform_bucket."
     echo 'To create it now, type "initialize".'
 
     read should_initialize
@@ -73,15 +75,15 @@ if ! aws s3api head-bucket --region "$region" --bucket "$bucket" ; then
         exit 1
     fi
 
-    aws s3api create-bucket --region "$region" --bucket "$bucket"
+    aws s3api create-bucket --region "$region" --bucket "$terraform_bucket"
 fi
 
-echo "Using S3 bucket $bucket"
+echo "Using S3 bucket $terraform_bucket"
 echo
 
 # Initialize backend and modules
 
 terraform init \
     -backend-config="region=$region" \
-    -backend-config="bucket=$bucket" \
+    -backend-config="bucket=$terraform_bucket" \
     -backend-config="key=$key"

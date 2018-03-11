@@ -16,13 +16,10 @@ if [ "$AWS_ACCESS_KEY_ID" == "" ] || [ "$AWS_SECRET_ACCESS_KEY" == "" ] ; then
     exit
 fi
 
-if [ "$APP_STAGE" == "" ] ; then
-    echo 'APP_STAGE must be defined.'
-    exit
-fi
-
 name=gybd
 image="$name-api"
+artifact_bucket="$name-artifacts"
+artifact_version=$( git log -n 1 --pretty=format:"%H" )
 
 docker build -t "$image" api
 
@@ -30,7 +27,7 @@ docker run \
     -e AWS_REGION="$AWS_REGION" \
     -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
     -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
-    -e APP_NAME="$name" \
-    -e APP_STAGE="$APP_STAGE" \
+    -e ARTIFACT_BUCKET="$artifact_bucket" \
+    -e ARTIFACT_VERSION="$artifact_version" \
     --interactive --tty \
     "$image"

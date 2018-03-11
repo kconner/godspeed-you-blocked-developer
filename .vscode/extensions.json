@@ -3,6 +3,7 @@
   // for the documentation about the extensions.json format
   "recommendations": [
     // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+    "PeterJausovec.vscode-docker",
     "mauve.terraform",
     "mindginative.terraform-snippets",
     "eg2.tslint",

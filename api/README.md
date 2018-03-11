@@ -18,13 +18,7 @@ aws configure --profile <profile name>
 ## Work in Docker
 
 ```
-AWS_REGION=<region> AWS_PROFILE=<profile> APP_STAGE=<stage> ./run-api-container.sh
-```
-
-### Build and deploy the AWS stack
-
-```
-npm run shipit
+AWS_REGION=<region> AWS_PROFILE=<profile> ./run-api-container.sh
 ```
 
 ### Build TypeScript files
@@ -33,14 +27,8 @@ npm run shipit
 npm run build
 ```
 
-### Test a lambda function
+### Build, package, and upload an artifact
 
 ```
-npm run serverless -- invoke --function helloWorld
-```
-
-### Destroy an AWS stack
-
-```
-npm run serverless -- remove
+npm run shipit
 ```

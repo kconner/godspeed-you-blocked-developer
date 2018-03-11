@@ -23,6 +23,8 @@ fi
 
 name=gybd
 image="$name-terraform"
+artifact_bucket="$name-artifacts"
+artifact_version=$( git log -n 1 --pretty=format:"%H" )
 
 docker build -t "$image" terraform
 
@@ -32,5 +34,7 @@ docker run \
     -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
     -e APP_NAME="$name" \
     -e APP_STAGE="$APP_STAGE" \
+    -e ARTIFACT_BUCKET="$artifact_bucket" \
+    -e TF_VAR_artifact_version="$artifact_version" \
     --interactive --tty \
     "$image"

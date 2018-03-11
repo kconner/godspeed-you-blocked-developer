@@ -3,7 +3,8 @@
 
 variable "function_name" {}
 variable "handler" {}
-variable "artifact_file" {}
+variable "artifact_bucket" {}
+variable "artifact_key" {}
 
 variable "environment_variables" {
   type = "map"

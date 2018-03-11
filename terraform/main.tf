@@ -11,6 +11,8 @@ variable "aws_region" {}
 variable "aws_account_id" {}
 variable "app_name" {}
 variable "app_stage" {}
+variable "artifact_bucket" {}
+variable "artifact_version" {}
 
 locals {
   app_prefix = "${var.app_name}-${var.app_stage}"

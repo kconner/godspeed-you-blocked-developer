@@ -1,21 +1,21 @@
 # authorize
 
 module "function_authorize" {
-  source        = "./lambda-function"
-  function_name = "${local.app_prefix}-authorize"
-  handler       = "authorize.authorize"
-
-  # TODO: We want to deploy an already-packaged artifact on S3, not a local file.
-  artifact_file = "api.zip"
+  source          = "./lambda-function"
+  function_name   = "${local.app_prefix}-authorize"
+  handler         = "authorize.authorize"
+  artifact_bucket = "${var.artifact_bucket}"
+  artifact_key    = "${var.artifact_version}/api.zip"
 }
 
 # getState
 
 module "function_getState" {
-  source        = "./lambda-function"
-  function_name = "${local.app_prefix}-getState"
-  handler       = "getState.getState"
-  artifact_file = "api.zip"
+  source          = "./lambda-function"
+  function_name   = "${local.app_prefix}-getState"
+  handler         = "getState.getState"
+  artifact_bucket = "${var.artifact_bucket}"
+  artifact_key    = "${var.artifact_version}/api.zip"
 
   environment_variables {
     GYBD_TABLE_STATES = "${aws_dynamodb_table.states.name}"
