@@ -1,0 +1,5 @@
+Dockerfile
+.dockerignore
+
+.terraform
+current-backend.auto.tfvars

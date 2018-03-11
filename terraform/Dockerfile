@@ -24,8 +24,8 @@ RUN mkdir -p /tmp \
     && mv terraform /usr/local/bin/
 
 # Infrastructure definition
-ADD ./use-terraform-environment.sh /app/use-terraform-environment.sh
-ADD ./*.tf /app/
+COPY . /app
 WORKDIR /app
 
+RUN echo "./initialize-terraform.sh" >> /root/.bashrc
 CMD bash
