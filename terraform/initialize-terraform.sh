@@ -15,13 +15,23 @@ if [ "$APP_STAGE" == "" ] ; then
     exit
 fi
 
+if [ "$STATE_BUCKET" == "" ] ; then
+    echo 'STATE_BUCKET must be defined.'
+    exit
+fi
+
+if [ "$ARTIFACT_BUCKET" == "" ] ; then
+    echo 'ARTIFACT_BUCKET must be defined.'
+    exit
+fi
+
 region="$AWS_REGION"
 account_id=$( aws sts get-caller-identity --output text --query Account )
 name="$APP_NAME"
 stage="$APP_STAGE"
 artifact_bucket="$ARTIFACT_BUCKET"
-terraform_bucket="$name-$stage-terraform"
-key="terraform.tfstate"
+state_bucket="$STATE_BUCKET"
+state_key="terraform.tfstate"
 
 echo "Using stage $stage for $name"
 
@@ -45,8 +55,8 @@ echo "  Wrote $backend_variables_file"
 # S3 bucket
 
 echo
-if ! aws s3api head-bucket --region "$region" --bucket "$terraform_bucket" ; then
-    echo "Didn't find Terraform state bucket $terraform_bucket."
+if ! aws s3api head-bucket --region "$region" --bucket "$state_bucket" ; then
+    echo "Didn't find Terraform state bucket $state_bucket."
     echo 'To create it now, type "initialize".'
 
     read should_initialize
@@ -55,10 +65,10 @@ if ! aws s3api head-bucket --region "$region" --bucket "$terraform_bucket" ; the
         exit 1
     fi
 
-    aws s3api create-bucket --region "$region" --bucket "$terraform_bucket"
+    aws s3api create-bucket --region "$region" --bucket "$state_bucket"
 fi
 
-echo "Using S3 bucket $terraform_bucket"
+echo "Using S3 bucket $state_bucket"
 echo
 
 # Initialize backend and modules
@@ -66,5 +76,5 @@ echo
 terraform init \
     -reconfigure \
     -backend-config="region=$region" \
-    -backend-config="bucket=$terraform_bucket" \
-    -backend-config="key=$key"
+    -backend-config="bucket=$state_bucket" \
+    -backend-config="key=$state_key"

@@ -22,9 +22,11 @@ if [ "$APP_STAGE" == "" ] ; then
 fi
 
 name=gybd
+stage="$APP_STAGE"
 image="$name-terraform"
 artifact_bucket="$name-artifacts"
 artifact_version=$( git log -n 1 --pretty=format:"%H" )
+state_bucket="$name-$stage-terraform"
 
 docker build -t "$image" terraform
 
@@ -33,8 +35,9 @@ docker run \
     -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
     -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
     -e APP_NAME="$name" \
-    -e APP_STAGE="$APP_STAGE" \
+    -e APP_STAGE="$stage" \
     -e ARTIFACT_BUCKET="$artifact_bucket" \
     -e TF_VAR_artifact_version="$artifact_version" \
+    -e STATE_BUCKET="$state_bucket" \
     --interactive --tty \
     "$image"
