@@ -18,6 +18,17 @@ locals {
   app_prefix = "${var.app_name}-${var.app_stage}"
 }
 
+output "inputs" {
+  value = {
+    aws_region       = "${var.aws_region}"
+    aws_account_id   = "${var.aws_account_id}"
+    app_name         = "${var.app_name}"
+    app_stage        = "${var.app_stage}"
+    artifact_bucket  = "${var.artifact_bucket}"
+    artifact_version = "${var.artifact_version}"
+  }
+}
+
 output "api_key" {
   value = "${aws_api_gateway_api_key.api_key.value}"
 }
