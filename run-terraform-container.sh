@@ -39,5 +39,6 @@ docker run \
     -e ARTIFACT_BUCKET="$artifact_bucket" \
     -e TF_VAR_artifact_version="$artifact_version" \
     -e STATE_BUCKET="$state_bucket" \
+    -e TF_IN_AUTOMATION="true" \
     --interactive --tty \
     "$image"

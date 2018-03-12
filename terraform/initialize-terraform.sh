@@ -74,6 +74,7 @@ echo
 # Initialize backend and modules
 
 terraform init \
+    -input=false \
     -reconfigure \
     -backend-config="region=$region" \
     -backend-config="bucket=$state_bucket" \
