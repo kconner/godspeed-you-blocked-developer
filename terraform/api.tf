@@ -4,7 +4,7 @@ resource "aws_api_gateway_rest_api" "api" {
 
 # Authorizer
 
-module "api_authorizer" {
+module "authorizer_authorize" {
   source                  = "./api-authorizer"
   aws_region              = "${var.aws_region}"
   aws_account_id          = "${var.aws_account_id}"
@@ -42,7 +42,7 @@ module "endpoint_get_states_stateID" {
   http_method             = "GET"
   function_arn            = "${module.function_getState.arn}"
   function_invocation_arn = "${module.function_getState.invocation_arn}"
-  authorizer_id           = "${module.api_authorizer.authorizer_id}"
+  authorizer_id           = "${module.authorizer_authorize.authorizer_id}"
 }
 
 # Deployment
