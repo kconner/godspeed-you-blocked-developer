@@ -5,7 +5,7 @@ resource "aws_api_gateway_rest_api" "api" {
 # Authorizer
 
 module "authorizer_authorize" {
-  source                  = "./api-authorizer"
+  source                  = "./modules/api-authorizer"
   aws_region              = "${var.aws_region}"
   aws_account_id          = "${var.aws_account_id}"
   rest_api_id             = "${aws_api_gateway_rest_api.api.id}"
@@ -31,7 +31,7 @@ resource "aws_api_gateway_resource" "states_stateID" {
 # Endpoints
 
 module "endpoint_get_states_stateID" {
-  source = "./api-endpoint"
+  source = "./modules/api-endpoint"
 
   aws_region     = "${var.aws_region}"
   aws_account_id = "${var.aws_account_id}"

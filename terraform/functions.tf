@@ -1,7 +1,7 @@
 # authorize
 
 module "function_authorize" {
-  source          = "./lambda-function"
+  source          = "./modules/lambda-function"
   function_name   = "${local.app_prefix}-authorize"
   handler         = "authorize.authorize"
   artifact_bucket = "${var.artifact_bucket}"
@@ -11,7 +11,7 @@ module "function_authorize" {
 # getState
 
 module "function_getState" {
-  source          = "./lambda-function"
+  source          = "./modules/lambda-function"
   function_name   = "${local.app_prefix}-getState"
   handler         = "getState.getState"
   artifact_bucket = "${var.artifact_bucket}"
