@@ -9,9 +9,9 @@
   "scripts": {
     "build": "node_modules/.bin/tsc",
     "package": "cd build && zip /tmp/api.zip *",
-    "publish":
+    "archive":
       "aws s3 mb s3://$ARTIFACT_BUCKET --region=$AWS_REGION && aws s3 cp /tmp/api.zip s3://$ARTIFACT_BUCKET/$ARTIFACT_VERSION/api.zip",
-    "shipit": "npm run build && npm run package && npm run publish"
+    "shipit": "npm run build && npm run package && npm run archive"
   },
   "devDependencies": {
     "@types/aws-lambda": "0.0.33",

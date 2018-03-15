@@ -1,3 +1,5 @@
+# REST API
+
 resource "aws_api_gateway_rest_api" "api" {
   name = "${local.app_prefix}-api"
 }

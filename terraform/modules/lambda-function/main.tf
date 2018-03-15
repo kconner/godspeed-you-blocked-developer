@@ -1,27 +1,58 @@
-# Produces a Lambda function with a log group and access to create it and write to it.
-# Add additional policies to the execution role externally.
+# Log group
 
-variable "function_name" {}
-variable "handler" {}
-variable "artifact_bucket" {}
-variable "artifact_key" {}
+resource "aws_cloudwatch_log_group" "log_group" {
+  name = "/aws/lambda/${var.function_name}"
+}
 
-variable "environment_variables" {
-  type = "map"
+# Execution role
 
-  default = {
-    UNUSED = ""
+data "aws_iam_policy_document" "lambda_may_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
   }
 }
 
-output "arn" {
-  value = "${aws_lambda_function.function.arn}"
+resource "aws_iam_role" "execution" {
+  assume_role_policy = "${data.aws_iam_policy_document.lambda_may_assume_role.json}"
+  name               = "${var.function_name}-execution"
 }
 
-output "invocation_arn" {
-  value = "${aws_lambda_function.function.invoke_arn}"
+# Log group policy
+
+data "aws_iam_policy_document" "write_to_log_streams" {
+  statement {
+    actions   = ["logs:CreateLogStream"]
+    resources = ["${aws_cloudwatch_log_group.log_group.arn}"]
+  }
+
+  statement {
+    actions   = ["logs:PutLogEvents"]
+    resources = ["${aws_cloudwatch_log_group.log_group.arn}:*"]
+  }
 }
 
-output "execution_role_id" {
-  value = "${aws_iam_role.execution.id}"
+resource "aws_iam_role_policy" "write_to_log_streams" {
+  role   = "${aws_iam_role.execution.id}"
+  policy = "${data.aws_iam_policy_document.write_to_log_streams.json}"
+  name   = "write-to-log-streams"
+}
+
+# Lambda function
+
+resource "aws_lambda_function" "function" {
+  function_name = "${var.function_name}"
+  handler       = "${var.handler}"
+  s3_bucket     = "${var.package_bucket}"
+  s3_key        = "${var.package_key}"
+  runtime       = "nodejs6.10"
+  role          = "${aws_iam_role.execution.arn}"
+
+  environment {
+    variables = "${var.environment_variables}"
+  }
 }

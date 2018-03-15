@@ -4,9 +4,6 @@ node_modules
 # build products
 build
 
-# serverless
-.serverless
-
 # terraform
 .terraform
 current-backend.auto.tfvars

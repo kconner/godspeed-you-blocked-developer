@@ -1,14 +1,3 @@
-variable "aws_region" {}
-variable "aws_account_id" {}
-
-variable "rest_api_id" {}
-variable "resource_id" {}
-variable "resource_path" {}
-variable "http_method" {}
-variable "function_arn" {}
-variable "function_invocation_arn" {}
-variable "authorizer_id" {}
-
 resource "aws_api_gateway_method" "method" {
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"

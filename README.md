@@ -4,10 +4,10 @@ GYBD is a simple planning tool. Teams can use it as a dashboard to coordinate a 
 
 In this tool, you:
 
-- Create plans and add tasks
-- Connect tasks to those they depend on
-- See which tasks can be worked on and which are still blocked
-- Mark off tasks as you complete them
+* Create plans and add tasks
+* Connect tasks to those they depend on
+* See which tasks can be worked on and which are still blocked
+* Mark off tasks as you complete them
 
 ## Usage
 
@@ -15,31 +15,31 @@ In this tool, you:
 
 A plan consists of a set of tasks and their relationships.
 
-- To create a new plan, type in the plan title field at the right. Then add a task.
-- To switch to an existing plan, type its name or select it from the list box.
-- To delete a plan, remove all its tasks.
+* To create a new plan, type in the plan title field at the right. Then add a task.
+* To switch to an existing plan, type its name or select it from the list box.
+* To delete a plan, remove all its tasks.
 
 ### Tasks
 
-- To add a task, drag one out from the bin under the plan title and drop it in the canvas.
-- You can drag tasks to reposition them. You'll want to arrange tasks chronologically left to right.
-- To remove a task, drag it back to the bin.
+* To add a task, drag one out from the bin under the plan title and drop it in the canvas.
+* You can drag tasks to reposition them. You'll want to arrange tasks chronologically left to right.
+* To remove a task, drag it back to the bin.
 
 Each task can have any number of prerequisite tasks.
 
-- A task is _blocked_ if any of its prerequisites are not done yet.
-- A task is _doable_ if its prerequisites are all done.
-- A task is _done_ if you've marked it done.
+* A task is _blocked_ if any of its prerequisites are not done yet.
+* A task is _doable_ if its prerequisites are all done.
+* A task is _done_ if you've marked it done.
 
 ### Relationships
 
-- To add a relationship between tasks, drag the handle from the prerequisite's right edge and drop it on the task that depends on it.
-- To change a relationship, drag handle at the line's right side. You can drop it on another task to redirect it, or drop it in the canvas to remove it.
+* To add a relationship between tasks, drag the handle from the prerequisite's right edge and drop it on the task that depends on it.
+* To change a relationship, drag handle at the line's right side. You can drop it on another task to redirect it, or drop it in the canvas to remove it.
 
 ### Saving
 
-- GYBD uses your browser's [local storage](https://en.wikipedia.org/wiki/Web_storage) to keep your data. Data can be lost when you clear your browser cache.
-- At present there is no way to import, export, or share your data.
+* GYBD uses your browser's [local storage](https://en.wikipedia.org/wiki/Web_storage) to keep your data. Data can be lost when you clear your browser cache.
+* At present there is no way to import, export, or share your data.
 
 ## Contributing
 
@@ -47,6 +47,57 @@ I built GYBD tool while learning some web technologies, so it does not have a ma
 
 Contributions are welcome! Please send me a pull request. To discuss a feature before you build, please make a GitHub issue. Be sure you're happy with the [license](LICENSE).
 
-### Developer documentation
+## Documentation
 
-- [Architecture decisions](docs/architecture)
+* [Architecture decisions](docs/architecture)
+
+## Workflow
+
+### Setup
+
+Install Docker as the regular Docker app from their website.
+
+```bash
+# Install AWS-CLI
+brew install awscli
+
+# Configure an AWS profile with your access key ID, secret access key, and region
+aws configure --profile <profile>
+```
+
+### API build
+
+```bash
+# Work in Docker
+AWS_REGION=<region> AWS_PROFILE=<profile> ./run-api-container.sh
+
+# Build TypeScript files
+npm run build
+
+# Build, package, and archive the API artifact
+npm run shipit
+```
+
+### Deployment
+
+```bash
+# Work in Docker
+AWS_REGION=<region> AWS_PROFILE=<profile> APP_STAGE=<stage> ./run-terraform-container.sh
+./initialize-terraform.sh
+
+# Inspect the deployed state
+terraform show
+terraform output
+
+# Plan a deployment
+terraform plan -out=<file>
+
+# Verify a planned deployment
+terraform show <file>
+
+# Apply a planned deployment
+terraform apply <file>
+
+# Plan and apply interactively
+terraform apply
+```
