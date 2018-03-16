@@ -1,24 +1,85 @@
 #!/bin/sh -e
 
-if [ "$AWS_REGION" == "" ] ; then
-    echo 'AWS_REGION must be defined.'
-    exit
-fi
+function print_usage {
+    cat << EOF
+usage: run-terraform-container.sh [options] <command>
 
-if [ ! "$AWS_PROFILE" == "" ] ; then
+commands:   bash    Open a shell, from which you can run terraform
+            apply   Run terraform apply interactively
+
+EOF
+}
+
+while [ -n "$1" ] ; do
+    case $1 in
+    --region)
+        shift
+        AWS_REGION=$1
+        shift
+        ;;
+    --profile)
+        shift
+        AWS_PROFILE=$1
+        shift
+        ;;
+    --key)
+        shift
+        AWS_ACCESS_KEY_ID=$1
+        shift
+        ;;
+    --secret)
+        shift
+        AWS_SECRET_ACCESS_KEY=$1
+        shift
+        ;;
+    --stage)
+        shift
+        APP_STAGE=$1
+        shift
+        ;;
+    bash)
+        shift
+        command=(bash)
+        ;;
+    apply)
+        shift
+        command=(bash -lc "terraform apply")
+        ;;
+    *)
+        print_usage
+        exit 1
+        ;;
+    esac
+done
+
+if [ -n "$AWS_PROFILE" ] ; then
     AWS_ACCESS_KEY_ID=$( aws configure get aws_access_key_id --profile "$AWS_PROFILE" )
     AWS_SECRET_ACCESS_KEY=$( aws configure get aws_secret_access_key --profile "$AWS_PROFILE" )
 fi
 
-if [ "$AWS_ACCESS_KEY_ID" == "" ] || [ "$AWS_SECRET_ACCESS_KEY" == "" ] ; then
-    echo 'AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be defined.'
-    echo 'AWS_PROFILE is acceptable if it implies both.'
-    exit
+if [ -z "$AWS_REGION" ] ; then
+    print_usage
+    echo 'required: --region or AWS_REGION'
+    exit 1
 fi
 
-if [ "$APP_STAGE" == "" ] ; then
-    echo 'APP_STAGE must be defined.'
-    exit
+if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] ; then
+    print_usage
+    echo 'required: --key or AWS_ACCESS_KEY_ID, and --secret or AWS_SECRET_ACCESS_KEY'
+    echo '  or: --profile or AWS_PROFILE if credentials are configured'
+    exit 1
+fi
+
+if [ -z "$APP_STAGE" ] ; then
+    print_usage
+    echo 'required: --stage or APP_STAGE'
+    exit 1
+fi
+
+if [ -z "$command" ] ; then
+    print_usage
+    echo 'required: command'
+    exit 1
 fi
 
 name=gybd
@@ -41,4 +102,5 @@ docker run \
     -e STATE_BUCKET="$state_bucket" \
     -e TF_IN_AUTOMATION="true" \
     --interactive --tty \
-    "$image"
+    "$image" \
+    "${command[@]}"

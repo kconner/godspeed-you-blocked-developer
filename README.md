@@ -68,22 +68,24 @@ aws configure --profile <profile>
 ### API build
 
 ```bash
-# Work in Docker
-AWS_REGION=<region> AWS_PROFILE=<profile> ./run-api-container.sh
+# Launch a container and use bash
+./run-api-container.sh bash --region <region> --profile <profile>
 
 # Build TypeScript files
 npm run build
 
 # Build, package, and archive the API artifact
 npm run shipit
+
+# Launch a container, then build, package, and archive the API artifact
+./run-api-container.sh shipit --region <region> --profile <profile>
 ```
 
 ### Deployment
 
 ```bash
-# Work in Docker
-AWS_REGION=<region> AWS_PROFILE=<profile> APP_STAGE=<stage> ./run-terraform-container.sh
-./initialize-terraform.sh
+# Launch a container and use bash
+./run-terraform-container.sh bash --region <region> --profile <profile> --stage <stage>
 
 # Inspect the deployed state
 terraform show
@@ -100,4 +102,7 @@ terraform apply <file>
 
 # Plan and apply interactively
 terraform apply
+
+# Launch container, then plan and apply interactively
+./run-terraform-container.sh apply --region <region> --profile <profile> --stage <stage>
 ```
