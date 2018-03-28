@@ -1,44 +1,44 @@
 .appSidebar {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  padding: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
-  border-radius: 22px;
-  background-color: #247;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 22px;
+    background-color: #247;
 }
 
 .appTitle {
-  font-size: 24px;
-  font-weight: normal;
-  margin: 4px 0;
-  width: 216px;
-  color: #fff;
+    font-size: 24px;
+    font-weight: normal;
+    margin: 4px 0;
+    width: 216px;
+    color: #fff;
 }
 
 .appGitHubLink {
-  font-size: 14px;
-  margin: 5px 0;
+    font-size: 14px;
+    margin: 5px 0;
 }
 
 .appSidebar .textField {
-  margin: 12px 0 0 0;
+    margin: 12px 0 0 0;
 }
 
 .appSidebar .textField input {
-  padding: 8px;
-  width: 200px;
-  border-radius: 12px;
+    padding: 8px;
+    width: 200px;
+    border-radius: 12px;
 }
 
 .appSidebar .select {
-  margin: 12px 0 0 0;
+    margin: 12px 0 0 0;
 }
 
 .appSidebar .select select {
-  width: 216px;
+    width: 216px;
 }
 
 .appSidebar .taskCardBin {
-  margin: 12px 0 0 0;
+    margin: 12px 0 0 0;
 }

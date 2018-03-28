@@ -1,23 +1,23 @@
 {
-  "name": "godspeed-you-blocked-developer-api",
-  "homepage": "http://godspeed-you-blocked-developer.com",
-  "version": "0.2.0",
-  "description": "Godspeed You! Blocked Developer API",
-  "license": "MIT",
-  "private": true,
-  "author": "Kevin Conner (https://github.com/kconner)",
-  "scripts": {
-    "build": "node_modules/.bin/tsc",
-    "package": "cd build && zip /tmp/api.zip *",
-    "archive":
-      "aws s3 mb s3://$ARTIFACT_BUCKET --region=$AWS_REGION && aws s3 cp /tmp/api.zip s3://$ARTIFACT_BUCKET/$ARTIFACT_VERSION/api.zip",
-    "shipit": "npm run build && npm run package && npm run archive"
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "0.0.33",
-    "@types/node": "^9.4.6",
-    "aws-sdk": "^2.205.0",
-    "tslint": "^5.9.1",
-    "typescript": "^2.7.2"
-  }
+    "name": "godspeed-you-blocked-developer-api",
+    "homepage": "http://godspeed-you-blocked-developer.com",
+    "version": "0.2.0",
+    "description": "Godspeed You! Blocked Developer API",
+    "license": "MIT",
+    "private": true,
+    "author": "Kevin Conner (https://github.com/kconner)",
+    "scripts": {
+        "build": "node_modules/.bin/tsc",
+        "package": "cd build && zip /tmp/api.zip *",
+        "archive":
+            "aws s3 mb s3://$ARTIFACT_BUCKET --region=$AWS_REGION && aws s3 cp /tmp/api.zip s3://$ARTIFACT_BUCKET/$ARTIFACT_VERSION/api.zip",
+        "shipit": "npm run build && npm run package && npm run archive"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "0.0.33",
+        "@types/node": "^9.4.6",
+        "aws-sdk": "^2.205.0",
+        "tslint": "^5.9.1",
+        "typescript": "^2.7.2"
+    }
 }

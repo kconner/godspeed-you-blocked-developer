@@ -1,54 +1,54 @@
 .taskCard {
-  position: absolute;
-  display: block;
+    position: absolute;
+    display: block;
 }
 
 .taskCardContent {
-  font-size: 20px;
-  line-height: 36px;
-  cursor: grab;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    font-size: 20px;
+    line-height: 36px;
+    cursor: grab;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
 .taskCardContent.done {
-  background-color: #247;
-  color: #fff;
+    background-color: #247;
+    color: #fff;
 }
 
 .taskCardContent.doable {
-  background-color: #0db;
+    background-color: #0db;
 }
 
 .taskCardContent.blocked {
-  background-color: #db0;
+    background-color: #db0;
 }
 
 .taskCardContent .textField {
-  margin: 3px 0;
+    margin: 3px 0;
 }
 
 .taskCardContent .textField input {
-  margin: 0;
+    margin: 0;
 }
 
 .taskCardHandle {
-  position: absolute;
-  width: 30px;
-  height: 24px;
-  border-radius: 12px;
-  z-index: -1;
-  cursor: grab;
+    position: absolute;
+    width: 30px;
+    height: 24px;
+    border-radius: 12px;
+    z-index: -1;
+    cursor: grab;
 }
 
 .taskCardHandle.done {
-  background-color: #247;
+    background-color: #247;
 }
 
 .taskCardHandle.doable {
-  background-color: #0db;
+    background-color: #0db;
 }
 
 .taskCardHandle.blocked {
-  background-color: #db0;
+    background-color: #db0;
 }

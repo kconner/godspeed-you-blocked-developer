@@ -1,7 +1,8 @@
-.checkbox, .checkbox input {
-  font-size: 20px;
+.checkbox,
+.checkbox input {
+    font-size: 20px;
 }
 
 .checkbox label.disabled {
-  opacity: 0.4;
+    opacity: 0.4;
 }

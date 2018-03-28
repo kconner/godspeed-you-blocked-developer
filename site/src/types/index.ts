@@ -1,144 +1,134 @@
 import * as uuid from 'uuid'
 
 export interface StoreState {
-  currentPlanID: string
-  plans: {
-    [id: string]: Plan | undefined
-  }
+    currentPlanID: string
+    plans: {
+        [id: string]: Plan | undefined
+    }
 }
 
 export interface Plan {
-  id: string
-  tasks: {
-    [id: string]: Task | undefined
-  }
+    id: string
+    tasks: {
+        [id: string]: Task | undefined
+    }
 }
 
 export interface Task {
-  id: string
-  title: string
-  assignee: string
-  location: Point
-  isDone: boolean
-  prerequisiteTaskIDs: string[]
+    id: string
+    title: string
+    assignee: string
+    location: Point
+    isDone: boolean
+    prerequisiteTaskIDs: string[]
 }
 
 export interface Point {
-  x: number
-  y: number
+    x: number
+    y: number
 }
 
 export interface Size {
-  width: number
-  height: number
+    width: number
+    height: number
 }
 
 export enum TaskStatus {
-  blocked = 'blocked',
-  doable = 'doable',
-  done = 'done'
+    blocked = 'blocked',
+    doable = 'doable',
+    done = 'done',
 }
 
 // Thanks! https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage
 export const loadState = (): StoreState | undefined => {
-  try {
-    const serializedState = localStorage.getItem('state')
-    if (!serializedState) {
-      return undefined
-    }
+    try {
+        const serializedState = localStorage.getItem('state')
+        if (!serializedState) {
+            return undefined
+        }
 
-    return JSON.parse(serializedState)
-  } catch (error) {
-    return undefined
-  }
+        return JSON.parse(serializedState)
+    } catch (error) {
+        return undefined
+    }
 }
 
 export const saveState = (state: StoreState) => {
-  try {
-    const serializedState = JSON.stringify(state)
-    localStorage.setItem('state', serializedState)
-  } catch (error) {
-    window.console.log(error)
-  }
+    try {
+        const serializedState = JSON.stringify(state)
+        localStorage.setItem('state', serializedState)
+    } catch (error) {
+        window.console.log(error)
+    }
 }
 
-export const newPlan = (id: string): Plan => (
-  {
+export const newPlan = (id: string): Plan => ({
     id,
-    tasks: {}
-  }
-)
+    tasks: {},
+})
 
-export const newTask = (location: Point): Task => (
-  {
+export const newTask = (location: Point): Task => ({
     id: uuid.v4(),
     title: '',
     assignee: '',
     location,
     isDone: false,
-    prerequisiteTaskIDs: []
-  }
-)
+    prerequisiteTaskIDs: [],
+})
 
 const gridSize = 50
 
-export const snapToGrid = (point: Point): Point => (
-  {
+export const snapToGrid = (point: Point): Point => ({
     x: Math.round(point.x / gridSize) * gridSize,
-    y: Math.round(point.y / gridSize) * gridSize
-  }
-)
+    y: Math.round(point.y / gridSize) * gridSize,
+})
 
 export const nonemptyPlanIDsInState = (state: StoreState): string[] =>
-  Object.keys(state.plans)
-    .filter(planID => {
-      const plan = state.plans[planID]
-      return plan && 0 < Object.keys(plan.tasks).length
-    })
-    .sort()
+    Object.keys(state.plans)
+        .filter(planID => {
+            const plan = state.plans[planID]
+            return plan && 0 < Object.keys(plan.tasks).length
+        })
+        .sort()
 
 export const tasksInPlan = (plan: Plan): Task[] =>
-  definedElementsOfArray(
-    Object.keys(plan.tasks).map(taskID => plan.tasks[taskID])
-  )
+    definedElementsOfArray(Object.keys(plan.tasks).map(taskID => plan.tasks[taskID]))
 
 export const prerequisitesForTaskInPlan = (task: Task, plan: Plan): Task[] =>
-  definedElementsOfArray(
-    task.prerequisiteTaskIDs.map(prerequisiteTaskID => plan.tasks[prerequisiteTaskID])
-  )
+    definedElementsOfArray(task.prerequisiteTaskIDs.map(prerequisiteTaskID => plan.tasks[prerequisiteTaskID]))
 
 export const prerequisitesOrderedForTask = (prerequisites: Task[], task: Task) =>
-  [...prerequisites].sort((lhs, rhs) =>
-    slopeFromTaskToPrerequisite(task, rhs) - slopeFromTaskToPrerequisite(task, lhs)
-  )
+    [...prerequisites].sort(
+        (lhs, rhs) => slopeFromTaskToPrerequisite(task, rhs) - slopeFromTaskToPrerequisite(task, lhs)
+    )
 
 const slopeFromTaskToPrerequisite = (task: Task, prerequisite: Task): number => {
-  const p0 = task.location
-  const p1 = prerequisite.location
-  const vector = {
-    x: p1.x - p0.x,
-    y: p1.y - p0.y
-  }
-  const slope = vector.y / vector.x
-  return isFinite(slope) ? slope : 1000
+    const p0 = task.location
+    const p1 = prerequisite.location
+    const vector = {
+        x: p1.x - p0.x,
+        y: p1.y - p0.y,
+    }
+    const slope = vector.y / vector.x
+    return isFinite(slope) ? slope : 1000
 }
 
 export const statusForTaskInPlan = (task: Task, plan: Plan): TaskStatus =>
-  task.isDone
-    ? TaskStatus.done
-    : prerequisitesForTaskInPlan(task, plan).every(prerequisite => prerequisite.isDone)
-      ? TaskStatus.doable
-      : TaskStatus.blocked
+    task.isDone
+        ? TaskStatus.done
+        : prerequisitesForTaskInPlan(task, plan).every(prerequisite => prerequisite.isDone)
+            ? TaskStatus.doable
+            : TaskStatus.blocked
 
 // Helpers
 
 const definedElementsOfArray = <T>(array: (T | undefined)[]): T[] =>
-  array.reduce(
-    (definedElements, element) => {
-      if (element) {
-        definedElements.push(element)
-      }
-      return definedElements
-    },
-    [] as T[]
-  )
+    array.reduce(
+        (definedElements, element) => {
+            if (element) {
+                definedElements.push(element)
+            }
+            return definedElements
+        },
+        [] as T[]
+    )

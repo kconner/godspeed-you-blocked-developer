@@ -1,16 +1,16 @@
 .taskArc {
-  stroke-width: 4px;
-  fill: transparent;
+    stroke-width: 4px;
+    fill: transparent;
 }
 
 .taskArc.done {
-  stroke: #247;
+    stroke: #247;
 }
 
 .taskArc.doable {
-  stroke: #0db;
+    stroke: #0db;
 }
 
 .taskArc.blocked {
-  stroke: #db0;
+    stroke: #db0;
 }
