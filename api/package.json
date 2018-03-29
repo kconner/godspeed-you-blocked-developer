@@ -8,7 +8,7 @@
     "author": "Kevin Conner (https://github.com/kconner)",
     "scripts": {
         "build": "node_modules/.bin/tsc",
-        "package": "cd build && zip /tmp/api.zip *",
+        "package": "cd build && zip -r /tmp/api.zip *",
         "archive":
             "aws s3 mb s3://$ARTIFACT_BUCKET --region=$AWS_REGION && aws s3 cp /tmp/api.zip s3://$ARTIFACT_BUCKET/$ARTIFACT_VERSION/api.zip",
         "shipit": "yarn build && yarn package && yarn archive"
