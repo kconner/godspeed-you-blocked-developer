@@ -55,7 +55,9 @@ Contributions are welcome! Please send me a pull request. To discuss a feature b
 
 ### Setup
 
-Install Docker as the regular Docker app from their website.
+Install Docker from the [Docker website](https://docs.docker.com/docker-for-mac/install/).
+
+Install NVM [as directed](https://github.com/creationix/nvm#installation).
 
 ```bash
 # Install AWS-CLI
@@ -63,6 +65,20 @@ brew install awscli
 
 # Configure an AWS profile with your access key ID, secret access key, and region
 aws configure --profile <profile>
+
+# Install Yarn for use with NVM's Node
+brew install yarn --without-node
+
+# Install Node packages for local compilation
+cd api
+nvm install
+nvm use
+yarn
+
+cd site
+nvm install
+nvm use
+yarn
 ```
 
 ### API build
