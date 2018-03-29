@@ -72,10 +72,10 @@ aws configure --profile <profile>
 ./run-api-container.sh bash --region <region> --profile <profile>
 
 # Build TypeScript files
-npm run build
+yarn build
 
 # Build, package, and archive the API artifact
-npm run shipit
+yarn shipit
 
 # Launch a container, then build, package, and archive the API artifact
 ./run-api-container.sh shipit --region <region> --profile <profile>

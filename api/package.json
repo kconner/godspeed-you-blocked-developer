@@ -11,7 +11,7 @@
         "package": "cd build && zip /tmp/api.zip *",
         "archive":
             "aws s3 mb s3://$ARTIFACT_BUCKET --region=$AWS_REGION && aws s3 cp /tmp/api.zip s3://$ARTIFACT_BUCKET/$ARTIFACT_VERSION/api.zip",
-        "shipit": "npm run build && npm run package && npm run archive"
+        "shipit": "yarn build && yarn package && yarn archive"
     },
     "devDependencies": {
         "@types/aws-lambda": "0.0.33",

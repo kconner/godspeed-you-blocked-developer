@@ -17,9 +17,9 @@ RUN mkdir -p /tmp \
 RUN pip install awscli
 
 # Build environment
-COPY package.json /app/
+COPY package.json yarn.lock /app/
 WORKDIR /app
-RUN npm install
+RUN yarn
 
 # Source
 COPY tsconfig.json /app/

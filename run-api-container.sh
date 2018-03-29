@@ -4,7 +4,7 @@ function print_usage {
     cat << EOF
 usage: run-api-container.sh [options] <command>
 
-commands:   bash    Open a shell, from which you can run npm tasks
+commands:   bash    Open a shell, from which you can run yarn tasks
             shipit  Build, package, and archive
 
 EOF
@@ -38,7 +38,7 @@ while [ -n "$1" ] ; do
         ;;
     shipit)
         shift
-        command=(npm run shipit)
+        command=(yarn shipit)
         ;;
     *)
         print_usage
