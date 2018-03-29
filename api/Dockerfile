@@ -1,6 +1,6 @@
 FROM node:6.10.3
 
-# APT: Python, zip, unzip, curl
+# APT
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends build-essential g++ python2.7 python2.7-dev zip unzip curl \
@@ -17,6 +17,9 @@ RUN mkdir -p /tmp \
 
 # AWS CLI
 RUN pip install awscli
+
+# Yarn
+RUN npm install -g yarn
 
 # Build environment
 COPY package.json yarn.lock /app/
