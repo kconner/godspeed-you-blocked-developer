@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "get_item_from_states_table" {
 module "function_authorize" {
   source         = "./modules/lambda-function"
   function_name  = "${local.app_prefix}-authorize"
-  handler        = "authorize.authorize"
+  handler        = "build/authorize.authorize"
   package_bucket = "${var.artifact_bucket}"
   package_key    = "${var.artifact_version}/api.zip"
 }
@@ -22,7 +22,7 @@ module "function_authorize" {
 module "function_getState" {
   source         = "./modules/lambda-function"
   function_name  = "${local.app_prefix}-getState"
-  handler        = "getState.getState"
+  handler        = "build/getState.getState"
   package_bucket = "${var.artifact_bucket}"
   package_key    = "${var.artifact_version}/api.zip"
 
