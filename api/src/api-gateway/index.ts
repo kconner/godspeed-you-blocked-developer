@@ -1,15 +1,14 @@
 import * as Lambda from 'aws-lambda'
-import { AWSError, DynamoDB } from 'aws-sdk'
-import { drop } from '../async'
+import * as async from '../async'
 
 export const asyncLambdaHandler = (
     task: (event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => Promise<Lambda.APIGatewayProxyResult>
 ) => (event: Lambda.APIGatewayProxyEvent, context: Lambda.Context, callback: Lambda.APIGatewayProxyCallback) => {
-    drop(task(event, context))(callback)
+    async.drop(task(event, context))(callback)
 }
 
-export const requireEnvironmentVariable = (env: NodeJS.ProcessEnv, name: string): string => {
-    const value = env[name]
+export const requiredEnvironmentVariable = (env: NodeJS.ProcessEnv, name: string) => {
+    const value = optionalEnvironmentVariable(env, name)
 
     if (!value) {
         throw response(500, { message: `Missing environment variable ${name}` })
@@ -18,7 +17,11 @@ export const requireEnvironmentVariable = (env: NodeJS.ProcessEnv, name: string)
     return value
 }
 
-export const requirePathParameter = (event: Lambda.APIGatewayProxyEvent, name: string): string => {
+export const optionalEnvironmentVariable = (env: NodeJS.ProcessEnv, name: string) => {
+    return env[name] || null
+}
+
+export const requiredPathParameter = (event: Lambda.APIGatewayProxyEvent, name: string) => {
     const pathParameters: { [key: string]: string | undefined } = event.pathParameters || {}
     const value = pathParameters[name]
 
@@ -27,6 +30,21 @@ export const requirePathParameter = (event: Lambda.APIGatewayProxyEvent, name: s
     }
 
     return value
+}
+
+export const requiredQueryParameter = (event: Lambda.APIGatewayProxyEvent, name: string) => {
+    const value = optionalQueryParameter(event, name)
+
+    if (!value) {
+        throw response(400, { message: `Missing query parameter ${name}` })
+    }
+
+    return value
+}
+
+export const optionalQueryParameter = (event: Lambda.APIGatewayProxyEvent, name: string) => {
+    const queryParameters: { [key: string]: string | undefined } = event.queryStringParameters || {}
+    return queryParameters[name] || null
 }
 
 export const responseForData = (data: object | null) => {
