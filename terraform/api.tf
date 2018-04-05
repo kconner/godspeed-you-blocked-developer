@@ -71,11 +71,25 @@ module "endpoint_post_account" {
 # Deployment
 
 resource "aws_api_gateway_deployment" "deployment" {
-  # Specifically, we need these modules' integrations to be created.
-  depends_on = ["module.endpoint_get_state_stateID", "module.endpoint_post_account"]
-
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   stage_name  = "${var.app_stage}"
+
+  # API Gateway Deployments are really just POST requests that cause collections of resources
+  # to be made available to HTTP. Terraform doesn't think it needs recreate the resource though,
+  # so we need to cause it to recreate by changing a property that has that effect.
+  # We change it when the artifact version changes and when any part of this file changes.
+  # https://github.com/hashicorp/terraform/issues/6613#issuecomment-322264393
+  stage_description = "Deployed with version ${var.artifact_version}. API MD5: ${md5(file("api.tf"))}"
+
+  # We also need to recreate this deployment only after API resources have all been updated.
+  depends_on = [
+    "module.authorizer_authorize",
+    "aws_api_gateway_resource.state",
+    "aws_api_gateway_resource.state_stateID",
+    "aws_api_gateway_resource.account",
+    "module.endpoint_get_state_stateID",
+    "module.endpoint_post_account",
+  ]
 }
 
 # API Key and usage plan
