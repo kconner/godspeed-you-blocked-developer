@@ -21,8 +21,8 @@ RUN pip install awscli
 # Terraform
 RUN mkdir -p /tmp \
     && cd /tmp \
-    && curl -O https://releases.hashicorp.com/terraform/0.11.3/terraform_0.11.3_linux_amd64.zip \
-    && unzip terraform_0.11.3_linux_amd64.zip \
+    && curl -O https://releases.hashicorp.com/terraform/0.11.5/terraform_0.11.5_linux_amd64.zip \
+    && unzip terraform_0.11.5_linux_amd64.zip \
     && mv terraform /usr/local/bin/
 
 # Infrastructure definition
