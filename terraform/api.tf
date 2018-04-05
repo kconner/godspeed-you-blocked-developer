@@ -68,6 +68,21 @@ module "endpoint_post_account" {
   authorizer_id           = "${module.authorizer_authorize.authorizer_id}"
 }
 
+module "endpoint_get_account" {
+  source = "./modules/api-endpoint"
+
+  aws_region     = "${var.aws_region}"
+  aws_account_id = "${var.aws_account_id}"
+
+  rest_api_id             = "${aws_api_gateway_rest_api.api.id}"
+  resource_id             = "${aws_api_gateway_resource.account.id}"
+  resource_path           = "${aws_api_gateway_resource.account.path}"
+  http_method             = "GET"
+  function_arn            = "${module.function_getAccount.arn}"
+  function_invocation_arn = "${module.function_getAccount.invocation_arn}"
+  authorizer_id           = "${module.authorizer_authorize.authorizer_id}"
+}
+
 # Deployment
 
 resource "aws_api_gateway_deployment" "deployment" {
@@ -77,6 +92,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   depends_on = [
     "module.endpoint_get_state_stateID",
     "module.endpoint_post_account",
+    "module.endpoint_get_account",
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"

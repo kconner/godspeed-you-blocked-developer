@@ -14,6 +14,13 @@ data "aws_iam_policy_document" "put_item_in_account_table" {
   }
 }
 
+data "aws_iam_policy_document" "get_item_from_account_table" {
+  statement {
+    actions   = ["dynamodb:GetItem"]
+    resources = ["${aws_dynamodb_table.account.arn}"]
+  }
+}
+
 # authorize
 
 module "function_authorize" {
@@ -62,4 +69,24 @@ resource "aws_iam_role_policy" "postAccount_put_item_in_account_table" {
   role   = "${module.function_postAccount.execution_role_id}"
   policy = "${data.aws_iam_policy_document.put_item_in_account_table.json}"
   name   = "put-item-in-account-table"
+}
+
+# getAccount
+
+module "function_getAccount" {
+  source         = "./modules/lambda-function"
+  function_name  = "${local.app_prefix}-getAccount"
+  handler        = "build/getAccount.getAccount"
+  package_bucket = "${var.artifact_bucket}"
+  package_key    = "${var.artifact_version}/api.zip"
+
+  environment_variables {
+    ACCOUNT_TABLE_NAME = "${aws_dynamodb_table.account.name}"
+  }
+}
+
+resource "aws_iam_role_policy" "getAccount_get_item_from_account_table" {
+  role   = "${module.function_getAccount.execution_role_id}"
+  policy = "${data.aws_iam_policy_document.get_item_from_account_table.json}"
+  name   = "get-item-from-account-table"
 }

@@ -1,7 +1,7 @@
 import * as uuid from 'uuid/v4'
 import * as gateway from './api-gateway'
 import * as dynamo from './dynamo-db'
-import { Account, decodeAccount, encodeAccount } from './dynamo-db/Account'
+import { Account, encodeAccount } from './dynamo-db/Account'
 
 export const postAccount = gateway.asyncLambdaHandler(async (event, context) => {
     const account: Account = {
