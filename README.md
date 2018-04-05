@@ -119,6 +119,10 @@ terraform apply <file>
 # Plan and apply interactively
 terraform apply
 
-# Launch container, then plan and apply interactively
-./run-terraform-container.sh apply --region <region> --profile <profile> --stage <stage>
+# Run the post-apply script
+cd terraform
+./post-apply.sh
+
+# Launch container, then plan and apply interactively, then run the post-apply script
+./run-terraform-container.sh deploy --region <region> --profile <profile> --stage <stage>
 ```
