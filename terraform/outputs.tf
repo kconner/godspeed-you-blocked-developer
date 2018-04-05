@@ -20,3 +20,8 @@ output "api_key" {
   description = "Value of the x-api-key that endpoints expect, from aws_api_gateway_api_key::value"
   value       = "${aws_api_gateway_api_key.api_key.value}"
 }
+
+output "rest_api_id" {
+  description = "ID of the rest API to be redeployed, from aws_api_gateway_rest_api::id"
+  value       = "${aws_api_gateway_rest_api.api.id}"
+}

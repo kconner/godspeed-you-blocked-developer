@@ -5,7 +5,7 @@ function print_usage {
 usage: run-terraform-container.sh [options] <command>
 
 commands:   bash    Open a shell, from which you can run terraform
-            apply   Run terraform apply interactively
+            deploy  Run terraform apply interactively, then post-apply.sh
 
 EOF
 }
@@ -41,9 +41,9 @@ while [ -n "$1" ] ; do
         shift
         command=(bash)
         ;;
-    apply)
+    deploy)
         shift
-        command=(bash -lc "terraform apply")
+        command=(bash -lc "terraform apply && ./post-apply.sh")
         ;;
     *)
         print_usage
