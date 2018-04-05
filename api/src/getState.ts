@@ -5,7 +5,7 @@ import * as optional from './optional'
 
 export const getState = gateway.asyncLambdaHandler(async (event, context) => {
     const item = await dynamo.getItemAsync(
-        gateway.requiredEnvironmentVariable(process.env, 'GYBD_TABLE_STATES'),
+        gateway.requiredEnvironmentVariable(process.env, 'STATES_TABLE_NAME'),
         gateway.requiredPathParameter(event, 'stateID')
     )
 

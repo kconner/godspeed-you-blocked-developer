@@ -27,7 +27,7 @@ module "function_getState" {
   package_key    = "${var.artifact_version}/api.zip"
 
   environment_variables {
-    GYBD_TABLE_STATES = "${aws_dynamodb_table.states.name}"
+    STATES_TABLE_NAME = "${aws_dynamodb_table.states.name}"
   }
 }
 
