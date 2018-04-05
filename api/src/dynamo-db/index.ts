@@ -1,5 +1,6 @@
 import { DynamoDB } from 'aws-sdk'
 import * as async from '../async'
+import { encodeString } from './attributes'
 
 const dynamo = new DynamoDB()
 
@@ -7,13 +8,22 @@ export const getItemAsync = async (tableName: string, id: string) => {
     const input: DynamoDB.GetItemInput = {
         TableName: tableName,
         Key: {
-            id: { S: id },
+            id: encodeString(id),
         },
     }
 
     const output = await async.lift<DynamoDB.GetItemOutput>(callback => dynamo.getItem(input, callback))
 
     return output.Item || null
+}
+
+export const putItemAsync = async (tableName: string, item: DynamoDB.AttributeMap) => {
+    const input: DynamoDB.PutItemInput = {
+        TableName: tableName,
+        Item: item,
+    }
+
+    await async.lift<DynamoDB.PutItemOutput>(callback => dynamo.putItem(input, callback))
 }
 
 export const scanAsync = async (tableName: string) => {

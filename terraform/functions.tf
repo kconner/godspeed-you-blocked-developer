@@ -1,9 +1,16 @@
 # Policy documents
 
-data "aws_iam_policy_document" "get_item_from_states_table" {
+data "aws_iam_policy_document" "get_item_from_state_table" {
   statement {
     actions   = ["dynamodb:GetItem"]
-    resources = ["${aws_dynamodb_table.states.arn}"]
+    resources = ["${aws_dynamodb_table.state.arn}"]
+  }
+}
+
+data "aws_iam_policy_document" "put_item_in_account_table" {
+  statement {
+    actions   = ["dynamodb:PutItem"]
+    resources = ["${aws_dynamodb_table.account.arn}"]
   }
 }
 
@@ -27,12 +34,32 @@ module "function_getState" {
   package_key    = "${var.artifact_version}/api.zip"
 
   environment_variables {
-    STATES_TABLE_NAME = "${aws_dynamodb_table.states.name}"
+    STATE_TABLE_NAME = "${aws_dynamodb_table.state.name}"
   }
 }
 
-resource "aws_iam_role_policy" "getState_get_item_from_states_table" {
+resource "aws_iam_role_policy" "getState_get_item_from_state_table" {
   role   = "${module.function_getState.execution_role_id}"
-  policy = "${data.aws_iam_policy_document.get_item_from_states_table.json}"
-  name   = "get-item-from-states-table"
+  policy = "${data.aws_iam_policy_document.get_item_from_state_table.json}"
+  name   = "get-item-from-state-table"
+}
+
+# postAccount
+
+module "function_postAccount" {
+  source         = "./modules/lambda-function"
+  function_name  = "${local.app_prefix}-postAccount"
+  handler        = "build/postAccount.postAccount"
+  package_bucket = "${var.artifact_bucket}"
+  package_key    = "${var.artifact_version}/api.zip"
+
+  environment_variables {
+    ACCOUNT_TABLE_NAME = "${aws_dynamodb_table.account.name}"
+  }
+}
+
+resource "aws_iam_role_policy" "postAccount_put_item_in_account_table" {
+  role   = "${module.function_postAccount.execution_role_id}"
+  policy = "${data.aws_iam_policy_document.put_item_in_account_table.json}"
+  name   = "put-item-in-account-table"
 }

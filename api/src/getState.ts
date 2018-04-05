@@ -1,15 +1,15 @@
 import * as gateway from './api-gateway'
 import * as dynamo from './dynamo-db'
-import { stateFromItem } from './dynamo-db/State'
+import { decodeState } from './dynamo-db/State'
 import * as optional from './optional'
 
 export const getState = gateway.asyncLambdaHandler(async (event, context) => {
     const item = await dynamo.getItemAsync(
-        gateway.requiredEnvironmentVariable(process.env, 'STATES_TABLE_NAME'),
+        gateway.requiredEnvironmentVariable(process.env, 'STATE_TABLE_NAME'),
         gateway.requiredPathParameter(event, 'stateID')
     )
 
-    const state = optional.map(item, stateFromItem)
+    const state = optional.map(item, decodeState)
 
     return gateway.responseForData(state)
 })

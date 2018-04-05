@@ -1,12 +1,17 @@
 import { DynamoDB } from 'aws-sdk'
-import { stringFromAttribute, mapFromAttribute } from './attributes'
+import { attributeOfItem, decodeString, decodeInteger, encodeString, encodeInteger } from './attributes'
 
 export interface State {
     id: string
-    value: object
+    value: number
 }
 
-export const stateFromItem = (item: DynamoDB.AttributeMap): State => ({
-    id: stringFromAttribute(item, 'id'),
-    value: mapFromAttribute(item, 'value'),
+export const decodeState = (item: DynamoDB.AttributeMap): State => ({
+    id: decodeString(attributeOfItem(item, 'id')),
+    value: decodeInteger(attributeOfItem(item, 'name')),
+})
+
+export const encodeState = (state: State): DynamoDB.AttributeMap => ({
+    id: encodeString(state.id),
+    value: encodeInteger(state.value),
 })

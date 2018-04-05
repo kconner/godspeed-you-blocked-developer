@@ -1,25 +1,21 @@
 import { DynamoDB } from 'aws-sdk'
 
-export const stringFromAttribute = (item: DynamoDB.AttributeMap, name: string) => attributeFromItem(item, name).S || ''
+type AttributeDecoder<T> = (attribute: DynamoDB.AttributeValue) => T
+type AttributeEncoder<T> = (value: T) => DynamoDB.AttributeValue
 
-export const integerFromAttribute = (item: DynamoDB.AttributeMap, name: string) =>
-    parseInt(attributeFromItem(item, name).N || '0')
+export const attributeOfItem = (item: DynamoDB.AttributeMap, name: string): DynamoDB.AttributeValue => item[name] || {}
 
-export const booleanFromAttribute = (item: DynamoDB.AttributeMap, name: string) =>
-    attributeFromItem(item, name).BOOL || false
+export const decodeString = (attribute: DynamoDB.AttributeValue) => attribute.S || ''
+export const encodeString = (value: string): DynamoDB.AttributeValue => ({ S: value })
 
-export const mapFromAttribute = (item: DynamoDB.AttributeMap, name: string) => attributeFromItem(item, name).M || {}
+export const decodeInteger = (attribute: DynamoDB.AttributeValue) => parseInt(attribute.N || '0')
+export const encodeInteger = (value: number): DynamoDB.AttributeValue => ({ N: value.toString() })
 
-export const stringListFromAttribute = (item: DynamoDB.AttributeMap, name: string) =>
-    (attributeFromItem(item, name).L || []).reduce(
-        (list, item) => {
-            const value = item.S
-            if (value) {
-                list.push(value)
-            }
-            return list
-        },
-        [] as string[]
-    )
+export const decodeBoolean = (attribute: DynamoDB.AttributeValue) => attribute.BOOL || false
+export const encodeBoolean = (value: boolean): DynamoDB.AttributeValue => ({ BOOL: value })
 
-const attributeFromItem = (item: DynamoDB.AttributeMap, name: string): DynamoDB.AttributeValue => item[name] || {}
+export const decodeList = <T>(attribute: DynamoDB.AttributeValue, mapElement: AttributeDecoder<T>) =>
+    (attribute.L || []).map(mapElement)
+export const encodeList = <T>(value: T[], mapElement: AttributeEncoder<T>): DynamoDB.AttributeValue => ({
+    L: value.map(mapElement),
+})

@@ -18,32 +18,53 @@ module "authorizer_authorize" {
 
 # Resources
 
-resource "aws_api_gateway_resource" "states" {
+resource "aws_api_gateway_resource" "state" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   parent_id   = "${aws_api_gateway_rest_api.api.root_resource_id}"
-  path_part   = "states"
+  path_part   = "state"
 }
 
-resource "aws_api_gateway_resource" "states_stateID" {
+resource "aws_api_gateway_resource" "state_stateID" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
-  parent_id   = "${aws_api_gateway_resource.states.id}"
+  parent_id   = "${aws_api_gateway_resource.state.id}"
   path_part   = "{stateID}"
+}
+
+resource "aws_api_gateway_resource" "account" {
+  rest_api_id = "${aws_api_gateway_rest_api.api.id}"
+  parent_id   = "${aws_api_gateway_rest_api.api.root_resource_id}"
+  path_part   = "account"
 }
 
 # Endpoints
 
-module "endpoint_get_states_stateID" {
+module "endpoint_get_state_stateID" {
   source = "./modules/api-endpoint"
 
   aws_region     = "${var.aws_region}"
   aws_account_id = "${var.aws_account_id}"
 
   rest_api_id             = "${aws_api_gateway_rest_api.api.id}"
-  resource_id             = "${aws_api_gateway_resource.states_stateID.id}"
-  resource_path           = "${aws_api_gateway_resource.states_stateID.path}"
+  resource_id             = "${aws_api_gateway_resource.state_stateID.id}"
+  resource_path           = "${aws_api_gateway_resource.state_stateID.path}"
   http_method             = "GET"
   function_arn            = "${module.function_getState.arn}"
   function_invocation_arn = "${module.function_getState.invocation_arn}"
+  authorizer_id           = "${module.authorizer_authorize.authorizer_id}"
+}
+
+module "endpoint_post_account" {
+  source = "./modules/api-endpoint"
+
+  aws_region     = "${var.aws_region}"
+  aws_account_id = "${var.aws_account_id}"
+
+  rest_api_id             = "${aws_api_gateway_rest_api.api.id}"
+  resource_id             = "${aws_api_gateway_resource.account.id}"
+  resource_path           = "${aws_api_gateway_resource.account.path}"
+  http_method             = "POST"
+  function_arn            = "${module.function_postAccount.arn}"
+  function_invocation_arn = "${module.function_postAccount.invocation_arn}"
   authorizer_id           = "${module.authorizer_authorize.authorizer_id}"
 }
 
@@ -51,7 +72,7 @@ module "endpoint_get_states_stateID" {
 
 resource "aws_api_gateway_deployment" "deployment" {
   # Specifically, we need these modules' integrations to be created.
-  depends_on = ["module.endpoint_get_states_stateID"]
+  depends_on = ["module.endpoint_get_state_stateID", "module.endpoint_post_account"]
 
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   stage_name  = "${var.app_stage}"
