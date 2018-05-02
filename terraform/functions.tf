@@ -7,6 +7,13 @@ data "aws_iam_policy_document" "get_item_from_state_table" {
   }
 }
 
+data "aws_iam_policy_document" "admin_create_user_in_users_pool" {
+  statement {
+    actions   = ["cognito:AdminCreateUser"]
+    resources = ["${aws_cognito_user_pool.users.arn}"]
+  }
+}
+
 data "aws_iam_policy_document" "put_item_in_account_table" {
   statement {
     actions   = ["dynamodb:PutItem"]
@@ -61,8 +68,16 @@ module "function_postAccount" {
   package_key    = "${var.artifact_version}/api.zip"
 
   environment_variables {
-    ACCOUNT_TABLE_NAME = "${aws_dynamodb_table.account.name}"
+    ACCOUNT_TABLE_NAME  = "${aws_dynamodb_table.account.name}"
+    USER_POOL_ID        = "${aws_cognito_user_pool.users.id}"
+    USER_POOL_CLIENT_ID = "${aws_cognito_user_pool_client.users_api.id}"
   }
+}
+
+resource "aws_iam_role_policy" "postAccount_admin_create_user_in_users_pool" {
+  role   = "${module.function_postAccount.execution_role_id}"
+  policy = "${data.aws_iam_policy_document.admin_create_user_in_users_pool.json}"
+  name   = "admin-create-user-in-users-pool"
 }
 
 resource "aws_iam_role_policy" "postAccount_put_item_in_account_table" {

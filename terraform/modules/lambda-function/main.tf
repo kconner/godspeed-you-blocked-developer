@@ -49,7 +49,7 @@ resource "aws_lambda_function" "function" {
   handler       = "${var.handler}"
   s3_bucket     = "${var.package_bucket}"
   s3_key        = "${var.package_key}"
-  runtime       = "nodejs6.10"
+  runtime       = "nodejs8.10"
   role          = "${aws_iam_role.execution.arn}"
 
   environment {
