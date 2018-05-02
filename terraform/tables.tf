@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "state" {
-  name     = "${local.app_prefix}-state"
+  name     = "${local.resource_prefix}-state"
   hash_key = "id"
 
   attribute {
@@ -16,7 +16,7 @@ resource "aws_dynamodb_table" "state" {
 }
 
 resource "aws_dynamodb_table" "account" {
-  name     = "${local.app_prefix}-account"
+  name     = "${local.resource_prefix}-account"
   hash_key = "id"
 
   attribute {

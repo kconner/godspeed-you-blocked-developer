@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "get_item_from_account_table" {
 
 module "function_authorize" {
   source         = "./modules/lambda-function"
-  function_name  = "${local.app_prefix}-authorize"
+  function_name  = "${local.resource_prefix}-authorize"
   handler        = "build/authorize.authorize"
   package_bucket = "${var.artifact_bucket}"
   package_key    = "${var.artifact_version}/api.zip"
@@ -35,7 +35,7 @@ module "function_authorize" {
 
 module "function_getState" {
   source         = "./modules/lambda-function"
-  function_name  = "${local.app_prefix}-getState"
+  function_name  = "${local.resource_prefix}-getState"
   handler        = "build/getState.getState"
   package_bucket = "${var.artifact_bucket}"
   package_key    = "${var.artifact_version}/api.zip"
@@ -55,7 +55,7 @@ resource "aws_iam_role_policy" "getState_get_item_from_state_table" {
 
 module "function_postAccount" {
   source         = "./modules/lambda-function"
-  function_name  = "${local.app_prefix}-postAccount"
+  function_name  = "${local.resource_prefix}-postAccount"
   handler        = "build/postAccount.postAccount"
   package_bucket = "${var.artifact_bucket}"
   package_key    = "${var.artifact_version}/api.zip"
@@ -75,7 +75,7 @@ resource "aws_iam_role_policy" "postAccount_put_item_in_account_table" {
 
 module "function_getAccount" {
   source         = "./modules/lambda-function"
-  function_name  = "${local.app_prefix}-getAccount"
+  function_name  = "${local.resource_prefix}-getAccount"
   handler        = "build/getAccount.getAccount"
   package_bucket = "${var.artifact_bucket}"
   package_key    = "${var.artifact_version}/api.zip"

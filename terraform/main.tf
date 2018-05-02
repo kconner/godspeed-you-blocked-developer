@@ -8,5 +8,5 @@ provider "aws" {
 }
 
 locals {
-  app_prefix = "${var.app_name}-${var.app_stage}"
+  resource_prefix = "${var.app_name}-${var.app_stage}"
 }

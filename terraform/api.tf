@@ -1,7 +1,7 @@
 # REST API
 
 resource "aws_api_gateway_rest_api" "api" {
-  name = "${local.app_prefix}-api"
+  name = "${local.resource_prefix}-api"
 }
 
 # Authorizer
@@ -102,12 +102,12 @@ resource "aws_api_gateway_deployment" "deployment" {
 # API Key and usage plan
 
 resource "aws_api_gateway_api_key" "api_key" {
-  name = "${local.app_prefix}-api-key"
+  name = "${local.resource_prefix}-api-key"
 }
 
 resource "aws_api_gateway_usage_plan" "usage_plan" {
-  name        = "${local.app_prefix}"
-  description = "Usage plan for the ${local.app_prefix} API."
+  name        = "${local.resource_prefix}"
+  description = "Usage plan for the ${local.resource_prefix} API."
 
   api_stages {
     api_id = "${aws_api_gateway_rest_api.api.id}"
