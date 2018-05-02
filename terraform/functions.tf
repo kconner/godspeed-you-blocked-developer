@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "get_item_from_state_table" {
 
 data "aws_iam_policy_document" "admin_create_user_in_users_pool" {
   statement {
-    actions   = ["cognito:AdminCreateUser"]
+    actions   = ["cognito-idp:AdminCreateUser"]
     resources = ["${aws_cognito_user_pool.users.arn}"]
   }
 }

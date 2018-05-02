@@ -10,9 +10,9 @@ export const postAccount = gateway.asyncLambdaHandler(async (event, context) => 
     const username = 'abc123' // TODO
     // const password = gateway.requiredQueryParameter(event, 'password')
 
-    const user = await cognito.adminCreateUserAsync(userPoolID, userPoolClientID, username)
+    const create = cognito.adminCreateUserAsync(userPoolID, userPoolClientID, username)
 
-    return gateway.responseForData(user)
+    return await gateway.responseForData(create)
 
     // const account: Account = {
     //     id: uuid(),

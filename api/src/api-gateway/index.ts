@@ -47,10 +47,11 @@ export const optionalQueryParameter = (event: Lambda.APIGatewayProxyEvent, name:
     return queryParameters[name] || null
 }
 
-export const responseForData = (data: object | null) => {
+export const responseForData = async (data: Promise<object | null>) => {
     try {
-        if (data) {
-            return response(200, data)
+        const value = await data
+        if (value) {
+            return response(200, value)
         } else {
             return response(404, { message: 'No such item' })
         }
