@@ -6,6 +6,7 @@
         "outDir": "./build",
         "rootDir": "./src",
         "strict": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "noUnusedLocals": true
     }
 }
