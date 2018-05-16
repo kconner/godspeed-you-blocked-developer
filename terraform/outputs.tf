@@ -22,6 +22,6 @@ output "api_key" {
 }
 
 output "rest_api_id" {
-  description = "ID of the rest API to be redeployed, from aws_api_gateway_rest_api::id"
+  description = "ID of the REST API to be redeployed, from aws_api_gateway_rest_api::id"
   value       = "${aws_api_gateway_rest_api.api.id}"
 }
